@@ -67,17 +67,17 @@
 
 #define BEACON_LOST_TIME            4 * OS_HZ    /* 2048 msec = 2 sec */
 
-#define DLS_TIME                1200      /* unit: msec */
-#define AUTH_TIME               300       /* unit: msec */
-#define ASSOC_TIME              300       /* unit: msec */
-#define JOIN_TIME               2000        /* unit: msec */
+#define DLS_TIMEOUT                 1200      /* unit: msec */
+#define AUTH_TIMEOUT                300       /* unit: msec */
+#define ASSOC_TIMEOUT               300       /* unit: msec */
+#define JOIN_TIMEOUT                2000        /* unit: msec */
 #define SHORT_CHANNEL_TIME          90        /* unit: msec */
 #define MIN_CHANNEL_TIME            110        /* unit: msec, for dual band scan */
 #define MAX_CHANNEL_TIME            140       /* unit: msec, for single band scan */
 #define	FAST_ACTIVE_SCAN_TIME	    30 		  /* Active scan waiting for probe response time */
 #define CW_MIN_IN_BITS              4         /* actual CwMin = 2^CW_MIN_IN_BITS - 1 */
 #define AUTO_CHANNEL_SEL_TIMEOUT		400		/* uint: msec */
-#define LINK_DOWN_TIME          20000      /* unit: msec */
+#define LINK_DOWN_TIMEOUT          20000      /* unit: msec */
 #define AUTO_WAKEUP_TIMEOUT			70			/*unit: msec */
 
 
@@ -121,9 +121,9 @@ extern unsigned int CW_MAX_IN_BITS;
 #define BSS_NOT_FOUND                    0xFFFFFFFF
 
 
-#ifdef CONFIG_STA_SUPPORT
+//#ifdef CONFIG_STA_SUPPORT
 #define MAX_LEN_OF_MLME_QUEUE            40 /*10 */
-#endif /* CONFIG_STA_SUPPORT */
+//#endif /* CONFIG_STA_SUPPORT */
 
 enum SCAN_MODE{
 	/* Active scan, send probe request, and wait beacon and probe response */
@@ -1230,7 +1230,7 @@ typedef struct _MLME_QUEUE_ELEM {
     unsigned long             Machine;
     unsigned long             MsgType;
     unsigned long             MsgLen;
-//    LARGE_INTEGER     TimeStamp;
+    unsigned long long     TimeStamp;
     unsigned char             Rssi0;
     unsigned char             Rssi1;
     unsigned char             Rssi2;
@@ -1499,7 +1499,7 @@ typedef struct _bcn_ie_list {
 	unsigned char ExtRateLen;
 	unsigned char CkipFlag;
 	unsigned char AironetCellPowerLimit;
-//	LARGE_INTEGER TimeStamp;
+	unsigned long long TimeStamp;
 	CF_PARM CfParm;
 	EDCA_PARM EdcaParm;
 	QBSS_LOAD_PARM QbssLoad;

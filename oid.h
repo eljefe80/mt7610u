@@ -442,34 +442,34 @@ typedef struct _NDIS_802_11_CONFIGURATION {
 	unsigned long DSConfig;		/* Frequency, units are kHz */
 	NDIS_802_11_CONFIGURATION_FH FHConfig;
 } NDIS_802_11_CONFIGURATION, *PNDIS_802_11_CONFIGURATION;
-/*
+
 typedef struct _NDIS_802_11_STATISTICS {
 	unsigned long Length;		
-	LARGE_INTEGER TransmittedFragmentCount;
-	LARGE_INTEGER MulticastTransmittedFrameCount;
-	LARGE_INTEGER FailedCount;
-	LARGE_INTEGER RetryCount;
-	LARGE_INTEGER MultipleRetryCount;
-	LARGE_INTEGER RTSSuccessCount;
-	LARGE_INTEGER RTSFailureCount;
-	LARGE_INTEGER ACKFailureCount;
-	LARGE_INTEGER FrameDuplicateCount;
-	LARGE_INTEGER ReceivedFragmentCount;
-	LARGE_INTEGER MulticastReceivedFrameCount;
-	LARGE_INTEGER FCSErrorCount;
-	LARGE_INTEGER TransmittedFrameCount;
-	LARGE_INTEGER WEPUndecryptableCount;
-	LARGE_INTEGER TKIPLocalMICFailures;
-	LARGE_INTEGER TKIPRemoteMICErrors;
-	LARGE_INTEGER TKIPICVErrors;
-	LARGE_INTEGER TKIPCounterMeasuresInvoked;
-	LARGE_INTEGER TKIPReplays;
-	LARGE_INTEGER CCMPFormatErrors;
-	LARGE_INTEGER CCMPReplays;
-	LARGE_INTEGER CCMPDecryptErrors;
-	LARGE_INTEGER FourWayHandshakeFailures;
+	unsigned long long TransmittedFragmentCount;
+	unsigned long long MulticastTransmittedFrameCount;
+	unsigned long long FailedCount;
+	unsigned long long RetryCount;
+	unsigned long long MultipleRetryCount;
+	unsigned long long RTSSuccessCount;
+	unsigned long long RTSFailureCount;
+	unsigned long long ACKFailureCount;
+	unsigned long long FrameDuplicateCount;
+	unsigned long long ReceivedFragmentCount;
+	unsigned long long MulticastReceivedFrameCount;
+	unsigned long long FCSErrorCount;
+	unsigned long long TransmittedFrameCount;
+	unsigned long long WEPUndecryptableCount;
+	unsigned long long TKIPLocalMICFailures;
+	unsigned long long TKIPRemoteMICErrors;
+	unsigned long long TKIPICVErrors;
+	unsigned long long TKIPCounterMeasuresInvoked;
+	unsigned long long TKIPReplays;
+	unsigned long long CCMPFormatErrors;
+	unsigned long long CCMPReplays;
+	unsigned long long CCMPDecryptErrors;
+	unsigned long long FourWayHandshakeFailures;
 } NDIS_802_11_STATISTICS, *PNDIS_802_11_STATISTICS;
-*/
+
 typedef struct _MBSS_STATISTICS {
 	long TxCount;
 	unsigned long RxCount;
@@ -934,7 +934,7 @@ typedef union _HTTRANSMIT_SETTING {
 } HTTRANSMIT_SETTING, *PHTTRANSMIT_SETTING;
 
 typedef enum _RT_802_11_PREAMBLE {
-	Rt802_11Preamblelong,
+	Rt802_11PreambleLong,
 	Rt802_11PreambleShort,
 	Rt802_11PreambleAuto
 } RT_802_11_PREAMBLE, *PRT_802_11_PREAMBLE;
@@ -999,7 +999,7 @@ typedef struct _RT_802_11_LINK_STATUS {
 
 #ifdef SYSTEM_LOG_SUPPORT
 typedef struct _RT_802_11_EVENT_LOG {
-//	LARGE_INTEGER SystemTime;	/* timestammp via NdisGetCurrentSystemTime() */
+//	unsigned long long SystemTime;	/* timestammp via NdisGetCurrentSystemTime() */
 	unsigned char Addr[MAC_ADDR_LENGTH];
 	unsigned short Event;		/* EVENT_xxx */
 } RT_802_11_EVENT_LOG, *PRT_802_11_EVENT_LOG;

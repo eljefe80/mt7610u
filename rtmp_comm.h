@@ -364,9 +364,9 @@ typedef struct _PTK_SG_T{
 	Packet information for NdisQueryPacket
 */
 typedef struct  _PACKET_INFO    {
-	unsigned intPhysicalBufferCount;    /* Physical breaks of buffer descripor chained */
-	unsigned intBufferCount;           /* Number of Buffer descriptor chained */
-	unsigned intTotalPacketLength ;     /* Self explained */
+	unsigned int PhysicalBufferCount;    /* Physical breaks of buffer descripor chained */
+	unsigned int BufferCount;           /* Number of Buffer descriptor chained */
+	unsigned int TotalPacketLength ;     /* Self explained */
 	char* pFirstBuffer;   /* Pointer to first buffer descriptor */
 #ifdef TX_PKT_SG
 	PKT_SG_T sg_list[MAX_SKB_FRAGS];

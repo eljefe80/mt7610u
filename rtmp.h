@@ -38,7 +38,6 @@
 
 
 
-#define CONFIG_STA_SUPPORT 1
 
 
 #ifdef CLIENT_WDS
@@ -339,8 +338,8 @@ void DisplayTxAgg (RTMP_ADAPTER *pAd);
 	_pAd->StaActive.SupportedHtPhy.ChannelWidth = _pAd->MlmeAux.HtCapability.HtCapInfo.ChannelWidth;      \
 	_pAd->StaActive.SupportedHtPhy.MimoPs = _pAd->MlmeAux.HtCapability.HtCapInfo.MimoPs;      \
 	_pAd->StaActive.SupportedHtPhy.GF = _pAd->MlmeAux.HtCapability.HtCapInfo.GF;      \
-	_pAd->StaActive.SupportedHtPhy.shortGIfor20 = _pAd->MlmeAux.HtCapability.HtCapInfo.shortGIfor20;      \
-	_pAd->StaActive.SupportedHtPhy.shortGIfor40 = _pAd->MlmeAux.HtCapability.HtCapInfo.shortGIfor40;      \
+	_pAd->StaActive.SupportedHtPhy.ShortGIfor20 = _pAd->MlmeAux.HtCapability.HtCapInfo.ShortGIfor20;      \
+	_pAd->StaActive.SupportedHtPhy.ShortGIfor40 = _pAd->MlmeAux.HtCapability.HtCapInfo.ShortGIfor40;      \
 	_pAd->StaActive.SupportedHtPhy.TxSTBC = _pAd->MlmeAux.HtCapability.HtCapInfo.TxSTBC;      \
 	_pAd->StaActive.SupportedHtPhy.RxSTBC = _pAd->MlmeAux.HtCapability.HtCapInfo.RxSTBC;      \
 	_pAd->StaActive.SupportedHtPhy.ExtChanOffset = _pAd->MlmeAux.AddHtInfo.AddHtInfo.ExtChanOffset;      \
@@ -1201,7 +1200,7 @@ typedef union _REG_TRANSMIT_SETTING {
 		unsigned int HTMODE:1;
 		unsigned int TRANSNO:2;
 		unsigned int STBC:1;	/*SPACE */
-		unsigned int shortGI:1;
+		unsigned int ShortGI:1;
 		unsigned int BW:1;	/*channel bandwidth 20MHz or 40 MHz */
 		unsigned int TxBF:1;	/* 3*3 */
 		unsigned int ITxBfEn:1;
@@ -1217,7 +1216,7 @@ typedef union _REG_TRANSMIT_SETTING {
 		unsigned int ITxBfEn:1;
 		unsigned int TxBF:1;
 		unsigned int BW:1;	/*channel bandwidth 20MHz or 40 MHz */
-		unsigned int shortGI:1;
+		unsigned int ShortGI:1;
 		unsigned int STBC:1;	/*SPACE */
 		unsigned int TRANSNO:2;
 		unsigned int HTMODE:1;
@@ -1383,7 +1382,7 @@ typedef struct _COMMON_CONFIG {
 	unsigned char TxRate;		/* Same value to fill in TXD. TxRate is 6-bit */
 	unsigned char MaxTxRate;	/* RATE_1, RATE_2, RATE_5_5, RATE_11 */
 	unsigned char TxRateIndex;	/* Tx rate index in Rate Switch Table */
-	unsigned char MintxRate;	/* RATE_1, RATE_2, RATE_5_5, RATE_11 */
+	unsigned char MinTxRate;	/* RATE_1, RATE_2, RATE_5_5, RATE_11 */
 	unsigned char RtsRate;		/* RATE_xxx */
 	HTTRANSMIT_SETTING MlmeTransmit;	/* MGMT frame PHY rate setting when operatin at Ht rate. */
 	unsigned char MlmeRate;		/* RATE_xxx, used to send MLME frames */
@@ -1416,7 +1415,7 @@ typedef struct _COMMON_CONFIG {
 	unsigned long TxPreamble;	/* Rt802_11PreambleLong, Rt802_11Preambleshort, Rt802_11PreambleAuto */
 	unsigned char bUseZeroToDisableFragment;	/* Microsoft use 0 as disable */
 	unsigned long UseBGProtection;	/* 0: auto, 1: always use, 2: always not use */
-	unsigned char bUseshortSlotTime;	/* 0: disable, 1 - use short slot (9us) */
+	unsigned char bUseShortSlotTime;	/* 0: disable, 1 - use short slot (9us) */
 	unsigned char bEnableTxBurst;	/* 1: enble TX PACKET BURST (when BA is established or AP is not a legacy WMM AP), 0: disable TX PACKET BURST */
 	unsigned char bAggregationCapable;	/* 1: enable TX aggregation when the peer supports it */
 	unsigned char bPiggyBackCapable;	/* 1: enable TX piggy-back according MAC's version */
@@ -2381,7 +2380,7 @@ typedef struct _BLOCK_QUEUE_ENTRY {
 
 
 struct wificonf {
-	unsigned char bshortGI;
+	unsigned char bShortGI;
 	unsigned char bGreenField;
 };
 
@@ -2655,6 +2654,19 @@ typedef struct tx_agc_ctrl{
 	char TxAgcComp;	/* Store the compensation (TxAgcStep * (idx-1)) */
 }TX_AGC_CTRL;
 
+typedef struct _QUEUE_ENTRY
+{
+    struct _QUEUE_ENTRY *Next;
+} QUEUE_ENTRY, *PQUEUE_ENTRY;
+
+/* Queue structure */
+typedef struct _QUEUE_HEADER
+{
+    PQUEUE_ENTRY Head;
+    PQUEUE_ENTRY Tail;
+    unsigned long Number;
+} QUEUE_HEADER, *PQUEUE_HEADER;
+
 
 /*
 	The miniport adapter structure
@@ -2791,7 +2803,7 @@ struct _RTMP_ADAPTER {
 #endif /* RTMP_MAC_USB */
 
 	/* resource for software backlog queues */
-	struct list_head TxSwQueue[NUM_OF_TX_RING];	/* 4 AC + 1 HCCA */
+	QUEUE_HEADER TxSwQueue[NUM_OF_TX_RING];	/* 4 AC + 1 HCCA */
 	NDIS_SPIN_LOCK TxSwQueueLock[NUM_OF_TX_RING];	/* TxSwQueue spinlock */
 
 	/* Maximum allowed tx software Queue length */
@@ -3579,7 +3591,7 @@ typedef struct _TX_BLK_
 	unsigned short				TotalFragNum;				/* Total frame fragments required in one batch */
 	unsigned short				TotalFrameLen;				/* Total length of all frames want to send-out in one batch */
 
-	struct list_head		TxPacketList;
+	QUEUE_HEADER				TxPacketList;
 	MAC_TABLE_ENTRY	*pMacEntry;					/* NULL: packet with 802.11 RA field is multicast/broadcast address */
 	HTTRANSMIT_SETTING	*pTransmit;
 	
@@ -4232,7 +4244,7 @@ void RECBATimerTimeout(
     IN void *SystemSpecific2, 
     IN void *SystemSpecific3);
 
-voidORIBATimerTimeout(
+void ORIBATimerTimeout(
 PRTMP_ADAPTER	pAd);
 
 void SendRefreshBAR(
@@ -6788,7 +6800,7 @@ char *				pParam);
 
 
 
-int	Set_ForceshortGI_Proc(
+int	Set_ForceShortGI_Proc(
 PRTMP_ADAPTER	pAd,
 char *			arg);
 
@@ -6849,7 +6861,7 @@ PRTMP_ADAPTER	pAd,
 unsigned char*			pDA);
 
 #ifdef DOT11_N_SUPPORT
-voidQueryBATABLE(
+void QueryBATABLE(
  PRTMP_ADAPTER pAd,
 	PQUERYBA_TABLE pBAT);
 #endif /* DOT11_N_SUPPORT */
@@ -7532,13 +7544,13 @@ RXINFO_STRUC *pRxInfo);
 /*////////////////////////////////////*/
 
 #ifdef AP_QLOAD_SUPPORT
-voidQBSS_LoadInit(
+void QBSS_LoadInit(
  	IN		RTMP_ADAPTER	*pAd);
 
-voidQBSS_LoadAlarmReset(
+void QBSS_LoadAlarmReset(
  	IN		RTMP_ADAPTER	*pAd);
 
-voidQBSS_LoadAlarmResume(
+void QBSS_LoadAlarmResume(
  	IN		RTMP_ADAPTER	*pAd);
 
 unsigned intQBSS_LoadBusyTimeGet(
@@ -7562,11 +7574,11 @@ unsigned intQBSS_LoadElementParse(
 	OUT		unsigned char			*pChanUtil,
 	OUT		unsigned short			*pAvalAdmCap);
 
-voidQBSS_LoadUpdate(
+void QBSS_LoadUpdate(
  	IN		RTMP_ADAPTER	*pAd,
 	unsigned long			UpTime);
 
-voidQBSS_LoadStatusClear(
+void QBSS_LoadStatusClear(
  	IN		RTMP_ADAPTER	*pAd);
 
 int	Show_QoSLoad_Proc(
@@ -7754,7 +7766,7 @@ void RTThreadDequeueCmd(
 PCmdQ		cmdq,
 	OUT	PCmdQElmt	*pcmdqelmt);
 
-int RTEnqueueinternalCmd(
+int RTEnqueueInternalCmd(
 PRTMP_ADAPTER	pAd,
 NDIS_OID			Oid,
 void *		pInformationBuffer,
@@ -8085,11 +8097,11 @@ MAC_TABLE_ENTRY *InsertMacRepeaterEntry(
  unsigned char			IfIdx);
 #endif /* MAC_REPEATER_SUPPORT */
 
-void DumpTxWI(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI);
-void Dump_rxwi(RTMP_ADAPTER *pAd, RXWI_STRUC *pRxWI);
-void Dump_txinfo(RTMP_ADAPTER *pAd, TXINFO_STRUC *pTxInfo);
-void Dump_rxinfo(RTMP_ADAPTER *pAd, RXINFO_STRUC *pRxInfo);
-void DumpRxFCEInfo(RTMP_ADAPTER *pAd, RXFCE_INFO *pRxFceInfo);
+void dumpTxWI(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI);
+void dump_rxwi(RTMP_ADAPTER *pAd, RXWI_STRUC *pRxWI);
+void dump_txinfo(RTMP_ADAPTER *pAd, TXINFO_STRUC *pTxInfo);
+void dump_rxinfo(RTMP_ADAPTER *pAd, RXINFO_STRUC *pRxInfo);
+void dumpRxFCEInfo(RTMP_ADAPTER *pAd, RXFCE_INFO *pRxFceInfo);
 
 
 

@@ -38,17 +38,16 @@ typedef struct _RTMP_OS_ABL_OPS {
 } RTMP_OS_ABL_OPS;
 
 extern RTMP_OS_ABL_OPS *pRaOsOps;
-#include "rt_linux.h"
 
 #ifdef LINUX
 #ifndef OS_ABL_FUNC_SUPPORT
-#include "os/rt_linux.h"
+#include "rt_linux.h"
 
 #else
 
 #ifdef RTMP_MODULE_OS
 /* for util/netif */
-#include "os/rt_linux.h"
+#include "rt_linux.h"
 #else
 /* for core */
 #include "os/rt_drv.h"

@@ -565,8 +565,8 @@ typedef enum _CMD_RTPRIV_IOCTL_STATION {
 #define RT_WLAN_EVENT_PIN							0x07
 
 typedef struct __RT_CMD_RATE_SET {
-unsigned intRate;
-unsigned intFixed;
+unsigned int Rate;
+unsigned int Fixed;
 } RT_CMD_RATE_SET;
 
 typedef struct __RT_CMD_PARAM_SET {
@@ -702,7 +702,7 @@ typedef struct __RT_CMD_STA_IOCTL_BSS {
 } RT_CMD_STA_IOCTL_BSS;
 
 typedef struct __RT_CMD_STA_IOCTL_BSS_LIST {
-unsigned intMaxNum;
+unsigned int MaxNum;
 	unsigned int BssNum;
 	RT_CMD_STA_IOCTL_BSS *pList;
 } RT_CMD_STA_IOCTL_BSS_LIST;
@@ -774,7 +774,7 @@ int MaxKeyLen;
 #define RT_CMD_STA_IOCTL_SECURITY_ALG_WEP		0x02
 #define RT_CMD_STA_IOCTL_SECURITY_ALG_TKIP		0x03
 #define RT_CMD_STA_IOCTL_SECURITY_ALG_CCMP		0x04
-unsigned intAlg;
+unsigned int Alg;
 
 #define RT_CMD_STA_IOCTL_SECURTIY_EXT_SET_TX_KEY	0x01
 #define RT_CMD_STA_IOCTL_SECURTIY_EXT_GROUP_KEY		0x02
@@ -806,8 +806,8 @@ unsigned intlength;
 
 typedef struct __RT_CMD_STA_IOCTL_SHOW {
 char *pData;
-unsigned intMaxSize;
-unsigned intInfType;
+unsigned int MaxSize;
+unsigned int InfType;
 } RT_CMD_STA_IOCTL_SHOW;
 
 #define RT_CMD_STA_IOCTL_IW_MLME_DEAUTH		0x01
@@ -847,8 +847,8 @@ typedef struct __RT_CMD_STA_IOCTL_SECURITY_ADV {
 #define RT_CMD_STA_IOCTL_WPA_AUTH_80211_AUTH_ALG_LEAP		0x83
 
 #define RT_CMD_STA_IOCTL_WPA_AUTH_WPA_ENABLED			0x90
-unsigned intflags;
-unsigned intvalue;
+unsigned int flags;
+unsigned int value;
 } RT_CMD_STA_IOCTL_SECURITY_ADV;
 
 typedef struct __RT_CMD_STA_IOCTL_RSN_IE {
@@ -860,7 +860,7 @@ typedef struct __RT_CMD_STA_IOCTL_PMA_SA {
 #define RT_CMD_STA_IOCTL_PMA_SA_FLUSH					0x01
 #define RT_CMD_STA_IOCTL_PMA_SA_REMOVE					0x02
 #define RT_CMD_STA_IOCTL_PMA_SA_ADD						0x03
-unsigned intCmd;
+unsigned int Cmd;
 unsigned char *pBssid;
 unsigned char *pPmkid;
 } RT_CMD_STA_IOCTL_PMA_SA;

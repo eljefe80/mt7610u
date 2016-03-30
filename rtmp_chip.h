@@ -89,11 +89,11 @@ typedef struct _FREQUENCY_ITEM {
 
 #define STATUS_SUCCESS                  0x00
 #define STATUS_UNSUCCESSFUL             0x01
-
+/*
 typedef struct _QUEUE_ENTRY {
         struct _QUEUE_ENTRY *Next;
 } QUEUE_ENTRY, *PQUEUE_ENTRY;
-
+*/
 /* Queue structure */
 /*typedef struct _QUEUE_HEADER {
         PQUEUE_ENTRY Head;
@@ -552,7 +552,7 @@ typedef union _EEPROM_ANTENNA_STRUC {
   *   EEPROM operation related marcos
   */
 #define RT28xx_EEPROM_READ16(_pAd, _offset, _value)			\
-	(_pAd)->chipOps.eeread((RTMP_ADAPTER *)(_pAd), (unsigned short)(_offset), (Punsigned short)&(_value))
+	(_pAd)->chipOps.eeread((RTMP_ADAPTER *)(_pAd), (unsigned short)(_offset), (unsigned short *)&(_value))
 
 #define RT28xx_EEPROM_WRITE16(_pAd, _offset, _value)		\
 	(_pAd)->chipOps.eewrite((RTMP_ADAPTER *)(_pAd), (unsigned short)(_offset), (unsigned short)(_value))

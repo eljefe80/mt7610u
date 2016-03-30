@@ -68,14 +68,14 @@ STATE_MACHINE_FUNC Trans[])
 void PeerAuthSimpleRspGenAndSend(
 PRTMP_ADAPTER pAd,
 PHEADER_802_11 pHdr80211,
-USHORT Alg,
-USHORT Seq,
-USHORT Reason,
-USHORT Status)
+unsigned short Alg,
+unsigned short Seq,
+unsigned short Reason,
+unsigned short Status)
 {
 	HEADER_802_11 AuthHdr;
-	ULONG FrameLen = 0;
-	PUCHAR pOutBuffer = NULL;
+	unsigned long FrameLen = 0;
+	unsigned char* pOutBuffer = NULL;
 	int NStatus;
 
 	if (Reason != MLME_SUCCESS) {
@@ -109,10 +109,10 @@ void PeerDeauthAction(
 PRTMP_ADAPTER pAd,
 PMLME_QUEUE_ELEM Elem)
 {
-	UCHAR Addr1[MAC_ADDR_LEN];
-	UCHAR Addr2[MAC_ADDR_LEN];
-	UCHAR Addr3[MAC_ADDR_LEN];
-	USHORT Reason;
+	unsigned char Addr1[MAC_ADDR_LEN];
+	unsigned char Addr2[MAC_ADDR_LEN];
+	unsigned char Addr3[MAC_ADDR_LEN];
+	unsigned short Reason;
 	unsigned char bDoIterate = FALSE;
 
 	if (PeerDeauthSanity

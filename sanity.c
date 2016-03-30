@@ -27,14 +27,14 @@
 
 #include "rt_config.h"
 
-extern UCHAR CISCO_OUI[];
+extern unsigned char CISCO_OUI[];
 
-extern UCHAR WPA_OUI[];
-extern UCHAR RSN_OUI[];
-extern UCHAR WME_INFO_ELEM[];
-extern UCHAR WME_PARM_ELEM[];
-extern UCHAR RALINK_OUI[];
-extern UCHAR BROADCOM_OUI[];
+extern unsigned char WPA_OUI[];
+extern unsigned char RSN_OUI[];
+extern unsigned char WME_INFO_ELEM[];
+extern unsigned char WME_PARM_ELEM[];
+extern unsigned char RALINK_OUI[];
+extern unsigned char BROADCOM_OUI[];
 
 /* 
     ==========================================================================
@@ -46,10 +46,10 @@ extern UCHAR BROADCOM_OUI[];
  */
 unsigned char MlmeStartReqSanity(
 	IN PRTMP_ADAPTER pAd,
-	IN VOID *Msg,
-	IN ULONG MsgLen,
-	CHAR Ssid[],
-	UCHAR *pSsidLen)
+	IN void *Msg,
+	IN unsigned long MsgLen,
+	char Ssid[],
+	unsigned char *pSsidLen)
 {
 	MLME_START_REQ_STRUCT *Info;
 
@@ -80,36 +80,36 @@ unsigned char MlmeStartReqSanity(
  */
 unsigned char PeerAssocRspSanity(
 	IN PRTMP_ADAPTER pAd,
-	IN VOID *pMsg,
-	IN ULONG MsgLen,
-	PUCHAR pAddr2,
-	USHORT *pCapabilityInfo,
-	USHORT *pStatus,
-	USHORT *pAid,
-	UCHAR SupRate[],
-	UCHAR *pSupRateLen,
-	UCHAR ExtRate[],
-	UCHAR *pExtRateLen,
+	IN void *pMsg,
+	IN unsigned long MsgLen,
+	unsigned char* pAddr2,
+	unsigned short *pCapabilityInfo,
+	unsigned short *pStatus,
+	unsigned short *pAid,
+	unsigned char SupRate[],
+	unsigned char *pSupRateLen,
+	unsigned char ExtRate[],
+	unsigned char *pExtRateLen,
 	HT_CAPABILITY_IE *pHtCapability,
 	ADD_HT_INFO_IE *pAddHtInfo,	/* AP might use this additional ht info IE */
-	UCHAR *pHtCapabilityLen,
-	UCHAR *pAddHtInfoLen,
-	UCHAR *pNewExtChannelOffset,
+	unsigned char *pHtCapabilityLen,
+	unsigned char *pAddHtInfoLen,
+	unsigned char *pNewExtChannelOffset,
 	PEDCA_PARM pEdcaParm,
 	EXT_CAP_INFO_ELEMENT *pExtCapInfo,
-	UCHAR *pCkipFlag,
+	unsigned char *pCkipFlag,
 	IE_LISTS *ie_list)
 {
-	CHAR IeType, *Ptr;
+	char IeType, *Ptr;
 	PFRAME_802_11 pFrame = (PFRAME_802_11) pMsg;
 	PEID_STRUCT pEid;
-	ULONG Length = 0;
+	unsigned long Length = 0;
 
 	*pNewExtChannelOffset = 0xff;
 	*pHtCapabilityLen = 0;
 	*pAddHtInfoLen = 0;
 	COPY_MAC_ADDR(pAddr2, pFrame->Hdr.Addr2);
-	Ptr = (PCHAR) pFrame->Octet;
+	Ptr = (char*) pFrame->Octet;
 	Length += LENGTH_802_11;
 
 	NdisMoveMemory(pCapabilityInfo, &pFrame->Octet[0], 2);
@@ -164,8 +164,8 @@ unsigned char PeerAssocRspSanity(
 			if (pEid->Len >= SIZE_HT_CAP_IE) {	/* Note: allow extension.!! */
 				NdisMoveMemory(pHtCapability, pEid->Octet, SIZE_HT_CAP_IE);
 
-				*(USHORT *) (&pHtCapability->HtCapInfo) = cpu2le16(*(USHORT *)(&pHtCapability->HtCapInfo));
-				*(USHORT *) (&pHtCapability->ExtHtCapInfo) = cpu2le16(*(USHORT *)(&pHtCapability->ExtHtCapInfo));
+				*(unsigned short *) (&pHtCapability->HtCapInfo) = cpu2le16(*(unsigned short *)(&pHtCapability->HtCapInfo));
+				*(unsigned short *) (&pHtCapability->ExtHtCapInfo) = cpu2le16(*(unsigned short *)(&pHtCapability->ExtHtCapInfo));
 
 				*pHtCapabilityLen = SIZE_HT_CAP_IE;
 			} else {
@@ -183,8 +183,8 @@ unsigned char PeerAssocRspSanity(
 				 */
 				NdisMoveMemory(pAddHtInfo, pEid->Octet, sizeof (ADD_HT_INFO_IE));
 
-				*(USHORT *) (&pAddHtInfo->AddHtInfo2) = cpu2le16(*(USHORT *)(&pAddHtInfo->AddHtInfo2));
-				*(USHORT *) (&pAddHtInfo->AddHtInfo3) = cpu2le16(*(USHORT *)(&pAddHtInfo->AddHtInfo3));
+				*(unsigned short *) (&pAddHtInfo->AddHtInfo2) = cpu2le16(*(unsigned short *)(&pAddHtInfo->AddHtInfo2));
+				*(unsigned short *) (&pAddHtInfo->AddHtInfo3) = cpu2le16(*(unsigned short *)(&pAddHtInfo->AddHtInfo3));
 
 				*pAddHtInfoLen = SIZE_ADD_HT_INFO_IE;
 			} else {
@@ -225,7 +225,7 @@ unsigned char PeerAssocRspSanity(
 			/* handle WME PARAMTER ELEMENT */
 			if (NdisEqualMemory(pEid->Octet, WME_PARM_ELEM, 6)
 			    && (pEid->Len == 24)) {
-				PUCHAR ptr;
+				unsigned char* ptr;
 				int i;
 
 				/* parsing EDCA parameters */
@@ -237,9 +237,9 @@ unsigned char PeerAssocRspSanity(
 				    pEid->Octet[6] & 0x0f;
 				pEdcaParm->bAPSDCapable =
 				    (pEid->Octet[6] & 0x80) ? 1 : 0;
-				ptr = (PUCHAR) & pEid->Octet[8];
+				ptr = (unsigned char*) & pEid->Octet[8];
 				for (i = 0; i < 4; i++) {
-					UCHAR aci = (*ptr & 0x60) >> 5;	/* b5~6 is AC INDEX */
+					unsigned char aci = (*ptr & 0x60) >> 5;	/* b5~6 is AC INDEX */
 					pEdcaParm->bACM[aci] = (((*ptr) & 0x10) == 0x10);	/* b5 is ACM */
 					pEdcaParm->Aifsn[aci] = (*ptr) & 0x0f;	/* b0~3 is AIFSN */
 					pEdcaParm->Cwmin[aci] = *(ptr + 1) & 0x0f;	/* b0~4 is Cwmin */
@@ -252,8 +252,8 @@ unsigned char PeerAssocRspSanity(
 		case IE_EXT_CAPABILITY:
 			if (pEid->Len >= 1)
 			{
-				UCHAR MaxSize;
-				UCHAR MySize = sizeof(EXT_CAP_INFO_ELEMENT);
+				unsigned char MaxSize;
+				unsigned char MySize = sizeof(EXT_CAP_INFO_ELEMENT);
 
 				MaxSize = min(pEid->Len, MySize);
 				NdisMoveMemory(pExtCapInfo, &pEid->Octet[0], MaxSize);
@@ -268,7 +268,7 @@ unsigned char PeerAssocRspSanity(
 		}
 
 		Length = Length + 2 + pEid->Len;
-		pEid = (PEID_STRUCT) ((UCHAR *) pEid + 2 + pEid->Len);
+		pEid = (PEID_STRUCT) ((unsigned char *) pEid + 2 + pEid->Len);
 	}
 
 
@@ -285,16 +285,16 @@ unsigned char PeerAssocRspSanity(
     ==========================================================================
  */
 unsigned char GetTimBit(
-	IN CHAR *Ptr,
-	IN USHORT Aid,
-	UCHAR *TimLen,
-	UCHAR *BcastFlag,
-	UCHAR *DtimCount,
-	UCHAR *DtimPeriod,
-	UCHAR *MessageToMe)
+	IN char *Ptr,
+	IN unsigned short Aid,
+	unsigned char *TimLen,
+	unsigned char *BcastFlag,
+	unsigned char *DtimCount,
+	unsigned char *DtimPeriod,
+	unsigned char *MessageToMe)
 {
-	UCHAR BitCntl, N1, N2, MyByte, MyBit;
-	CHAR *IdxPtr;
+	unsigned char BitCntl, N1, N2, MyByte, MyBit;
+	char *IdxPtr;
 
 	IdxPtr = Ptr;
 

@@ -214,10 +214,10 @@ void				*pAdSrc,
 unsigned short					Event_flag,
 unsigned char* 					pAddr,
 unsigned char				BssIdx,
-CHAR					Rssi)
+char					Rssi)
 {
 	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdSrc;
-	char *	pBuf = NULL, pBufPtr = NULL;
+	char *	pBuf = NULL, *pBufPtr = NULL;
 	unsigned short	event, type, BufLen;	
 unsigned char event_table_len = 0;
 

@@ -1912,7 +1912,7 @@ int Set_WOW_Hold(
 
 int RTMPSetInformation(
     IN RTMP_ADAPTER *pAd,
-    INRTMP_IOCTL_INPUT_STRUCT *rq,
+    IN RTMP_IOCTL_INPUT_STRUCT *rq,
     IN  int cmd)
 {
     RTMP_IOCTL_INPUT_STRUCT *wrq = (RTMP_IOCTL_INPUT_STRUCT *) rq;
@@ -2246,12 +2246,12 @@ int RTMPSetInformation(
                     pAd->CommonCfg.TxPreamble = Preamble;
                     MlmeSetTxPreamble(pAd, Rt802_11PreambleShort);
                 }
-                else if ((Preamble == Rt802_11Preamblelong) || (Preamble == Rt802_11PreambleAuto))
+                else if ((Preamble == Rt802_11PreambleLong) || (Preamble == Rt802_11PreambleAuto))
                 {
                     /* if user wants AUTO, initialize to long here, then change according to AP's */
                     /* capability upon association. */
                     pAd->CommonCfg.TxPreamble = Preamble;
-                    MlmeSetTxPreamble(pAd, Rt802_11Preamblelong);
+                    MlmeSetTxPreamble(pAd, Rt802_11PreambleLong);
                 }
                 else
                 {
@@ -3342,7 +3342,7 @@ int RTMPSetInformation(
 				Status = -EINVAL;
 			else
 			{
-				STRING	ChStr[5] = {0};
+				char	ChStr[5] = {0};
 				Status = copy_from_user(&ctmp, wrq->u.data.pointer, wrq->u.data.length);
 				snprintf(ChStr, sizeof(ChStr), "%d", ctmp);
 				Set_Channel_Proc(pAd, ChStr);
@@ -3398,7 +3398,7 @@ int RTMPQueryInformation(
     RT_802_11_PREAMBLE                  PreamType;
     NDIS_802_11_AUTHENTICATION_MODE AuthMode;
     NDIS_802_11_WEP_STATUS WepStatus;
-    NDIS_MEDIA_STATE MediaState;
+    unsigned int MediaState;
     unsigned long BssBufSize, ulInfo=0, NetworkTypeList[4], apsd = 0, RateValue=0;
     unsigned short BssLen = 0;
     unsigned char* pBuf = NULL, pPtr;
@@ -3406,7 +3406,7 @@ int RTMPQueryInformation(
     unsigned int we_version_compiled;
     unsigned char i, Padding = 0;
     unsigned char RadioState;
-    STRING driverVersion[8];
+    char driverVersion[8];
     OID_SET_HT_PHYMODE *pHTPhyMode = NULL;
     HTTRANSMIT_SETTING	HTPhyMode;
 	
@@ -3584,7 +3584,7 @@ int RTMPQueryInformation(
             else
                 MediaState = NdisMediaStateDisconnected;
                 
-            wrq->u.data.length = sizeof(NDIS_MEDIA_STATE);
+            wrq->u.data.length = sizeof(unsigned int);
             Status = copy_to_user(wrq->u.data.pointer, &MediaState, wrq->u.data.length);
             break;   
         case OID_802_11_BSSID:
@@ -4683,19 +4683,19 @@ void RTMPIoctlMAC(
 	IN RTMP_ADAPTER *pAd,
 	IN RTMP_IOCTL_INPUT_STRUCT *wrq)
 {
-	char * this_char, value;
+	char * this_char, *value;
 	int j = 0, k = 0;
-	STRING *msg = NULL;
-	STRING *arg = NULL;
+	char *msg = NULL;
+	char *arg = NULL;
 	unsigned int macAddr = 0, macValue = 0;
 	unsigned char temp[16];
-	STRING temp2[16];
+	char temp2[16];
 	int Status;
 	unsigned char bIsPrintAllMAC = FALSE;
 
 
 
-	os_alloc_mem(NULL, (unsigned char **)&msg, sizeof(STRING)*1024);
+	os_alloc_mem(NULL, (unsigned char **)&msg, sizeof(char)*1024);
 	if (!msg)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
@@ -4703,7 +4703,7 @@ void RTMPIoctlMAC(
 	}
 	memset(msg, 0x00, 1024);
 
-	os_alloc_mem(NULL, (unsigned char **)&arg, sizeof(STRING)*255);
+	os_alloc_mem(NULL, (unsigned char **)&arg, sizeof(char)*255);
 	if (arg == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
@@ -4910,27 +4910,27 @@ void RTMPIoctlE2PROM(
 {
 	char *				this_char;
 	char *				value;
-	INT					j = 0, k = 0;
+	int					j = 0, k = 0;
 /*	STRING				msg[1024]; */
-	STRING				*msg = NULL;
+	char				*msg = NULL;
 /*	STRING				arg[255]; */
-	STRING				*arg = NULL;
+	char				*arg = NULL;
 	unsigned short				eepAddr = 0;
 	unsigned char				temp[16];
-	STRING				temp2[16];
+	char				temp2[16];
 	unsigned short				eepValue;
 	int					Status;
 	unsigned char				bIsPrintAllE2P = FALSE;
 
 
 	/* allocate memory */
-	os_alloc_mem(NULL, (unsigned char **)&msg, sizeof(STRING)*1024);
+	os_alloc_mem(NULL, (unsigned char **)&msg, sizeof(char)*1024);
 	if (msg == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
 		goto LabelOK;
 	}
-	os_alloc_mem(NULL, (unsigned char **)&arg, sizeof(STRING)*255);
+	os_alloc_mem(NULL, (unsigned char **)&arg, sizeof(char)*255);
 	if (arg == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
@@ -7231,7 +7231,7 @@ RtmpIoctl_rt_ioctl_giwencodeext(
 			else
 			{
 				pIoctlSec->length = pAd->SharedKey[BSS0][idx].KeyLen;				
-				pIoctlSec->pData = (Pchar)&(pAd->SharedKey[BSS0][idx].Key[0]);
+				pIoctlSec->pData = (char*)&(pAd->SharedKey[BSS0][idx].Key[0]);
 			}
 			break;
 		case Ndis802_11Encryption2Enabled:
@@ -7249,7 +7249,7 @@ RtmpIoctl_rt_ioctl_giwencodeext(
 			else
 			{
 				pIoctlSec->length = 32;
-				pIoctlSec->pData = (Pchar)&pAd->StaCfg.PMK[0];
+				pIoctlSec->pData = (char *)&pAd->StaCfg.PMK[0];
 			}
 			break;
 		default:
@@ -8054,7 +8054,7 @@ int RTMP_STA_IoctlHandle(
 			unsigned int i;
 
 			pBssList->BssNum = pAd->ScanTab.BssNr;
-			for (i = 0; i <pBssList->MaxNum ; i++)
+			for (i = 0; i < pBssList->MaxNum ; i++)
 			{
 				if (i >=  pAd->ScanTab.BssNr)
 					break;

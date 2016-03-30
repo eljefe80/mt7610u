@@ -89,10 +89,10 @@ STATE_MACHINE_FUNC Trans[])
     ==========================================================================
  */
 void AuthTimeout(
-Pvoid SystemSpecific1,
-Pvoid FunctionContext,
-Pvoid SystemSpecific2,
-Pvoid SystemSpecific3)
+void* SystemSpecific1,
+void* FunctionContext,
+void* SystemSpecific2,
+void* SystemSpecific3)
 {
 	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *) FunctionContext;
 
@@ -126,7 +126,7 @@ MLME_QUEUE_ELEM *Elem)
 	if (AUTH_ReqSend(pAd, Elem, &pAd->MlmeAux.AuthTimer, "AUTH", 1, NULL, 0))
 		pAd->Mlme.AuthMachine.CurrState = AUTH_WAIT_SEQ2;
 	else {
-		USHORT Status;
+		unsigned short Status;
 
 		pAd->Mlme.AuthMachine.CurrState = AUTH_REQ_IDLE;
 		Status = MLME_INVALID_FORMAT;
@@ -146,25 +146,25 @@ void PeerAuthRspAtSeq2Action(
 PRTMP_ADAPTER pAd,
 MLME_QUEUE_ELEM * Elem)
 {
-	UCHAR Addr2[MAC_ADDR_LEN];
-	USHORT Seq, Status, RemoteStatus, Alg;
-	UCHAR iv_hdr[4];
-/*    UCHAR         ChlgText[CIPHER_TEXT_LEN]; */
-	UCHAR *ChlgText = NULL;
-/*    UCHAR         CyperChlgText[CIPHER_TEXT_LEN + 8 + 8]; */
-	UCHAR *CyperChlgText = NULL;
-	ULONG c_len = 0;
+	unsigned char Addr2[MAC_ADDR_LEN];
+	unsigned short Seq, Status, RemoteStatus, Alg;
+	unsigned char iv_hdr[4];
+/*    unsigned char         ChlgText[CIPHER_TEXT_LEN]; */
+	unsigned char *ChlgText = NULL;
+/*    unsigned char         CyperChlgText[CIPHER_TEXT_LEN + 8 + 8]; */
+	unsigned char *CyperChlgText = NULL;
+	unsigned long c_len = 0;
 	HEADER_802_11 AuthHdr;
 	unsigned char TimerCancelled;
-	PUCHAR pOutBuffer = NULL;
+	unsigned char* pOutBuffer = NULL;
 	int NStatus;
-	ULONG FrameLen = 0;
-	USHORT Status2;
-	UCHAR ChallengeIe = IE_CHALLENGE_TEXT;
-	UCHAR len_challengeText = CIPHER_TEXT_LEN;
+	unsigned long FrameLen = 0;
+	unsigned short Status2;
+	unsigned char ChallengeIe = IE_CHALLENGE_TEXT;
+	unsigned char len_challengeText = CIPHER_TEXT_LEN;
 
 	/* allocate memory */
-	os_alloc_mem(NULL, (UCHAR **) & ChlgText, CIPHER_TEXT_LEN);
+	os_alloc_mem(NULL, (unsigned char **) & ChlgText, CIPHER_TEXT_LEN);
 	if (ChlgText == NULL) {
 		DBGPRINT(RT_DEBUG_ERROR,
 			 ("%s: ChlgText Allocate memory fail!!!\n",
@@ -172,7 +172,7 @@ MLME_QUEUE_ELEM * Elem)
 		return;
 	}
 
-	os_alloc_mem(NULL, (UCHAR **) & CyperChlgText, CIPHER_TEXT_LEN + 8 + 8);
+	os_alloc_mem(NULL, (unsigned char **) & CyperChlgText, CIPHER_TEXT_LEN + 8 + 8);
 	if (CyperChlgText == NULL) {
 		DBGPRINT(RT_DEBUG_ERROR,
 			 ("%s: CyperChlgText Allocate memory fail!!!\n",
@@ -183,7 +183,7 @@ MLME_QUEUE_ELEM * Elem)
 
 	if (PeerAuthSanity
 	    (pAd, Elem->Msg, Elem->MsgLen, Addr2, &Alg, &Seq, &Status,
-	     (PCHAR) ChlgText)) {
+	     (char*) ChlgText)) {
 		if (MAC_ADDR_EQUAL(pAd->MlmeAux.Bssid, Addr2) && Seq == 2) {
 			DBGPRINT(RT_DEBUG_TRACE,
 				 ("AUTH - Receive AUTH_RSP seq#2 to me (Alg=%d, Status=%d)\n",
@@ -234,9 +234,9 @@ MLME_QUEUE_ELEM * Elem)
 					RTMPConstructWEPIVHdr(pAd->StaCfg.DefaultKeyId,
 							      pAd->SharedKey[BSS0][pAd->StaCfg.DefaultKeyId].TxTsc, iv_hdr);
 
-					Alg = cpu2le16(*(USHORT *) & Alg);
-					Seq = cpu2le16(*(USHORT *) & Seq);
-					RemoteStatus = cpu2le16(*(USHORT *) &RemoteStatus);
+					Alg = cpu2le16(*(unsigned short *) & Alg);
+					Seq = cpu2le16(*(unsigned short *) & Seq);
+					RemoteStatus = cpu2le16(*(unsigned short *) &RemoteStatus);
 
 					/* Construct message text */
 					MakeOutgoingFrame(CyperChlgText, &c_len,
@@ -315,14 +315,14 @@ void PeerAuthRspAtSeq4Action(
 PRTMP_ADAPTER pAd,
 MLME_QUEUE_ELEM *Elem)
 {
-	UCHAR Addr2[MAC_ADDR_LEN];
-	USHORT Alg, Seq, Status;
-/*    CHAR          ChlgText[CIPHER_TEXT_LEN]; */
-	CHAR *ChlgText = NULL;
+	unsigned char Addr2[MAC_ADDR_LEN];
+	unsigned short Alg, Seq, Status;
+/*    char          ChlgText[CIPHER_TEXT_LEN]; */
+	char *ChlgText = NULL;
 	unsigned char TimerCancelled;
 
 	/* allocate memory */
-	os_alloc_mem(NULL, (UCHAR **) & ChlgText, CIPHER_TEXT_LEN);
+	os_alloc_mem(NULL, (unsigned char **) & ChlgText, CIPHER_TEXT_LEN);
 	if (ChlgText == NULL) {
 		DBGPRINT(RT_DEBUG_ERROR,
 			 ("%s: ChlgText Allocate memory fail!!!\n",
@@ -373,10 +373,10 @@ MLME_QUEUE_ELEM *Elem)
 {
 	MLME_DEAUTH_REQ_STRUCT *pInfo;
 	HEADER_802_11 DeauthHdr;
-	PUCHAR pOutBuffer = NULL;
+	unsigned char* pOutBuffer = NULL;
 	int NStatus;
-	ULONG FrameLen = 0;
-	USHORT Status;
+	unsigned long FrameLen = 0;
+	unsigned short Status;
 
 	pInfo = (MLME_DEAUTH_REQ_STRUCT *) Elem->Msg;
 
@@ -424,7 +424,7 @@ void AuthTimeoutAction(
 PRTMP_ADAPTER pAd,
 MLME_QUEUE_ELEM *Elem)
 {
-	USHORT Status;
+	unsigned short Status;
 	DBGPRINT(RT_DEBUG_TRACE, ("AUTH - AuthTimeoutAction\n"));
 	pAd->Mlme.AuthMachine.CurrState = AUTH_REQ_IDLE;
 	Status = MLME_REJ_TIMEOUT;
@@ -443,7 +443,7 @@ void InvalidStateWhenAuth(
 PRTMP_ADAPTER pAd,
 MLME_QUEUE_ELEM *Elem)
 {
-	USHORT Status;
+	unsigned short Status;
 	DBGPRINT(RT_DEBUG_TRACE,
 		 ("AUTH - InvalidStateWhenAuth (state=%ld), reset AUTH state machine\n",
 		  pAd->Mlme.AuthMachine.CurrState));
@@ -466,13 +466,13 @@ MLME_QUEUE_ELEM *Elem)
  */
 void Cls2errAction(
 PRTMP_ADAPTER pAd,
-PUCHAR pAddr)
+unsigned char* pAddr)
 {
 	HEADER_802_11 DeauthHdr;
-	PUCHAR pOutBuffer = NULL;
+	unsigned char* pOutBuffer = NULL;
 	int NStatus;
-	ULONG FrameLen = 0;
-	USHORT Reason = REASON_CLS2ERR;
+	unsigned long FrameLen = 0;
+	unsigned short Reason = REASON_CLS2ERR;
 
 	NStatus = MlmeAllocateMemory(pAd, &pOutBuffer);	/*Get an unused nonpaged memory */
 	if (NStatus != NDIS_STATUS_SUCCESS)
@@ -495,19 +495,19 @@ unsigned char AUTH_ReqSend(
 PRTMP_ADAPTER pAd,
 PMLME_QUEUE_ELEM pElem,
 PRALINK_TIMER_STRUCT pAuthTimer,
-PSTRING pSMName,
-USHORT SeqNo,
-PUCHAR pNewElement,
-ULONG ElementLen)
+char* pSMName,
+unsigned short SeqNo,
+unsigned char* pNewElement,
+unsigned long ElementLen)
 {
-	USHORT Alg, Seq, Status;
-	UCHAR Addr[6];
-	ULONG Timeout;
+	unsigned short Alg, Seq, Status;
+	unsigned char Addr[6];
+	unsigned long Timeout;
 	HEADER_802_11 AuthHdr;
 	unsigned char TimerCancelled;
 	int NStatus;
-	PUCHAR pOutBuffer = NULL;
-	ULONG FrameLen = 0, tmp = 0;
+	unsigned char* pOutBuffer = NULL;
+	unsigned long FrameLen = 0, tmp = 0;
 
 	/* Block all authentication request durning WPA block period */
 	if (pAd->StaCfg.bBlockAssoc == TRUE) {

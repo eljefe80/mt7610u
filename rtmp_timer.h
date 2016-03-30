@@ -119,7 +119,6 @@ DECLARE_TIMER_FUNCTION(BeaconUpdateExec);
 #endif /* RTMP_MAC_USB */
 
 
-#ifdef CONFIG_STA_SUPPORT
 DECLARE_TIMER_FUNCTION(BeaconTimeout);
 DECLARE_TIMER_FUNCTION(ScanTimeout);
 DECLARE_TIMER_FUNCTION(AuthTimeout);
@@ -140,7 +139,6 @@ DECLARE_TIMER_FUNCTION(DlsTimeoutAction);
 DECLARE_TIMER_FUNCTION(RtmpUsbStaAsicForceWakeupTimeout);
 #endif /* RTMP_MAC_USB */
 
-#endif /* CONFIG_STA_SUPPORT */
 
 #ifdef TXBF_SUPPORT
 DECLARE_TIMER_FUNCTION(eTxBfProbeTimerExec);
