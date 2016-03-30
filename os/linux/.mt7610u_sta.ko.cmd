@@ -1,0 +1,1 @@
+cmd_/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/os/linux/mt7610u_sta.ko := ld -r -m elf_x86_64 -T ./scripts/module-common.lds --build-id  -o /home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/os/linux/mt7610u_sta.ko /home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/os/linux/mt7610u_sta.o /home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/os/linux/mt7610u_sta.mod.o

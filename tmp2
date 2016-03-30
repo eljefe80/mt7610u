@@ -1,0 +1,1077 @@
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/rt_profile.c: In function ‘announce_802_3_packet’:
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/rt_profile.c:338:16: warning: unused variable ‘pAd’ [-Wunused-variable]
+  RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)pAdSrc;
+                ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/assoc.c: In function ‘AssocPostProc’:
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/assoc.c:1450:4: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+    unsigned char* pVIE;
+    ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/assoc.c: In function ‘StaAddMacTableEntry’:
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/assoc.c:1756:16: warning: unused variable ‘bSupportN’ [-Wunused-variable]
+  unsigned char bSupportN = FALSE;
+                ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:32:1: error: unknown type name ‘INT’
+ INT Set_AutoReconnect_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:34:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING   arg);
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:36:1: error: unknown type name ‘INT’
+ INT Set_AdhocN_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:38:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING   arg);
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:52:2: error: unknown type name ‘PSTRING’
+  PSTRING name;
+  ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:53:2: error: expected specifier-qualifier-list before ‘INT’
+  INT (*set_proc)(PRTMP_ADAPTER pAdapter, PSTRING arg);
+  ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:55:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"DriverVersion",    Set_DriverVersion_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:55:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[0].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:55:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:55:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[0].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:55:23: warning: excess elements in struct initializer
+  {"DriverVersion",    Set_DriverVersion_Proc},
+                       ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:55:23: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[0]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:56:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"CountryRegion",    Set_CountryRegion_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:56:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[1].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:56:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:56:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[1].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:56:23: warning: excess elements in struct initializer
+  {"CountryRegion",    Set_CountryRegion_Proc},
+                       ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:56:23: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[1]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:57:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"CountryRegionABand",  Set_CountryRegionABand_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:57:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[2].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:57:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:57:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[2].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:57:26: warning: excess elements in struct initializer
+  {"CountryRegionABand",  Set_CountryRegionABand_Proc},
+                          ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:57:26: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[2]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:58:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"SSID",      Set_SSID_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:58:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[3].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:58:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:58:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[3].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:58:16: warning: excess elements in struct initializer
+  {"SSID",      Set_SSID_Proc},
+                ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:58:16: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[3]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:59:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"WirelessMode",    Set_WirelessMode_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:59:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[4].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:59:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:59:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[4].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:59:22: warning: excess elements in struct initializer
+  {"WirelessMode",    Set_WirelessMode_Proc},
+                      ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:59:22: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[4]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:60:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"TxBurst",     Set_TxBurst_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:60:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[5].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:60:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:60:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[5].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:60:18: warning: excess elements in struct initializer
+  {"TxBurst",     Set_TxBurst_Proc},
+                  ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:60:18: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[5]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:61:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"TxPreamble",    Set_TxPreamble_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:61:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[6].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:61:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:61:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[6].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:61:20: warning: excess elements in struct initializer
+  {"TxPreamble",    Set_TxPreamble_Proc},
+                    ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:61:20: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[6]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:62:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"TxPower",     Set_TxPower_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:62:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[7].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:62:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:62:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[7].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:62:18: warning: excess elements in struct initializer
+  {"TxPower",     Set_TxPower_Proc},
+                  ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:62:18: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[7]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:63:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"Channel",     Set_Channel_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:63:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[8].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:63:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:63:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[8].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:63:18: warning: excess elements in struct initializer
+  {"Channel",     Set_Channel_Proc},
+                  ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:63:18: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[8]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:64:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"BGProtection",    Set_BGProtection_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:64:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[9].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:64:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:64:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[9].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:64:22: warning: excess elements in struct initializer
+  {"BGProtection",    Set_BGProtection_Proc},
+                      ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:64:22: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[9]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:65:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"RTSThreshold",    Set_RTSThreshold_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:65:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[10].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:65:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:65:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[10].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:65:22: warning: excess elements in struct initializer
+  {"RTSThreshold",    Set_RTSThreshold_Proc},
+                      ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:65:22: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[10]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:66:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"FragThreshold",    Set_FragThreshold_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:66:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[11].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:66:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:66:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[11].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:66:23: warning: excess elements in struct initializer
+  {"FragThreshold",    Set_FragThreshold_Proc},
+                       ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:66:23: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[11]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:89:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"VhtBw",     Set_VhtBw_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:89:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[12].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:89:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:89:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[12].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:89:16: warning: excess elements in struct initializer
+  {"VhtBw",     Set_VhtBw_Proc},
+                ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:89:16: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[12]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:90:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"VhtStbc",     Set_VhtStbc_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:90:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[13].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:90:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:90:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[13].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:90:18: warning: excess elements in struct initializer
+  {"VhtStbc",     Set_VhtStbc_Proc},
+                  ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:90:18: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[13]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:91:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"VhtBwSignal",    Set_VhtBwSignal_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:91:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[14].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:91:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:91:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[14].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:91:21: warning: excess elements in struct initializer
+  {"VhtBwSignal",    Set_VhtBwSignal_Proc},
+                     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:91:21: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[14]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:101:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"IEEE80211H",     Set_IEEE80211H_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:101:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[15].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:101:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:101:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[15].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:101:21: warning: excess elements in struct initializer
+  {"IEEE80211H",     Set_IEEE80211H_Proc},
+                     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:101:21: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[15]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:102:6: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+     {"NetworkType",                 Set_NetworkType_Proc},
+      ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:102:6: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[16].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:102:6: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:102:6: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[16].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:102:37: warning: excess elements in struct initializer
+     {"NetworkType",                 Set_NetworkType_Proc},
+                                     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:102:37: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[16]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:103:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"AuthMode",     Set_AuthMode_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:103:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[17].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:103:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:103:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[17].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:103:19: warning: excess elements in struct initializer
+  {"AuthMode",     Set_AuthMode_Proc},
+                   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:103:19: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[17]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:104:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"EncrypType",     Set_EncrypType_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:104:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[18].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:104:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:104:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[18].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:104:21: warning: excess elements in struct initializer
+  {"EncrypType",     Set_EncrypType_Proc},
+                     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:104:21: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[18]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:105:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"DefaultKeyID",    Set_DefaultKeyID_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:105:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[19].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:105:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:105:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[19].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:105:22: warning: excess elements in struct initializer
+  {"DefaultKeyID",    Set_DefaultKeyID_Proc},
+                      ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:105:22: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[19]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:106:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"Key1",      Set_Key1_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:106:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[20].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:106:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:106:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[20].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:106:16: warning: excess elements in struct initializer
+  {"Key1",      Set_Key1_Proc},
+                ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:106:16: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[20]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:107:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"Key2",      Set_Key2_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:107:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[21].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:107:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:107:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[21].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:107:16: warning: excess elements in struct initializer
+  {"Key2",      Set_Key2_Proc},
+                ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:107:16: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[21]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:108:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"Key3",      Set_Key3_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:108:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[22].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:108:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:108:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[22].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:108:16: warning: excess elements in struct initializer
+  {"Key3",      Set_Key3_Proc},
+                ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:108:16: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[22]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:109:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"Key4",      Set_Key4_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:109:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[23].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:109:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:109:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[23].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:109:16: warning: excess elements in struct initializer
+  {"Key4",      Set_Key4_Proc},
+                ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:109:16: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[23]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:110:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"WPAPSK",      Set_WPAPSK_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:110:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[24].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:110:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:110:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[24].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:110:18: warning: excess elements in struct initializer
+  {"WPAPSK",      Set_WPAPSK_Proc},
+                  ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:110:18: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[24]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:111:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"ResetCounter",    Set_ResetStatCounter_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:111:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[25].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:111:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:111:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[25].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:111:22: warning: excess elements in struct initializer
+  {"ResetCounter",    Set_ResetStatCounter_Proc},
+                      ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:111:22: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[25]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:112:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"PSMode",                      Set_PSMode_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:112:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[26].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:112:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:112:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[26].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:112:34: warning: excess elements in struct initializer
+  {"PSMode",                      Set_PSMode_Proc},
+                                  ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:112:34: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[26]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:151:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"RateAlg",     Set_RateAlg_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:151:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[27].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:151:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:151:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[27].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:151:18: warning: excess elements in struct initializer
+  {"RateAlg",     Set_RateAlg_Proc},
+                  ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:151:18: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[27]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:240:6: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+     {"WpaSupport",                  Set_Wpa_Support},
+      ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:240:6: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[28].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:240:6: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:240:6: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[28].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:240:37: warning: excess elements in struct initializer
+     {"WpaSupport",                  Set_Wpa_Support},
+                                     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:240:37: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[28]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:247:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"FixedTxMode",                 Set_FixedTxMode_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:247:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[29].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:247:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:247:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[29].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:247:34: warning: excess elements in struct initializer
+  {"FixedTxMode",                 Set_FixedTxMode_Proc},
+                                  ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:247:34: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[29]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:258:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"LongRetry",           Set_LongRetryLimit_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:258:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[30].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:258:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:258:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[30].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:258:26: warning: excess elements in struct initializer
+  {"LongRetry",           Set_LongRetryLimit_Proc},
+                          ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:258:26: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[30]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:259:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"ShortRetry",           Set_ShortRetryLimit_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:259:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[31].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:259:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:259:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[31].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:259:27: error: ‘Set_ShortRetryLimit_Proc’ undeclared here (not in a function)
+  {"ShortRetry",           Set_ShortRetryLimit_Proc},
+                           ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:259:27: warning: excess elements in struct initializer
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:259:27: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[31]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:260:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"AutoFallBack",          Set_AutoFallBack_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:260:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[32].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:260:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:260:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[32].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:260:28: warning: excess elements in struct initializer
+  {"AutoFallBack",          Set_AutoFallBack_Proc},
+                            ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:260:28: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[32]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:276:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"BeaconLostTime",    Set_BeaconLostTime_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:276:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[33].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:276:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:276:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[33].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:276:24: warning: excess elements in struct initializer
+  {"BeaconLostTime",    Set_BeaconLostTime_Proc},
+                        ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:276:24: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[33]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:277:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"AutoRoaming",     Set_AutoRoaming_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:277:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[34].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:277:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:277:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[34].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:277:22: warning: excess elements in struct initializer
+  {"AutoRoaming",     Set_AutoRoaming_Proc},
+                      ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:277:22: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[34]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:278:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"SiteSurvey",     Set_SiteSurvey_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:278:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[35].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:278:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:278:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[35].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:278:21: warning: excess elements in struct initializer
+  {"SiteSurvey",     Set_SiteSurvey_Proc},
+                     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:278:21: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[35]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:279:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"ForceTxBurst",    Set_ForceTxBurst_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:279:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[36].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:279:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:279:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[36].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:279:22: warning: excess elements in struct initializer
+  {"ForceTxBurst",    Set_ForceTxBurst_Proc},
+                      ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:279:22: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[36]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:287:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"AutoReconnect",     Set_AutoReconnect_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:287:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[37].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:287:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:287:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[37].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:287:24: error: ‘Set_AutoReconnect_Proc’ undeclared here (not in a function)
+  {"AutoReconnect",     Set_AutoReconnect_Proc},
+                        ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:287:24: warning: excess elements in struct initializer
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:287:24: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[37]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:288:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"AdhocN",      Set_AdhocN_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:288:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[38].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:288:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:288:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[38].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:288:18: error: ‘Set_AdhocN_Proc’ undeclared here (not in a function)
+  {"AdhocN",      Set_AdhocN_Proc},
+                  ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:288:18: warning: excess elements in struct initializer
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:288:18: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[38]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:302:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"VcoPeriod",     Set_VcoPeriod_Proc},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:302:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[39].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:302:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:302:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[39].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:302:20: warning: excess elements in struct initializer
+  {"VcoPeriod",     Set_VcoPeriod_Proc},
+                    ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:302:20: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[39]’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:336:3: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+  {"rf",     set_rf},
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:336:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[40].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:336:3: error: initializer element is not computable at load time
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:336:3: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[40].name’)
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:336:13: warning: excess elements in struct initializer
+  {"rf",     set_rf},
+             ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:336:13: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[40]’)
+In file included from ./include/uapi/linux/posix_types.h:4:0,
+                 from include/uapi/linux/types.h:13,
+                 from include/linux/types.h:5,
+                 from include/linux/list.h:4,
+                 from include/linux/module.h:9,
+                 from /home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/rt_linux.h:31,
+                 from /home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/rtmp_os.h:41,
+                 from /home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/rtmp_comm.h:74,
+                 from /home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/rt_config.h:33,
+                 from /home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:28:
+include/linux/stddef.h:7:14: warning: initialization makes integer from pointer without a cast [-Wint-conversion]
+ #define NULL ((void *)0)
+              ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:343:3: note: in expansion of macro ‘NULL’
+  {NULL,}
+   ^
+include/linux/stddef.h:7:14: note: (near initialization for ‘RTMP_PRIVATE_SUPPORT_PROC[41].name’)
+ #define NULL ((void *)0)
+              ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:343:3: note: in expansion of macro ‘NULL’
+  {NULL,}
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:347:1: error: unknown type name ‘INT’
+ INT RTMPSTAPrivIoctlSet(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:349:5: error: unknown type name ‘PSTRING’
+  IN PSTRING SetProcName,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:350:5: error: unknown type name ‘PSTRING’
+  IN PSTRING ProcArg)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:385:1: error: unknown type name ‘INT’
+ INT Set_SSID_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:387:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING          arg)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:518:1: error: unknown type name ‘INT’
+ INT Set_NetworkType_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:520:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING          arg)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:717:1: error: unknown type name ‘INT’
+ INT Set_AuthMode_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:719:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING          arg)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:757:1: error: unknown type name ‘INT’
+ INT Set_EncrypType_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:759:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING          arg)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:819:1: error: unknown type name ‘INT’
+ INT Set_DefaultKeyID_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:821:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING          arg)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:837:1: error: unknown type name ‘INT’
+ INT Set_Wep_Key_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:839:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING         Key,
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:840:9: error: unknown type name ‘INT’
+     IN  INT             KeyLen,
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:841:9: error: unknown type name ‘INT’
+     IN  INT             KeyId)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:923:1: error: unknown type name ‘INT’
+ INT Set_Key1_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:925:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING          arg)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1001:1: error: unknown type name ‘INT’
+ INT Set_Key2_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1003:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING          arg)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1077:1: error: unknown type name ‘INT’
+ INT Set_Key3_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1079:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING          arg)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1153:1: error: unknown type name ‘INT’
+ INT Set_Key4_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1155:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING          arg)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1230:1: error: unknown type name ‘INT’
+ INT Set_WPAPSK_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1232:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING          arg)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1278:1: error: unknown type name ‘INT’
+ INT Set_PSMode_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1280:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING          arg)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1355:1: error: unknown type name ‘INT’
+ INT Set_Wpa_Support(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1357:5: error: unknown type name ‘PSTRING’
+  IN PSTRING   arg)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1377:1: error: unknown type name ‘INT’
+ INT Set_TGnWifiTest_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1379:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING          arg)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1424:1: error: unknown type name ‘INT’
+ INT Show_Adhoc_MacTable_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1426:5: error: unknown type name ‘PSTRING’
+  IN PSTRING   extra,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1427:5: error: unknown type name ‘UINT32’
+  IN UINT32   size)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1471:1: error: unknown type name ‘INT’
+ INT Set_BeaconLostTime_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1473:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING         arg)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1484:1: error: unknown type name ‘INT’
+ INT Set_AutoRoaming_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1486:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING         arg)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1515:1: error: unknown type name ‘INT’
+ INT Set_ForceTxBurst_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1517:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING         arg)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1556:1: error: unknown type name ‘VOID’
+ VOID RTMPAddKey(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1556:6: error: conflicting types for ‘RTMPAddKey’
+ VOID RTMPAddKey(
+      ^
+In file included from /home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/rt_config.h:63:0,
+                 from /home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:28:
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/rtmp.h:7939:6: note: previous declaration of ‘RTMPAddKey’ was here
+ void RTMPAddKey(
+      ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c: In function ‘RTMPAddKey’:
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1560:2: error: unknown type name ‘ULONG’
+  ULONG    KeyIdx;
+  ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1668:3: error: unknown type name ‘UCHAR’
+   UCHAR CipherAlg;
+   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1669:6: error: unknown type name ‘PUCHAR’
+      PUCHAR Key;
+      ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1688:37: error: ‘UCHAR’ undeclared (first use in this function)
+       pEntry->PairwiseKey.KeyLen = (UCHAR)pKey->KeyLength;
+                                     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1688:37: note: each undeclared identifier is reported only once for each function it appears in
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1688:34: warning: assignment makes integer from pointer without a cast [-Wint-conversion]
+       pEntry->PairwiseKey.KeyLen = (UCHAR)pKey->KeyLength;
+                                  ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1688:43: error: expected ‘;’ before ‘pKey’
+       pEntry->PairwiseKey.KeyLen = (UCHAR)pKey->KeyLength;
+                                           ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1700:14: error: expected ‘)’ before ‘pEntry’
+       (UCHAR)pEntry->Aid,
+              ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1700:7: warning: passing argument 2 of ‘AsicAddPairwiseKeyEntry’ makes integer from pointer without a cast [-Wint-conversion]
+       (UCHAR)pEntry->Aid,
+       ^
+In file included from /home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/rt_config.h:63:0,
+                 from /home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:28:
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/rtmp.h:4686:6: note: expected ‘unsigned char’ but argument is of type ‘struct <anonymous> *’
+ void AsicAddPairwiseKeyEntry(
+      ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1698:6: error: too few arguments to function ‘AsicAddPairwiseKeyEntry’
+      AsicAddPairwiseKeyEntry(
+      ^
+In file included from /home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/rt_config.h:63:0,
+                 from /home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:28:
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/rtmp.h:4686:6: note: declared here
+ void AsicAddPairwiseKeyEntry(
+      ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1698:6: warning: statement with no effect [-Wunused-value]
+      AsicAddPairwiseKeyEntry(
+      ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1715:30: warning: assignment makes integer from pointer without a cast [-Wint-conversion]
+     pAd->StaCfg.DefaultKeyId = (UCHAR) KeyIdx;
+                              ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1715:40: error: expected ‘;’ before ‘KeyIdx’
+     pAd->StaCfg.DefaultKeyId = (UCHAR) KeyIdx;
+                                        ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1718:41: warning: assignment makes integer from pointer without a cast [-Wint-conversion]
+     pAd->SharedKey[BSS0][KeyIdx].KeyLen = (UCHAR) pKey->KeyLength;
+                                         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1718:51: error: expected ‘;’ before ‘pKey’
+     pAd->SharedKey[BSS0][KeyIdx].KeyLen = (UCHAR) pKey->KeyLength;
+                                                   ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1728:12: warning: assignment makes integer from pointer without a cast [-Wint-conversion]
+        Key = pAd->SharedKey[BSS0][KeyIdx].Key;
+            ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1737:2: warning: ‘return’ with no value, in function returning non-void [-Wreturn-type]
+  return;
+  ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c: At top level:
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1750:1: error: unknown type name ‘VOID’
+ VOID StaSiteSurvey(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1753:5: error: unknown type name ‘UCHAR’
+  IN UCHAR    ScanType)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1797:1: error: unknown type name ‘INT’
+ INT Set_AutoReconnect_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1799:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING   arg)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1810:1: error: unknown type name ‘INT’
+ INT Set_AdhocN_Proc(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1812:9: error: unknown type name ‘PSTRING’
+     IN  PSTRING   arg)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1913:1: error: unknown type name ‘INT’
+ INT RTMPSetInformation(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1915:5: error: unknown type name ‘INRTMP_IOCTL_INPUT_STRUCT’
+     INRTMP_IOCTL_INPUT_STRUCT *rq,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:1916:9: error: unknown type name ‘INT’
+     IN  INT cmd)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:3381:1: error: unknown type name ‘INT’
+ INT RTMPQueryInformation(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:3384:9: error: unknown type name ‘INT’
+     IN  INT                 cmd)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5114:1: error: unknown type name ‘VOID’
+ VOID RTMPIoctlBbp32(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5117:5: error: unknown type name ‘CHAR’
+  IN CHAR *extra,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5118:5: error: unknown type name ‘UINT32’
+  IN UINT32 size)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5238:1: error: unknown type name ‘VOID’
+ VOID RTMPIoctlBbp(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5241:5: error: unknown type name ‘CHAR’
+  IN CHAR *extra,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5242:5: error: unknown type name ‘UINT32’
+  IN UINT32 size)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5425:1: error: unknown type name ‘VOID’
+ VOID RTMPIoctlShow(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5428:5: error: unknown type name ‘UINT32’
+  IN UINT32     subcmd,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5429:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5430:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5700:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5703:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5704:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5757:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5760:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5761:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5792:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5795:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5796:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5833:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5836:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5837:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5867:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5870:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5871:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5923:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5926:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5927:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5958:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5961:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:5962:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6097:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6100:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6101:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6188:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6191:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6192:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6250:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6253:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6254:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6305:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6308:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6309:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6333:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6336:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6337:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6368:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6371:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6372:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6395:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6398:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6399:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6422:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6425:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6426:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6449:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6452:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6453:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6479:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6482:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6483:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6596:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6599:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6600:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6664:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6667:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6668:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6669:5: error: unknown type name ‘UINT32’
+  IN UINT32     Subcmd)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6744:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6747:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6748:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6913:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6916:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6917:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6960:9: error: unknown type name ‘INT’
+     IN  INT             keyIdx,    
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6961:9: error: unknown type name ‘UCHAR’
+     IN  UCHAR           CipherAlg,
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6963:9: error: unknown type name ‘UCHAR’
+     IN  UCHAR   *pKey)
+         ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7028:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7031:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7032:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7182:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7185:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7186:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7280:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7283:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7284:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7340:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7343:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7344:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7411:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7414:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7415:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7500:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7503:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7504:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7572:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7575:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7576:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7642:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7645:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7646:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7668:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7671:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7672:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7696:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7699:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7700:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7731:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7734:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7735:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7758:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7761:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7762:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7785:1: error: unknown type name ‘INT’
+ INT
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7788:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7789:5: error: unknown type name ‘ULONG’
+  IN ULONG     Data)
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7942:1: error: unknown type name ‘INT’
+ INT RTMP_STA_IoctlHandle(
+ ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7943:5: error: unknown type name ‘VOID’
+  IN VOID     *pAdSrc,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7945:5: error: unknown type name ‘INT’
+  IN INT      Command,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7946:5: error: unknown type name ‘USHORT’
+  IN USHORT     Subcmd,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7947:5: error: unknown type name ‘VOID’
+  IN VOID     *pData,
+     ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7948:6: error: unknown type name ‘ULONG’
+  IN  ULONG     Data,
+      ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:7949:6: error: unknown type name ‘USHORT’
+  IN  USHORT                  priv_flags)
+      ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:54:4: warning: ‘PRTMP_PRIVATE_SET_PROC’ defined but not used [-Wunused-variable]
+ } *PRTMP_PRIVATE_SET_PROC, RTMP_PRIVATE_SUPPORT_PROC[] = {
+    ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:54:28: warning: ‘RTMP_PRIVATE_SUPPORT_PROC’ defined but not used [-Wunused-variable]
+ } *PRTMP_PRIVATE_SET_PROC, RTMP_PRIVATE_SUPPORT_PROC[] = {
+                            ^
+/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.c:6056:13: warning: ‘set_quality’ defined but not used [-Wunused-function]
+ static void set_quality(
+             ^
+make[2]: *** [/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes/sta_cfg.o] Error 1
+make[1]: *** [_module_/home/jwilliams/mt7610u-linksys-ae6000-wifi-fixes] Error 2
+make: *** [default] Error 2
