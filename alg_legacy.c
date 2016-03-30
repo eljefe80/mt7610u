@@ -48,24 +48,24 @@
 		call this routine every second
 	==========================================================================
  */
-VOID MlmeDynamicTxRateSwitching(
+void MlmeDynamicTxRateSwitching(
 	IN PRTMP_ADAPTER pAd)
 {
-	PUCHAR					pTable;
-	UCHAR					TableSize = 0;
-	UCHAR					UpRateIdx = 0, DownRateIdx = 0, CurrRateIdx;
-	ULONG					i, TxTotalCnt;
-	ULONG					TxErrorRatio = 0;
+	unsigned char*					pTable;
+	unsigned char					TableSize = 0;
+	unsigned char					UpRateIdx = 0, DownRateIdx = 0, CurrRateIdx;
+	unsigned long 					i, TxTotalCnt;
+	unsigned long 					TxErrorRatio = 0;
 	MAC_TABLE_ENTRY			*pEntry;
 	RTMP_RA_LEGACY_TB *pCurrTxRate, *pTmpTxRate = NULL;
-	UCHAR					InitTxRateIdx, TrainUp, TrainDown;
+	unsigned char					InitTxRateIdx, TrainUp, TrainDown;
 	TX_STA_CNT1_STRUC		StaTx1;
 	TX_STA_CNT0_STRUC		TxStaCnt0;
-	CHAR					Rssi, TmpIdx = 0;
-	ULONG					TxRetransmit = 0, TxSuccess = 0, TxFailCount = 0;
+	char					Rssi, TmpIdx = 0;
+	unsigned long 					TxRetransmit = 0, TxSuccess = 0, TxFailCount = 0;
 	RSSI_SAMPLE				*pRssi = &pAd->StaCfg.RssiSample;
 #ifdef RT3290
-	ULONG AccuTxTotalCnt = 0;
+	unsigned long  AccuTxTotalCnt = 0;
 #endif /* RT3290 */
 #ifdef AGS_SUPPORT
 	AGS_STATISTICS_INFO		AGSStatisticsInfo = {0};
@@ -208,8 +208,8 @@ VOID MlmeDynamicTxRateSwitching(
 			if (TxErrorRatio == 100)
 			{
 				TX_RTY_CFG_STRUC	TxRtyCfg,TxRtyCfgtmp;
-				ULONG	Index;
-				UINT32	MACValue;
+				unsigned long 	Index;
+				unsigned int	MACValue;
 
 				RTMP_IO_READ32(pAd, TX_RTY_CFG, &TxRtyCfg.word);
 				TxRtyCfgtmp.word = TxRtyCfg.word;
@@ -271,7 +271,7 @@ VOID MlmeDynamicTxRateSwitching(
 
 		/* Save LastTxOkCount, LastTxPER and last MCS action for StaQuickResponeForRateUpExec */
 		pEntry->LastTxOkCount = TxSuccess;
-		pEntry->LastTxPER = (TxTotalCnt == 0 ? 0 : (UCHAR)TxErrorRatio);
+		pEntry->LastTxPER = (TxTotalCnt == 0 ? 0 : (unsigned char)TxErrorRatio);
 		pEntry->LastTimeTxRateChangeAction = pEntry->LastSecTxRateChangeAction;
 
 		/*
@@ -448,9 +448,9 @@ VOID MlmeDynamicTxRateSwitching(
 		*/
 		if (TxTotalCnt <= 15)
 		{
-			UCHAR	TxRateIdx;
-			CHAR	mcs[24];
-			CHAR	RssiOffset = 0;
+			unsigned char	TxRateIdx;
+			char	mcs[24];
+			char	RssiOffset = 0;
 
 			/* Check existence and get the index of each MCS */
 			MlmeGetSupportedMcs(pAd, pTable, mcs);
@@ -510,7 +510,7 @@ VOID MlmeDynamicTxRateSwitching(
 			continue;
 		}
 
-		pEntry->PER[CurrRateIdx] = (UCHAR)TxErrorRatio;
+		pEntry->PER[CurrRateIdx] = (unsigned char)TxErrorRatio;
 
 		/* Select rate based on PER */
 		MlmeOldRateAdapt(pAd, pEntry, CurrRateIdx, UpRateIdx, DownRateIdx, TrainUp, TrainDown, TxErrorRatio);
@@ -547,26 +547,26 @@ VOID MlmeDynamicTxRateSwitching(
 
 	========================================================================
 */
-VOID StaQuickResponeForRateUpExec(
-	IN PVOID SystemSpecific1, 
-	IN PVOID FunctionContext, 
-	IN PVOID SystemSpecific2, 
-	IN PVOID SystemSpecific3) 
+void StaQuickResponeForRateUpExec(
+	IN void* SystemSpecific1, 
+	IN void* FunctionContext, 
+	IN void* SystemSpecific2, 
+	IN void* SystemSpecific3) 
 {
 	PRTMP_ADAPTER			pAd = (PRTMP_ADAPTER)FunctionContext;
-	ULONG					i;
-	PUCHAR					pTable;
-	UCHAR					TableSize = 0;
-	UCHAR					CurrRateIdx;
-	ULONG					TxTotalCnt;
-	ULONG					TxErrorRatio = 0;
+	unsigned long 					i;
+	unsigned char*					pTable;
+	unsigned char					TableSize = 0;
+	unsigned char					CurrRateIdx;
+	unsigned long 					TxTotalCnt;
+	unsigned long 					TxErrorRatio = 0;
 	RTMP_RA_LEGACY_TB *pCurrTxRate;
-	UCHAR					InitTxRateIdx, TrainUp, TrainDown;
-	CHAR					Rssi, ratio;
-	ULONG					TxSuccess, TxRetransmit, TxFailCount;
+	unsigned char					InitTxRateIdx, TrainUp, TrainDown;
+	char					Rssi, ratio;
+	unsigned long 					TxSuccess, TxRetransmit, TxFailCount;
 	MAC_TABLE_ENTRY			*pEntry;
 #ifdef TXBF_SUPPORT
-	BOOLEAN					CurrPhyETxBf, CurrPhyITxBf;
+	char					CurrPhyETxBf, CurrPhyITxBf;
 #endif /* TXBF_SUPPORT */
 #ifdef AGS_SUPPORT
 	AGS_STATISTICS_INFO		AGSStatisticsInfo = {0};
@@ -649,9 +649,9 @@ VOID StaQuickResponeForRateUpExec(
 			pAd->RalinkCounters.OneSecTxFailCount += TxStaCnt0.field.TxFailCount;
 
 #ifdef STATS_COUNT_SUPPORT
-			pAd->WlanCounters.TransmittedFragmentCount.u.LowPart += StaTx1.field.TxSuccess;
-			pAd->WlanCounters.RetryCount.u.LowPart += StaTx1.field.TxRetransmit;
-			pAd->WlanCounters.FailedCount.u.LowPart += TxStaCnt0.field.TxFailCount;
+			pAd->WlanCounters.TransmittedFragmentCount += StaTx1.field.TxSuccess;
+			pAd->WlanCounters.RetryCount += StaTx1.field.TxRetransmit;
+			pAd->WlanCounters.FailedCount += TxStaCnt0.field.TxFailCount;
 #endif /* STATS_COUNT_SUPPORT */
 
 			if (TxTotalCnt)
@@ -689,8 +689,8 @@ VOID StaQuickResponeForRateUpExec(
 				if (pEntry->Aid >= 1 && pEntry->Aid <= 8)
 				{
 					WCID_TX_CNT_STRUC wcidTxCnt;
-					UINT32 regAddr, offset;
-					ULONG HwTxCnt, HwErrRatio = 0;
+					unsigned int regAddr, offset;
+					unsigned long  HwTxCnt, HwErrRatio = 0;
 
 					regAddr = WCID_TX_CNT_0 + (pEntry->Aid - 1) * 4;
 					RTMP_IO_READ32(pAd, regAddr, &wcidTxCnt.word);
@@ -770,12 +770,12 @@ VOID StaQuickResponeForRateUpExec(
 			continue;
 		}
 
-		pEntry->PER[CurrRateIdx] = (UCHAR)TxErrorRatio;
+		pEntry->PER[CurrRateIdx] = (unsigned char)TxErrorRatio;
 
        /* Compare throughput */
 		do
 		{
-			ULONG OneSecTxNoRetryOKRationCount;
+			unsigned long  OneSecTxNoRetryOKRationCount;
 
 			/*
 				Compare throughput.
@@ -891,20 +891,20 @@ VOID StaQuickResponeForRateUpExec(
 			pEntry->CurrTxRateIndex = new rate index
 			pEntry->TxQuality is updated
 */
-VOID MlmeOldRateAdapt(
+void MlmeOldRateAdapt(
 	IN PRTMP_ADAPTER 	pAd,
 	IN PMAC_TABLE_ENTRY	pEntry,
-	IN UCHAR			CurrRateIdx,
-	IN UCHAR			UpRateIdx,
-	IN UCHAR			DownRateIdx,
-	IN ULONG			TrainUp,
-	IN ULONG			TrainDown,
-	IN ULONG			TxErrorRatio)
+	IN unsigned char			CurrRateIdx,
+	IN unsigned char			UpRateIdx,
+	IN unsigned char			DownRateIdx,
+	IN unsigned long 			TrainUp,
+	IN unsigned long 			TrainDown,
+	IN unsigned long 			TxErrorRatio)
 {
-	BOOLEAN	bTrainUp = FALSE;
+	char	bTrainUp = FALSE;
 #ifdef TXBF_SUPPORT
-	UCHAR *pTable = pEntry->pTable;
-	BOOLEAN invertTxBf = FALSE;
+	unsigned char *pTable = pEntry->pTable;
+	char invertTxBf = FALSE;
 #endif /* TXBF_SUPPORT */
 
 	pEntry->LastSecTxRateChangeAction = RATE_NO_CHANGE;

@@ -47,7 +47,7 @@
 */
 
 /* AGS: 1x1 HT-capable rate table */
-UCHAR AGS1x1HTRateTable[] = {
+unsigned char AGS1x1HTRateTable[] = {
 	0x09, 0x08, 0, 0, 0, 0, 0, 0, 0, 0,	/* Initial used item after association: the number of rate indexes, the initial mcs */
 	0x00, 0x21, 0, 0, 30, 101, 0, 16, 8, 1,	/* MCS 0 */
 	0x01, 0x21, 0, 1, 20, 50, 0, 16, 9, 2,	/* MCS 1 */
@@ -62,7 +62,7 @@ UCHAR AGS1x1HTRateTable[] = {
 
 
 /* AGS: 2x2 HT-capable rate table */
-UCHAR AGS2x2HTRateTable[] = {
+unsigned char AGS2x2HTRateTable[] = {
 	0x11, 0x10, 0, 0, 0, 0, 0, 0, 0, 0,	/* Initial used item after association: the number of rate indexes, the initial mcs */
 	0x00, 0x21, 0, 0, 30, 101, 0, 16, 8, 1,	/* MCS 0 */
 	0x01, 0x21, 0, 1, 20, 50, 0, 16, 9, 2,	/* MCS 1 */
@@ -85,7 +85,7 @@ UCHAR AGS2x2HTRateTable[] = {
 
 
 /* AGS: 3x3 HT-capable rate table */
-UCHAR AGS3x3HTRateTable[] = {
+unsigned char AGS3x3HTRateTable[] = {
 	0x19, 0x18, 0, 0, 0, 0, 0, 0, 0, 0,	/* Initial used item after association: the number of rate indexes, the initial mcs */
 	0x00, 0x21, 0, 0, 30, 101, 0, 16, 8, 1,	/* MCS 0 */
 	0x01, 0x21, 0, 1, 20, 50, 0, 16, 9, 2,	/* MCS 1 */
@@ -120,7 +120,7 @@ UCHAR AGS3x3HTRateTable[] = {
 #define NSS_1 0
 #define NSS_2 1
 /* RSSI Offset table for Ags rate tuning */
-UCHAR AgsRssiOffsetTable[3][4] = 
+unsigned char AgsRssiOffsetTable[3][4] = 
 {
 	// [i][] MAX System spatial stream capability: 1*1, 2*2, 3*3
 	// [i][] MAX System Bandwidth: 20, 40, 80, 160
@@ -149,7 +149,7 @@ UCHAR AgsRssiOffsetTable[3][4] =
 */
 
 /* AGS: 1x1 VHT-capable rate table */
-UCHAR Ags1x1VhtRateTable[] = 
+unsigned char Ags1x1VhtRateTable[] = 
 {
 	// Initial used item after association: the number of rate indexes, the initial MCS (index)
 	9,	0x08,	0x00, 0,							0,	0,		0,	0,	0,	0,
@@ -166,7 +166,7 @@ UCHAR Ags1x1VhtRateTable[] =
 
 
 /* AGS: 2x2 VHT-capable rate table */
-UCHAR Ags2x2VhtRateTable[] = {
+unsigned char Ags2x2VhtRateTable[] = {
 	// row #1 is initial used item after association: the number of rate indexes, the initial MCS (index)
 	17,	0x10,	0x00, 0,							0,	0,		0,	0,	0,	0,
 	0,	0x41,	0x00, 0, /* VHT 1x1 MCS 0 */		30,	101,	0,	0,	8,	1, 
@@ -190,9 +190,9 @@ UCHAR Ags2x2VhtRateTable[] = {
 #endif /* DOT11_VHT_AC */
 
 
-INT Show_AGS_Proc(
+int Show_AGS_Proc(
     IN  PRTMP_ADAPTER	pAd, 
-    IN  PSTRING arg)
+    IN  char* arg)
 {
 	MAC_TABLE_ENTRY *pEntry = &pAd->MacTab.Content[1];
 	UINT32 IdQuality;
@@ -223,20 +223,20 @@ INT Show_AGS_Proc(
 	Return Value:
 		None
 */
-VOID MlmeDynamicTxRateSwitchingAGS(
+void MlmeDynamicTxRateSwitchingAGS(
 	IN PRTMP_ADAPTER pAd, 
 	IN PMAC_TABLE_ENTRY pEntry, 
-	IN PUCHAR pTable, 
-	IN UCHAR TableSize, 
+	IN unsigned char* pTable, 
+	IN unsigned char TableSize, 
 	IN PAGS_STATISTICS_INFO pAGSStatisticsInfo,
-	IN UCHAR InitTxRateIdx)
+	IN unsigned char InitTxRateIdx)
 {
-	UCHAR UpRateIdx = 0, DownRateIdx = 0, CurrRateIdx = 0;
-	BOOLEAN bTxRateChanged = TRUE, bUpgradeQuality = FALSE;
+	unsigned char UpRateIdx = 0, DownRateIdx = 0, CurrRateIdx = 0;
+	char bTxRateChanged = TRUE, bUpgradeQuality = FALSE;
 	RTMP_RA_AGS_TB *pCurrTxRate = NULL;
 	RTMP_RA_LEGACY_TB *pNextTxRate = NULL;
-	UCHAR TrainUp = 0, TrainDown = 0, next_grp;
-	CHAR RssiOffset = 0;
+	unsigned char TrainUp = 0, TrainDown = 0, next_grp;
+	char RssiOffset = 0;
 
 
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("AGS: ---> %s\n", __FUNCTION__));
@@ -489,15 +489,15 @@ VOID MlmeDynamicTxRateSwitchingAGS(
 	/* MCS selection based on the RSSI information when the Tx samples are fewer than 15. */
 	if (pAGSStatisticsInfo->AccuTxTotalCnt <= 15)
 	{
-		CHAR idx = 0;
-		UCHAR TxRateIdx;
-		UCHAR MCS[24] = {0};
+		char idx = 0;
+		unsigned char TxRateIdx;
+		unsigned char MCS[24] = {0};
 		/* Check the existence and index of each needed MCS */
 
 #ifdef DOT11_VHT_AC
 		if ((pTable == Ags2x2VhtRateTable) || (pTable == Ags1x1VhtRateTable))
 		{
-			INT mcs_idx_offset;
+			int mcs_idx_offset;
 			while (idx < pTable[0])
 			{
 				pCurrTxRate = (RTMP_RA_AGS_TB *)(&pTable[(idx + 1) * SIZE_OF_AGS_RATE_TABLE_ENTRY]);
@@ -621,8 +621,8 @@ VOID MlmeDynamicTxRateSwitchingAGS(
 		pNextTxRate = (RTMP_RA_LEGACY_TB *)(&pTable[(pEntry->CurrTxRateIndex + 1) * SIZE_OF_AGS_RATE_TABLE_ENTRY]);
 		MlmeSetTxRate(pAd, pEntry, pNextTxRate);
 
-		RTMPZeroMemory(pEntry->TxQuality, (sizeof(USHORT) * (MAX_TX_RATE_INDEX+1)));
-		RTMPZeroMemory(pEntry->PER, (sizeof(UCHAR) * (MAX_TX_RATE_INDEX+1)));
+		RTMPZeroMemory(pEntry->TxQuality, (sizeof(unsigned short) * (MAX_TX_RATE_INDEX+1)));
+		RTMPZeroMemory(pEntry->PER, (sizeof(unsigned char) * (MAX_TX_RATE_INDEX+1)));
 		
 		pEntry->fLastSecAccordingRSSI = TRUE;
 		/* reset all OneSecTx counters */
@@ -647,7 +647,7 @@ VOID MlmeDynamicTxRateSwitchingAGS(
 
 	do
 	{
-		BOOLEAN	bTrainUpDown = FALSE;
+		char	bTrainUpDown = FALSE;
 
 		DBGPRINT_RAW(RT_DEBUG_INFO | DBG_FUNC_RA,
 					("%s: AGS: TxQuality[CurrRateIdx(%d)] = %d, UpPenalty:%d\n",
@@ -710,7 +710,7 @@ VOID MlmeDynamicTxRateSwitchingAGS(
 		}
 
 		/* update error ratio for current MCS */
-		pEntry->PER[CurrRateIdx] = (UCHAR)(pAGSStatisticsInfo->TxErrorRatio);
+		pEntry->PER[CurrRateIdx] = (unsigned char)(pAGSStatisticsInfo->TxErrorRatio);
 
 		/* Update the current Tx rate */
 		if (bTrainUpDown)
@@ -754,7 +754,7 @@ VOID MlmeDynamicTxRateSwitchingAGS(
 		
 		pEntry->LastSecTxRateChangeAction = RATE_UP;
 		pEntry->TxRateUpPenalty = 0;
-		RTMPZeroMemory(pEntry->PER, sizeof(UCHAR) * (MAX_TX_RATE_INDEX+1));
+		RTMPZeroMemory(pEntry->PER, sizeof(unsigned char) * (MAX_TX_RATE_INDEX+1));
 		pEntry->AGSCtrl.lastRateIdx = CurrRateIdx;
 
 		bTxRateChanged = TRUE;
@@ -861,21 +861,21 @@ VOID MlmeDynamicTxRateSwitchingAGS(
 	Return Value:
 		None
 */
-VOID StaQuickResponeForRateUpExecAGS(
+void StaQuickResponeForRateUpExecAGS(
 	IN PRTMP_ADAPTER pAd, 
 	IN PMAC_TABLE_ENTRY pEntry, 
-	IN PUCHAR pTable, 
-	IN UCHAR TableSize, 
+	IN unsigned char* pTable, 
+	IN unsigned char TableSize, 
 	IN PAGS_STATISTICS_INFO pAGSStatisticsInfo,
-	IN UCHAR InitTxRateIdx)
+	IN unsigned char InitTxRateIdx)
 {
-	UCHAR UpRateIdx = 0, DownRateIdx = 0, CurrRateIdx = 0;
-	BOOLEAN bTxRateChanged = TRUE;
+	unsigned char UpRateIdx = 0, DownRateIdx = 0, CurrRateIdx = 0;
+	char bTxRateChanged = TRUE;
 	RTMP_RA_AGS_TB *pCurrTxRate = NULL;
 	RTMP_RA_LEGACY_TB *pNextTxRate = NULL;
-	UCHAR TrainDown = 0, TrainUp = 0;
-	CHAR ratio = 0;
-	ULONG OneSecTxNoRetryOKRationCount = 0;
+	unsigned char TrainDown = 0, TrainUp = 0;
+	char ratio = 0;
+	unsigned long  OneSecTxNoRetryOKRationCount = 0;
 
 
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("QuickAGS: ---> %s\n", __FUNCTION__));
@@ -915,8 +915,8 @@ VOID StaQuickResponeForRateUpExecAGS(
 	/* MCS selection based on the RSSI information when the Tx samples are fewer than 15. */
 	if (pAGSStatisticsInfo->AccuTxTotalCnt <= 15)
 	{
-		RTMPZeroMemory(pEntry->TxQuality, sizeof(USHORT) * (MAX_TX_RATE_INDEX+1));
-		RTMPZeroMemory(pEntry->PER, sizeof(UCHAR) * (MAX_TX_RATE_INDEX+1));
+		RTMPZeroMemory(pEntry->TxQuality, sizeof(unsigned short) * (MAX_TX_RATE_INDEX+1));
+		RTMPZeroMemory(pEntry->PER, sizeof(unsigned char) * (MAX_TX_RATE_INDEX+1));
 
 		if ((pEntry->LastSecTxRateChangeAction == 1) && (CurrRateIdx != DownRateIdx))
 		{
@@ -945,7 +945,7 @@ VOID StaQuickResponeForRateUpExecAGS(
 		if (pAGSStatisticsInfo->TxErrorRatio >= TrainDown) /* Poor quality */
 			pEntry->TxQuality[CurrRateIdx] = AGS_TX_QUALITY_WORST_BOUND;
 
-		pEntry->PER[CurrRateIdx] = (UCHAR)(pAGSStatisticsInfo->TxErrorRatio);
+		pEntry->PER[CurrRateIdx] = (unsigned char)(pAGSStatisticsInfo->TxErrorRatio);
 
 		OneSecTxNoRetryOKRationCount = (pAGSStatisticsInfo->TxSuccess * ratio);
 		
@@ -969,7 +969,7 @@ VOID StaQuickResponeForRateUpExecAGS(
 					pAGSStatisticsInfo->TxErrorRatio,
 					TrainDown));
 
-				RTMPZeroMemory(pEntry->TxQuality, sizeof(USHORT) * (MAX_TX_RATE_INDEX+1));
+				RTMPZeroMemory(pEntry->TxQuality, sizeof(unsigned short) * (MAX_TX_RATE_INDEX+1));
 
 				if (pEntry->AGSCtrl.MCSGroup == 0)
 				{
@@ -1047,7 +1047,7 @@ VOID StaQuickResponeForRateUpExecAGS(
 		
 		pEntry->TxRateUpPenalty = 0;
 		pEntry->TxQuality[pEntry->CurrTxRateIndex] = 0; /*restore the TxQuality from max to 0 */
-		RTMPZeroMemory(pEntry->PER, sizeof(UCHAR) * (MAX_TX_RATE_INDEX+1));
+		RTMPZeroMemory(pEntry->PER, sizeof(unsigned char) * (MAX_TX_RATE_INDEX+1));
 	}
 	else if ((pEntry->CurrTxRateIndex != CurrRateIdx) && 
 	            (pEntry->LastSecTxRateChangeAction == 1)) /* Tx rate down */

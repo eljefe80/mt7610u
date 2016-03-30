@@ -48,7 +48,7 @@ void initblockQueueTab(
 	return;
 }
 
-BOOLEAN blockNetIf(
+char blockNetIf(
 	IN PBLOCK_QUEUE_ENTRY pBlockQueueEntry,
 	IN PNET_DEV pNetDev)
 {
@@ -69,7 +69,7 @@ BOOLEAN blockNetIf(
 	return TRUE;
 }
 
-VOID releaseNetIf(
+void releaseNetIf(
 	IN PBLOCK_QUEUE_ENTRY pBlockQueueEntry)
 {
 	PNETIF_ENTRY pNetIfEntry = NULL;
@@ -88,14 +88,14 @@ VOID releaseNetIf(
 }
 
 
-VOID StopNetIfQueue(
+void StopNetIfQueue(
 	IN PRTMP_ADAPTER pAd,
-	IN UCHAR QueIdx,
+	IN unsigned char QueIdx,
 	IN PNDIS_PACKET pPacket)
 {
 	PNET_DEV NetDev = NULL;
-	UCHAR IfIdx = 0;
-	BOOLEAN valid = FALSE;
+	unsigned char IfIdx = 0;
+	char valid = FALSE;
 
 
 #ifdef APCLI_SUPPORT

@@ -25,10 +25,10 @@
  *************************************************************************/
 
 
-#include <rt_config.h>
+#include "rt_config.h"
 
 
-INT dev_adjust_radio(RTMP_ADAPTER *pAd)
+int dev_adjust_radio(RTMP_ADAPTER *pAd)
 {
 	struct hw_setting *hw_cfg = &pAd->hw_cfg, new_cfg;
 
@@ -47,7 +47,7 @@ INT dev_adjust_radio(RTMP_ADAPTER *pAd)
 
 	if (hw_cfg->cent_ch != new_cfg.cent_ch)
 	{
-		UCHAR ext_ch = EXTCHA_NONE;
+		unsigned char ext_ch = EXTCHA_NONE;
 		
 		rtmp_bbp_set_ctrlch(pAd, ext_ch);
 		rtmp_mac_set_ctrlch(pAd, ext_ch);	

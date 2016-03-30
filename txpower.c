@@ -35,7 +35,7 @@
 #define MDSM_BBP_R1_STATIC_TX_POWER_CONTROL_MASK		0x03
 
 
-VOID AsicGetTxPowerOffset(RTMP_ADAPTER *pAd, ULONG *TxPwr)
+void AsicGetTxPowerOffset(RTMP_ADAPTER *pAd, unsigned long  *TxPwr)
 {
 	CONFIGURATION_OF_TX_POWER_CONTROL_OVER_MAC CfgOfTxPwrCtrlOverMAC;
 	DBGPRINT(RT_DEBUG_INFO, ("-->AsicGetTxPowerOffset\n"));
@@ -120,24 +120,24 @@ VOID AsicGetTxPowerOffset(RTMP_ADAPTER *pAd, ULONG *TxPwr)
 		}
 	}
 
-	NdisCopyMemory(TxPwr, (UCHAR *)&CfgOfTxPwrCtrlOverMAC, sizeof(CfgOfTxPwrCtrlOverMAC));
+	NdisCopyMemory(TxPwr, (unsigned char *)&CfgOfTxPwrCtrlOverMAC, sizeof(CfgOfTxPwrCtrlOverMAC));
 
 	DBGPRINT(RT_DEBUG_INFO, ("<--AsicGetTxPowerOffset\n"));
 }
 
 
-VOID AsicGetAutoAgcOffsetForExternalTxAlc(
+void AsicGetAutoAgcOffsetForExternalTxAlc(
 	IN PRTMP_ADAPTER 			pAd,
-	IN PCHAR 					pDeltaPwr,
-	IN PCHAR 					pTotalDeltaPwr,
-	IN PCHAR 					pAgcCompensate,
-	IN PCHAR 					pDeltaPowerByBbpR1)
+	IN char* 					pDeltaPwr,
+	IN char* 					pTotalDeltaPwr,
+	IN char* 					pAgcCompensate,
+	IN char* 					pDeltaPowerByBbpR1)
 {
 	BBP_R49_STRUC	BbpR49;
 	unsigned char			bAutoTxAgc = FALSE;
-	UCHAR			TssiRef, *pTssiMinusBoundary, *pTssiPlusBoundary, TxAgcStep, idx;
-	PCHAR			pTxAgcCompensate = NULL;
-	CHAR    			DeltaPwr = 0;
+	unsigned char			TssiRef, *pTssiMinusBoundary, *pTssiPlusBoundary, TxAgcStep, idx;
+	char*			pTxAgcCompensate = NULL;
+	char    			DeltaPwr = 0;
 
 	DBGPRINT(RT_DEBUG_INFO, ("-->%s\n", __FUNCTION__));
 
@@ -273,19 +273,19 @@ VOID AsicGetAutoAgcOffsetForExternalTxAlc(
 	==========================================================================
  */
 
-VOID AsicAdjustTxPower(
+void AsicAdjustTxPower(
 	IN PRTMP_ADAPTER pAd) 
 {
-	CHAR		Rssi = -127;
-	CHAR		DeltaPwr = 0;
-	CHAR		TxAgcCompensate = 0;
-	CHAR		DeltaPowerByBbpR1 = 0; 
-	CHAR		TotalDeltaPower = 0; /* (non-positive number) including the transmit power controlled by the MAC and the BBP R1 */
+	char		Rssi = -127;
+	char		DeltaPwr = 0;
+	char		TxAgcCompensate = 0;
+	char		DeltaPowerByBbpR1 = 0; 
+	char		TotalDeltaPower = 0; /* (non-positive number) including the transmit power controlled by the MAC and the BBP R1 */
 	CONFIGURATION_OF_TX_POWER_CONTROL_OVER_MAC CfgOfTxPwrCtrlOverMAC = {0};	
 #ifdef SINGLE_SKU
-	CHAR		TotalDeltaPowerOri = 0;
-	UCHAR		SingleSKUBbpR1Offset = 0;
-	ULONG		SingleSKUTotalDeltaPwr[MAX_TXPOWER_ARRAY_SIZE] = {0};
+	char		TotalDeltaPowerOri = 0;
+	unsigned char		SingleSKUBbpR1Offset = 0;
+	unsigned long 		SingleSKUTotalDeltaPwr[MAX_TXPOWER_ARRAY_SIZE] = {0};
 #endif /* SINGLE_SKU */
 
 
@@ -310,7 +310,7 @@ VOID AsicAdjustTxPower(
 #endif /* CONFIG_STA_SUPPORT */
 
 	/* Get Tx rate offset table which from EEPROM 0xDEh ~ 0xEFh */
-	RTMP_CHIP_ASIC_TX_POWER_OFFSET_GET(pAd, (PULONG)&CfgOfTxPwrCtrlOverMAC);
+	RTMP_CHIP_ASIC_TX_POWER_OFFSET_GET(pAd, (unsigned long*)&CfgOfTxPwrCtrlOverMAC);
 
 	/* Get temperature compensation delta power value */
 	RTMP_CHIP_ASIC_AUTO_AGC_OFFSET_GET(
@@ -335,7 +335,7 @@ VOID AsicAdjustTxPower(
 	if (pAd->CommonCfg.bSKUMode == TRUE)
 	{
 		/* Re calculate delta power while enabling Single SKU */
-		GetSingleSkuDeltaPower(pAd, &TotalDeltaPower, (PULONG)&SingleSKUTotalDeltaPwr, &SingleSKUBbpR1Offset);
+		GetSingleSkuDeltaPower(pAd, &TotalDeltaPower, (unsigned long*)&SingleSKUTotalDeltaPwr, &SingleSKUBbpR1Offset);
 	
 		TotalDeltaPowerOri = TotalDeltaPower;
 	}
@@ -350,22 +350,22 @@ VOID AsicAdjustTxPower(
 
 
 #ifdef SINGLE_SKU
-VOID GetSingleSkuDeltaPower(
+void GetSingleSkuDeltaPower(
 	IN 		PRTMP_ADAPTER 	pAd,
-	IN 		PCHAR 			pTotalDeltaPower,
-	IN	PULONG			pSingleSKUTotalDeltaPwr,
-	IN 	PUCHAR              	pSingleSKUBbpR1Offset) 
+	IN 		char* 			pTotalDeltaPower,
+	IN	unsigned long*			pSingleSKUTotalDeltaPwr,
+	IN 	unsigned char*              	pSingleSKUBbpR1Offset) 
 {
-	INT		i, j;
-	CHAR	Value;
-	CHAR 	MinValue = 127;
-	UCHAR	BbpR1 = 0;
-	UCHAR  	TxPwrInEEPROM = 0xFF, CountryTxPwr = 0xFF, criterion;
-	UCHAR   	AdjustMaxTxPwr[(MAX_TX_PWR_CONTROL_OVER_MAC_REGISTERS * 8)]; 
+	int 	i, j;
+	char	Value;
+	char 	MinValue = 127;
+	unsigned char	BbpR1 = 0;
+	unsigned char  	TxPwrInEEPROM = 0xFF, CountryTxPwr = 0xFF, criterion;
+	unsigned char   	AdjustMaxTxPwr[(MAX_TX_PWR_CONTROL_OVER_MAC_REGISTERS * 8)]; 
 	CONFIGURATION_OF_TX_POWER_CONTROL_OVER_MAC CfgOfTxPwrCtrlOverMAC = {0};
 	
 	/* Get TX rate offset table which from EEPROM 0xDEh ~ 0xEFh */
-	RTMP_CHIP_ASIC_TX_POWER_OFFSET_GET(pAd, (PULONG)&CfgOfTxPwrCtrlOverMAC);
+	RTMP_CHIP_ASIC_TX_POWER_OFFSET_GET(pAd, (unsigned long*)&CfgOfTxPwrCtrlOverMAC);
 		
 	/* Handle regulatory max. TX power constraint */
 	if (pAd->CommonCfg.Channel > 14) 
@@ -380,7 +380,7 @@ VOID GetSingleSkuDeltaPower(
 	CountryTxPwr = GetCuntryMaxTxPwr(pAd, pAd->CommonCfg.Channel); 
 
 	/* Use OFDM 6M as the criterion */
-	criterion = (UCHAR)((CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[0].RegisterValue & 0x000F0000) >> 16);
+	criterion = (unsigned char)((CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[0].RegisterValue & 0x000F0000) >> 16);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s: criterion=%d, TxPwrInEEPROM=%d, CountryTxPwr=%d\n", 
 		__FUNCTION__, criterion, TxPwrInEEPROM, CountryTxPwr));
@@ -392,7 +392,7 @@ VOID GetSingleSkuDeltaPower(
 		{
 			for (j=0; j<8; j++)
 			{
-				Value = (CHAR)((CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[i].RegisterValue >> j*4) & 0x0F); 
+				Value = (char)((CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[i].RegisterValue >> j*4) & 0x0F); 
 
 				if (j < 4)
 				{
@@ -416,7 +416,7 @@ VOID GetSingleSkuDeltaPower(
 		{
 			for (j=0; j<8; j++)
 			{
-				Value = (CHAR)((CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[i].RegisterValue >> j*4) & 0x0F);
+				Value = (char)((CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[i].RegisterValue >> j*4) & 0x0F);
 
 				AdjustMaxTxPwr[i*8+j] = TxPwrInEEPROM + (Value - criterion);
 
@@ -438,7 +438,7 @@ VOID GetSingleSkuDeltaPower(
 		{
 			for (j=0; j<8; j++)
 			{
-				Value = (CHAR)((CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[i].RegisterValue >> j*4) & 0x0F);
+				Value = (char)((CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[i].RegisterValue >> j*4) & 0x0F);
 
 				/* The TX power is larger than the regulatory, the power should be restrained */
 				if (AdjustMaxTxPwr[i*8+j] > CountryTxPwr)
@@ -482,7 +482,7 @@ VOID GetSingleSkuDeltaPower(
 		{
 			for (j=0; j<8; j++)
 			{
-				CHAR PwrChange;
+				char PwrChange;
 				/* 
 				   After Single SKU, each data rate offset power value is saved in TotalDeltaPwr[].
 				   PwrChange will add SingleSKUDeltaPwr and TotalDeltaPwr[] for each data rate to calculate
@@ -493,14 +493,14 @@ VOID GetSingleSkuDeltaPower(
 				   Value / TxPwr[] is get from eeprom 0xDEh ~ 0xEFh and increase or decrease the  
 				   20/40 Bandwidth Delta Value in eeprom 0x50h. 
 				*/
-				Value = (CHAR)((CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[i].RegisterValue >> j*4) & 0x0F); /* 0 ~ 15 */
+				Value = (char)((CfgOfTxPwrCtrlOverMAC.TxPwrCtrlOverMAC[i].RegisterValue >> j*4) & 0x0F); /* 0 ~ 15 */
 
 				/* Fix the corner case of Single SKU read eeprom offset 0xF0h ~ 0xFEh which for BBP Instruction configuration */
 				if (Value == 0xF)
 					continue;
 
 				/* Value_offset is current Pwr comapre with Country Regulation and need adjust delta value */
-				PwrChange = (CHAR)((*(pSingleSKUTotalDeltaPwr+i) >> j*4) & 0x0F); /* 0 ~ 15 */
+				PwrChange = (char)((*(pSingleSKUTotalDeltaPwr+i) >> j*4) & 0x0F); /* 0 ~ 15 */
 				PwrChange -= *pTotalDeltaPower;
 
 				Value -= PwrChange;
@@ -537,11 +537,11 @@ VOID GetSingleSkuDeltaPower(
 #endif /* SINGLE_SKU */
 
 
-VOID AsicPercentageDeltaPower(
+void AsicPercentageDeltaPower(
 	IN 		PRTMP_ADAPTER 		pAd,
-	IN		CHAR				Rssi,
-	INOUT	PCHAR				pDeltaPwr,
-	INOUT	PCHAR				pDeltaPowerByBbpR1) 
+	IN		char				Rssi,
+	INOUT	char*				pDeltaPwr,
+	INOUT	char*				pDeltaPowerByBbpR1) 
 {
 	/* 
 		Calculate delta power based on the percentage specified from UI.
@@ -595,11 +595,11 @@ VOID AsicPercentageDeltaPower(
 }
 
 
-VOID AsicCompensatePowerViaBBP(
+void AsicCompensatePowerViaBBP(
 	IN 		PRTMP_ADAPTER 		pAd,
-	INOUT	PCHAR				pTotalDeltaPower) 
+	INOUT	char*				pTotalDeltaPower) 
 {
-	UCHAR mdsm_drop_pwr;
+	unsigned char mdsm_drop_pwr;
 	
 	DBGPRINT(RT_DEBUG_INFO, ("%s: <Before BBP R1> TotalDeltaPower = %d dBm\n", __FUNCTION__, *pTotalDeltaPower));
 
@@ -631,7 +631,7 @@ VOID AsicCompensatePowerViaBBP(
 	else
 #endif /* RT65xx */
 	{
-		UCHAR	BbpR1 = 0;
+		unsigned char	BbpR1 = 0;
 	
 		/* The BBP R1 controls the transmit power for all rates */
 		RTMP_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R1, &BbpR1);
@@ -662,13 +662,13 @@ VOID AsicCompensatePowerViaBBP(
 		
 	========================================================================
 */
-VOID RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
+void RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
 {
-	ULONG		data, Adata, Gdata;
-	USHORT		i, value, value2;
-	USHORT		value_1, value_2, value_3, value_4;
-	INT			Apwrdelta, Gpwrdelta;
-	UCHAR		t1,t2,t3,t4;
+	unsigned long 		data, Adata, Gdata;
+	unsigned short 	i, value, value2;
+	unsigned short 	value_1, value_2, value_3, value_4;
+	int 		Apwrdelta, Gpwrdelta;
+	unsigned char		t1,t2,t3,t4;
 	unsigned char		bApwrdeltaMinus = TRUE, bGpwrdeltaMinus = TRUE;
 
 
@@ -918,9 +918,9 @@ VOID RTMPReadTxPwrPerRate(RTMP_ADAPTER *pAd)
 		
 	========================================================================
 */
-VOID RTMPReadChannelPwr(RTMP_ADAPTER *pAd)
+void RTMPReadChannelPwr(RTMP_ADAPTER *pAd)
 {
-	UINT32					i, choffset;
+	unsigned int					i, choffset;
 	EEPROM_TX_PWR_STRUC	    Power;
 	EEPROM_TX_PWR_STRUC	    Power2;
 

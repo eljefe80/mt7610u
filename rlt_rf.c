@@ -31,9 +31,9 @@
 
 NDIS_STATUS rlt_rf_write(
 	IN PRTMP_ADAPTER pAd,
-	IN UCHAR bank,
-	IN UCHAR regID,
-	IN UCHAR value)
+	IN unsigned char bank,
+	IN unsigned char regID,
+	IN unsigned char value)
 {
 	NDIS_STATUS	 ret = 0;
 
@@ -46,7 +46,7 @@ NDIS_STATUS rlt_rf_write(
 		RF_RANDOM_WRITE(pAd, &reg, 1);
 	} else {
 		RLT_RF_CSR_CFG rfcsr = { { 0 } };
-		UINT i = 0;
+		unsigned int i = 0;
 	
 
 #ifdef RTMP_MAC_USB
@@ -117,9 +117,9 @@ done:
 */
 NDIS_STATUS rlt_rf_read(
 	IN RTMP_ADAPTER *pAd,
-	IN UCHAR bank,
-	IN UCHAR regID,
-	IN UCHAR *pValue)
+	IN unsigned char bank,
+	IN unsigned char regID,
+	IN unsigned char *pValue)
 {
 	NDIS_STATUS	 ret = 0;
 	if (RTMP_TEST_FLAG(pAd, fRTMP_ADAPTER_MCU_SEND_IN_BAND_CMD)) {
@@ -132,7 +132,7 @@ NDIS_STATUS rlt_rf_read(
 	} else {
 	
 		RLT_RF_CSR_CFG rfcsr = { { 0 } };
-		UINT i=0, k=0;
+		unsigned int i=0, k=0;
 
 
 #ifdef RTMP_MAC_USB
@@ -179,7 +179,7 @@ NDIS_STATUS rlt_rf_read(
 				(rfcsr.field.RF_CSR_REG_ID == regID) &&
 				(rfcsr.field.RF_CSR_REG_BANK == bank))
 			{
-				*pValue = (UCHAR)(rfcsr.field.RF_CSR_DATA);
+				*pValue = (unsigned char)(rfcsr.field.RF_CSR_DATA);
 				break;
 			}
 		}

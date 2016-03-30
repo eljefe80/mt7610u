@@ -54,7 +54,7 @@
 	
 	========================================================================
 */
-VOID RTMPWriteTxWI(
+void RTMPWriteTxWI(
 	IN RTMP_ADAPTER *pAd,
 	IN TXWI_STRUC *pOutTxWI,
 	IN unsigned char FRAG,
@@ -63,19 +63,19 @@ VOID RTMPWriteTxWI(
 	IN unsigned char AMPDU,
 	IN unsigned char Ack,
 	IN unsigned char NSeq,		/* HW new a sequence.*/
-	IN UCHAR BASize,
-	IN UCHAR WCID,
-	IN ULONG Length,
-	IN UCHAR PID,
-	IN UCHAR TID,
-	IN UCHAR TxRate,
-	IN UCHAR Txopmode,
+	IN unsigned char BASize,
+	IN unsigned char WCID,
+	IN unsigned long  Length,
+	IN unsigned char PID,
+	IN unsigned char TID,
+	IN unsigned char TxRate,
+	IN unsigned char Txopmode,
 	IN unsigned char CfAck,
 	IN HTTRANSMIT_SETTING *pTransmit)
 {
 	PMAC_TABLE_ENTRY pMac = NULL;
 	TXWI_STRUC TxWI, *pTxWI;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	unsigned char TXWISize = pAd->chipCap.TXWISize;
 
 	if (WCID < MAX_LEN_OF_MAC_TABLE)
 		pMac = &pAd->MacTab.Content[WCID];
@@ -180,20 +180,20 @@ VOID RTMPWriteTxWI(
 	NdisMoveMemory(pOutTxWI, &TxWI, TXWISize);
 //+++Add by shiang for debug
 if (0){
-	hex_dump("TxWI", (UCHAR *)pOutTxWI, TXWISize);
+	hex_dump("TxWI", (unsigned char *)pOutTxWI, TXWISize);
 }
 //---Add by shiang for debug
 }
 
 
-VOID RTMPWriteTxWI_Data(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI, TX_BLK *pTxBlk)
+void RTMPWriteTxWI_Data(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI, TX_BLK *pTxBlk)
 {
 	HTTRANSMIT_SETTING *pTransmit;
 	MAC_TABLE_ENTRY *pMacEntry;
 #ifdef DOT11_N_SUPPORT
-	UCHAR BASize;
+	unsigned char BASize;
 #endif /* DOT11_N_SUPPORT */
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	unsigned char TXWISize = pAd->chipCap.TXWISize;
 
 
 	ASSERT(pTxWI);
@@ -247,7 +247,7 @@ VOID RTMPWriteTxWI_Data(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI, TX_BLK *pTxBlk)
 	BASize = pAd->CommonCfg.TxBASize;
 	if((pTxBlk->TxFrameType == TX_AMPDU_FRAME) && (pMacEntry))
 	{
-		UCHAR RABAOriIdx = pTxBlk->pMacEntry->BAOriWcidArray[pTxBlk->UserPriority];
+		unsigned char RABAOriIdx = pTxBlk->pMacEntry->BAOriWcidArray[pTxBlk->UserPriority];
 
 		BASize = pAd->BATable.BAOriEntry[RABAOriIdx].BAWinSize;
 	}
@@ -384,9 +384,9 @@ VOID RTMPWriteTxWI_Data(RTMP_ADAPTER *pAd, TXWI_STRUC *pTxWI, TX_BLK *pTxBlk)
 }
 
 
-VOID RTMPWriteTxWI_Cache(
+void RTMPWriteTxWI_Cache(
 	IN RTMP_ADAPTER *pAd,
-	INTXWI_STRUC *pTxWI,
+	IN TXWI_STRUC *pTxWI,
 	IN TX_BLK *pTxBlk)
 {
 	HTTRANSMIT_SETTING *pTransmit;
@@ -565,9 +565,9 @@ VOID RTMPWriteTxWI_Cache(
 }
 
 
-INT rtmp_mac_set_band(RTMP_ADAPTER *pAd, int  band)
+int rtmp_mac_set_band(RTMP_ADAPTER *pAd, int  band)
 {
-	UINT32 val, band_cfg;
+	unsigned int val, band_cfg;
 
 
 	RTMP_IO_READ32(pAd, TX_BAND_CFG, &band_cfg);
@@ -590,9 +590,9 @@ INT rtmp_mac_set_band(RTMP_ADAPTER *pAd, int  band)
 }
 
 
-INT rtmp_mac_set_ctrlch(RTMP_ADAPTER *pAd, INT extch)
+int rtmp_mac_set_ctrlch(RTMP_ADAPTER *pAd, int extch)
 {
-	UINT32 val, band_cfg;
+	unsigned int val, band_cfg;
 
 
 	RTMP_IO_READ32(pAd, TX_BAND_CFG, &band_cfg);
@@ -617,9 +617,9 @@ INT rtmp_mac_set_ctrlch(RTMP_ADAPTER *pAd, INT extch)
 }
 
 
-INT rtmp_mac_set_mmps(RTMP_ADAPTER *pAd, INT ReduceCorePower)
+int rtmp_mac_set_mmps(RTMP_ADAPTER *pAd, int ReduceCorePower)
 {
-	UINT32 mac_val, org_val;
+	unsigned int mac_val, org_val;
 
 	RTMP_IO_READ32(pAd, 0x1210, &org_val);
 	mac_val = org_val;

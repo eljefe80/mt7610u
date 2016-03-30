@@ -25,10 +25,10 @@
  *************************************************************************/
 
 
-#include <rt_config.h>
+#include "rt_config.h"
 
 
-VOID mgmt_tb_set_mcast_entry(RTMP_ADAPTER *pAd)
+void mgmt_tb_set_mcast_entry(RTMP_ADAPTER *pAd)
 {
 	MAC_TABLE_ENTRY *pEntry = &pAd->MacTab.Content[MCAST_WCID];
 	
@@ -39,7 +39,7 @@ VOID mgmt_tb_set_mcast_entry(RTMP_ADAPTER *pAd)
 }
 
 
-VOID set_entry_phy_cfg(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
+void set_entry_phy_cfg(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
 {
 
 	if (pEntry->MaxSupportedRate < RATE_FIRST_OFDM_RATE)
@@ -74,9 +74,9 @@ VOID set_entry_phy_cfg(RTMP_ADAPTER *pAd, MAC_TABLE_ENTRY *pEntry)
 */
 MAC_TABLE_ENTRY *MacTableLookup(
 	IN PRTMP_ADAPTER pAd,
-	PUCHAR pAddr)
+	unsigned char* pAddr)
 {
-	ULONG HashIdx;
+	unsigned long  HashIdx;
 	MAC_TABLE_ENTRY *pEntry = NULL;
 	
 	HashIdx = MAC_ADDR_HASH_INDEX(pAddr);
@@ -98,18 +98,18 @@ MAC_TABLE_ENTRY *MacTableLookup(
 
 MAC_TABLE_ENTRY *MacTableInsertEntry(
 	IN  PRTMP_ADAPTER   pAd,
-	IN  PUCHAR			pAddr,
-	IN	UCHAR			apidx,
-	IN	UCHAR			OpMode,
+	IN  unsigned char*			pAddr,
+	IN	unsigned char			apidx,
+	IN	unsigned char			OpMode,
 	IN unsigned char	CleanAll)
 {
-	UCHAR HashIdx;
+	unsigned char HashIdx;
 	int i, FirstWcid;
 	MAC_TABLE_ENTRY *pEntry = NULL, *pCurrEntry;
-/*	USHORT	offset;*/
-/*	ULONG	addr;*/
+/*	unsigned short offset;*/
+/*	unsigned long 	addr;*/
 	unsigned char Cancelled;
-	UINT32 MaxWcidNum = MAX_LEN_OF_MAC_TABLE;
+	unsigned int MaxWcidNum = MAX_LEN_OF_MAC_TABLE;
 #ifdef MAC_REPEATER_SUPPORT
 	unsigned char bAPCLI = FALSE;
 #endif /* MAC_REPEATER_SUPPORT */
@@ -297,7 +297,7 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 
 			pEntry->Sst = SST_NOT_AUTH;
 			pEntry->AuthState = AS_NOT_AUTH;
-			pEntry->Aid = (USHORT)i;  /*0;*/
+			pEntry->Aid = (unsigned short)i;  /*0;*/
 			pEntry->CapabilityInfo = 0;
 			pEntry->PsMode = PWR_ACTIVE;
 			pEntry->PsQIdleCount = 0;
@@ -319,7 +319,7 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
 			pAd->MacTab.Size ++;
 
 			/* Set the security mode of this entry as OPEN-NONE in ASIC */
-			RTMP_REMOVE_PAIRWISE_KEY_ENTRY(pAd, (UCHAR)i);
+			RTMP_REMOVE_PAIRWISE_KEY_ENTRY(pAd, (unsigned char)i);
 
 			/* Add this entry into ASIC RX WCID search table */
 			RTMP_STA_ENTRY_ADD(pAd, pEntry);
@@ -369,14 +369,14 @@ MAC_TABLE_ENTRY *MacTableInsertEntry(
  */
 unsigned char MacTableDeleteEntry(
 	IN PRTMP_ADAPTER pAd,
-	IN USHORT wcid,
-	IN PUCHAR pAddr)
+	IN unsigned short wcid,
+	IN unsigned char* pAddr)
 {
-	USHORT HashIdx;
+	unsigned short HashIdx;
 	MAC_TABLE_ENTRY *pEntry, *pPrevEntry, *pProbeEntry;
 	unsigned char Cancelled;
-	/*USHORT	offset;	 unused variable*/
-	/*UCHAR	j;			 unused variable*/
+	/*unsigned short offset;	 unused variable*/
+	/*unsigned char	j;			 unused variable*/
 
 	if (wcid >= MAX_LEN_OF_MAC_TABLE)
 		return FALSE;
@@ -535,7 +535,7 @@ unsigned char MacTableDeleteEntry(
 		the power-saving queues are freed here.
 	==========================================================================
  */
-VOID MacTableReset(
+void MacTableReset(
 	IN  PRTMP_ADAPTER  pAd)
 {
 	int         i;
@@ -574,8 +574,8 @@ VOID MacTableReset(
 #ifdef MAC_REPEATER_SUPPORT
 MAC_TABLE_ENTRY *InsertMacRepeaterEntry(
 	IN  PRTMP_ADAPTER   pAd,
-	IN  PUCHAR			pAddr,
-	IN  UCHAR			IfIdx)
+	IN  unsigned char*			pAddr,
+	IN  unsigned char			IfIdx)
 {
 	MAC_TABLE_ENTRY *pEntry = NULL;
 	PAPCLI_STRUCT pApCliEntry = NULL;

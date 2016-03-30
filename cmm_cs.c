@@ -25,7 +25,7 @@
  *************************************************************************/
 
 
-#include "include/rt_config.h"
+#include "rt_config.h"
 
 #ifdef CARRIER_DETECTION_SUPPORT
 static ULONG time[20];

@@ -78,7 +78,7 @@ FREQUENCY_ITEM FreqItems3020_Xtal20M[] =
 	{14,   0xF0,	 2,  0x18},
 };
 
-UCHAR	NUM_OF_3020_CHNL = (sizeof(RtmpFreqItems3020) / sizeof(FREQUENCY_ITEM));
+unsigned char	NUM_OF_3020_CHNL = (sizeof(RtmpFreqItems3020) / sizeof(FREQUENCY_ITEM));
 
 FREQUENCY_ITEM *FreqItems3020 = RtmpFreqItems3020;
 
@@ -162,7 +162,7 @@ RTMP_RF_REGS RF2850RegTable[] = {
 
 		/* still lack of MMAC(Japan) ch 34,38,42,46*/
 };
-UCHAR	NUM_OF_2850_CHNL = (sizeof(RF2850RegTable) / sizeof(RTMP_RF_REGS));
+unsigned char	NUM_OF_2850_CHNL = (sizeof(RF2850RegTable) / sizeof(RTMP_RF_REGS));
 #endif /* defined(RT28xx) || defined(RT2883) */
 
 #if defined(RTMP_INTERNAL_TX_ALC) || defined(RTMP_TEMPERATURE_COMPENSATION) 
@@ -266,7 +266,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpChipBcnSpecInit(RTMP_ADAPTER *pAd)
+void RtmpChipBcnSpecInit(RTMP_ADAPTER *pAd)
 {
 }
 
@@ -285,7 +285,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpChipBcnInit(
+void RtmpChipBcnInit(
 	IN RTMP_ADAPTER *pAd)
 {
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
@@ -337,7 +337,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID rlt_bcn_buf_init(RTMP_ADAPTER *pAd)
+void rlt_bcn_buf_init(RTMP_ADAPTER *pAd)
 {
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
 
@@ -406,11 +406,11 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpChipWriteHighMemory(
+void RtmpChipWriteHighMemory(
 	IN RTMP_ADAPTER *pAd,
-	IN USHORT Offset,
-	IN UINT32 Value,
-	IN UINT8 Unit)
+	IN unsigned short Offset,
+	IN unsigned int Value,
+	IN unsigned char Unit)
 {
 #ifdef RTMP_MAC_USB
 	switch(Unit)
@@ -420,8 +420,8 @@ VOID RtmpChipWriteHighMemory(
 			break;
 		case 2:
 		{
-			UINT16 ShortVal = (UINT16)Value;
-			RTUSBMultiWrite(pAd, Offset, (UCHAR *) &ShortVal, 2, TRUE);
+			unsigned short ShortVal = (unsigned short)Value;
+			RTUSBMultiWrite(pAd, Offset, (unsigned char *) &ShortVal, 2, TRUE);
 			break;
 		}
 		case 4:
@@ -449,11 +449,11 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID RtmpChipWriteMemory(
+void RtmpChipWriteMemory(
 	IN	RTMP_ADAPTER	*pAd,
-	IN	USHORT			Offset,
-	IN	UINT32			Value,
-	IN	UINT8			Unit)
+	IN	unsigned short 		Offset,
+	IN	unsigned int			Value,
+	IN	unsigned char 		Unit)
 {
 	switch(Unit)
 	{
@@ -473,9 +473,9 @@ VOID RtmpChipWriteMemory(
 
 
 
-static VOID RxSensitivityTuning(RTMP_ADAPTER *pAd)
+static void RxSensitivityTuning(RTMP_ADAPTER *pAd)
 {
-	UCHAR R66 = 0x26 + GET_LNA_GAIN(pAd);
+	unsigned char R66 = 0x26 + GET_LNA_GAIN(pAd);
 
 #ifdef RALINK_ATE
 	if (ATE_ON(pAd))
@@ -492,13 +492,13 @@ static VOID RxSensitivityTuning(RTMP_ADAPTER *pAd)
 
 
 #ifdef CONFIG_STA_SUPPORT
-static UCHAR ChipAGCAdjust(
+static unsigned char ChipAGCAdjust(
 	IN PRTMP_ADAPTER		pAd,
-	IN CHAR					Rssi,
-	IN UCHAR				OrigR66Value)
+	IN char					Rssi,
+	IN unsigned char				OrigR66Value)
 {
-	UCHAR R66 = OrigR66Value;
-	CHAR lanGain = GET_LNA_GAIN(pAd);
+	unsigned char R66 = OrigR66Value;
+	char lanGain = GET_LNA_GAIN(pAd);
 	
 	if (pAd->LatchRfRegs.Channel <= 14)
 	{	/*BG band*/
@@ -526,10 +526,10 @@ static UCHAR ChipAGCAdjust(
 #endif /* CONFIG_STA_SUPPORT */
 
 
-static VOID ChipBBPAdjust(RTMP_ADAPTER *pAd)
+static void ChipBBPAdjust(RTMP_ADAPTER *pAd)
 {
-	UCHAR rf_bw, ext_ch;
-	UCHAR bbp_val;
+	unsigned char rf_bw, ext_ch;
+	unsigned char bbp_val;
 
 
 #ifdef DOT11_N_SUPPORT
@@ -589,18 +589,18 @@ static VOID ChipBBPAdjust(RTMP_ADAPTER *pAd)
 }
 
 
-static VOID Default_ChipSwitchChannel(
+static void Default_ChipSwitchChannel(
 	IN PRTMP_ADAPTER pAd,
-	IN UCHAR Channel,
+	IN unsigned char Channel,
 	IN unsigned char bScan) 
 {
 	DBGPRINT(RT_DEBUG_ERROR, ("%s(): dummy channel switch function!\n", __FUNCTION__));
 }
 
 
-static VOID Default_ChipAGCInit(RTMP_ADAPTER *pAd, UCHAR BandWidth)
+static void Default_ChipAGCInit(RTMP_ADAPTER *pAd, unsigned char BandWidth)
 {
-	UCHAR R66 = 0x30, lan_gain;
+	unsigned char R66 = 0x30, lan_gain;
 
 	lan_gain = GET_LNA_GAIN(pAd);
 	if (pAd->LatchRfRegs.Channel <= 14)
@@ -613,10 +613,10 @@ static VOID Default_ChipAGCInit(RTMP_ADAPTER *pAd, UCHAR BandWidth)
 	{	//A band
 		{	
 			if (BandWidth == BW_20)
-				R66 = (UCHAR)(0x32 + (lan_gain * 5) / 3);
+				R66 = (unsigned char)(0x32 + (lan_gain * 5) / 3);
 #ifdef DOT11_N_SUPPORT
 			else
-				R66 = (UCHAR)(0x3A + (lan_gain * 5) / 3);
+				R66 = (unsigned char)(0x3A + (lan_gain * 5) / 3);
 #endif // DOT11_N_SUPPORT //
 		}
 	}
@@ -625,7 +625,7 @@ static VOID Default_ChipAGCInit(RTMP_ADAPTER *pAd, UCHAR BandWidth)
 }
 
 
-static VOID AsicAntennaDefaultReset(
+static void AsicAntennaDefaultReset(
 	IN PRTMP_ADAPTER		pAd,
 	IN EEPROM_ANTENNA_STRUC	*pAntenna)
 {
@@ -640,12 +640,12 @@ static VOID AsicAntennaDefaultReset(
 }
 
 
-VOID NetDevNickNameInit(
+void NetDevNickNameInit(
 	IN PRTMP_ADAPTER		pAd)
 {
 #ifdef CONFIG_STA_SUPPORT
 #ifdef RTMP_MAC_USB
-		snprintf((PSTRING) pAd->nickname, sizeof(pAd->nickname), "RT2870STA");
+		snprintf((char*) pAd->nickname, sizeof(pAd->nickname), "RT2870STA");
 #endif /* RTMP_MAC_USB */
 #endif /* CONFIG_STA_SUPPORT */
 }
@@ -654,14 +654,14 @@ VOID NetDevNickNameInit(
 
 
 #ifdef HW_ANTENNA_DIVERSITY_SUPPORT
-UINT32 SetHWAntennaDivsersity(
+unsigned int SetHWAntennaDivsersity(
 	IN PRTMP_ADAPTER		pAd,
 	IN unsigned char				Enable)
 {
 	if (Enable == TRUE)
 	{
-		UINT8 BBPValue = 0, RFValue = 0;
-		USHORT value;
+		unsigned char BBPValue = 0, RFValue = 0;
+		unsigned short value;
 
 		// RF_R29 bit7:6
 		RT28xx_EEPROM_READ16(pAd, EEPROM_RSSI_GAIN, value);
@@ -695,7 +695,7 @@ UINT32 SetHWAntennaDivsersity(
 	}
 	else
 	{
-		UINT8 BBPValue = 0;
+		unsigned char BBPValue = 0;
 
 		/*
 			main antenna: BBP_R152 bit7=1
@@ -738,10 +738,10 @@ UINT32 SetHWAntennaDivsersity(
 
 
 
-INT WaitForAsicReady(
+int WaitForAsicReady(
 	IN RTMP_ADAPTER *pAd)
 {
-	UINT32 mac_val = 0, reg = MAC_CSR0;
+	unsigned int mac_val = 0, reg = MAC_CSR0;
 	int idx = 0;
 
 #ifdef RT3290	
@@ -769,10 +769,10 @@ INT WaitForAsicReady(
 }
 
 
-INT AsicGetMacVersion(
+int AsicGetMacVersion(
 	IN RTMP_ADAPTER *pAd)
 {
-	UINT32 reg = MAC_CSR0;
+	unsigned int reg = MAC_CSR0;
 
 #ifdef RT3290
 	if (IS_RT3290(pAd))
@@ -812,12 +812,12 @@ Return Value:
 Note:
 ========================================================================
 */
-int RtmpChipOpsHook(VOID *pCB)
+int RtmpChipOpsHook(void *pCB)
 {
 	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)pCB;
 	RTMP_CHIP_OP *pChipOps = &pAd->chipOps;
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
-	UINT32 MacValue;
+	unsigned int MacValue;
 	int ret = 0;
 
 
