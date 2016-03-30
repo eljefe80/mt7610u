@@ -142,7 +142,7 @@ typedef struct _RF_R_M_W_REG{
 
 
 
-#include "mcu/mcu_and.h"
+#include "mcu_and.h"
 
 #define IS_RT3090A(_pAd)    ((((_pAd)->MACVersion & 0xffff0000) == 0x30900000))
 
@@ -785,10 +785,10 @@ struct _RTMP_CHIP_CAP_ {
 
 #ifdef MT76x0
 	unsigned char bDoTemperatureSensor;
-	SHORT TemperatureOffset;
-	SHORT LastTemperatureforVCO;
-	SHORT LastTemperatureforCal;
-	SHORT NowTemperature;
+	short TemperatureOffset;
+	short LastTemperatureforVCO;
+	short LastTemperatureforCal;
+	short NowTemperature;
 	unsigned char a_band_mid_ch;
 	unsigned char a_band_high_ch;
 	unsigned char ext_pa_current_setting;

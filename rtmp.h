@@ -66,11 +66,11 @@ typedef struct _UAPSD_INFO {
 	unsigned char bAPSDCapable;
 } UAPSD_INFO;
 
-#include "mcu/mcu.h"
+#include "mcu.h"
 
 
 #ifdef CONFIG_ANDES_SUPPORT
-#include "mcu/mcu_and.h"
+#include "mcu_and.h"
 #endif
 
 #include "rtmp_chip.h"
@@ -6454,7 +6454,7 @@ char *			arg);
 int Set_Channel_Proc(
 PRTMP_ADAPTER	pAd, 
 char *			arg);
-int	Set_shortSlot_Proc(
+int	Set_ShortSlot_Proc(
 PRTMP_ADAPTER	pAd,
 char *			arg);
 
@@ -7174,7 +7174,7 @@ int Set_LongRetryLimit_Proc(
 PRTMP_ADAPTER	pAdapter, 
 char *			arg);
 
-int Set_shortRetryLimit_Proc(
+int Set_ShortRetryLimit_Proc(
 PRTMP_ADAPTER	pAdapter, 
 char *			arg);
 
@@ -7754,7 +7754,7 @@ void RTThreadDequeueCmd(
 PCmdQ		cmdq,
 	OUT	PCmdQElmt	*pcmdqelmt);
 
-NDIS_STATUS RTEnqueueinternalCmd(
+int RTEnqueueinternalCmd(
 PRTMP_ADAPTER	pAd,
 NDIS_OID			Oid,
 void *		pInformationBuffer,
@@ -7903,7 +7903,7 @@ int Set_LongRetryLimit_Proc(
 PRTMP_ADAPTER	pAdapter, 
 char *			arg);
 
-int Set_shortRetryLimit_Proc(
+int Set_ShortRetryLimit_Proc(
 PRTMP_ADAPTER	pAdapter, 
 char *			arg);
 

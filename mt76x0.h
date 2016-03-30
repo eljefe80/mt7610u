@@ -28,7 +28,7 @@
 #ifndef __MT76X0_H__
 #define __MT76X0_H__
 
-#include "../mcu/mcu_and.h"
+#include "mcu_and.h"
 
 struct _RTMP_ADAPTER;
 
@@ -61,19 +61,19 @@ struct _RTMP_ADAPTER;
 */
 #ifdef RT_BIG_ENDIAN
 typedef struct _TSO_INFO_{
-	UINT32 mss:16;
-	UINT32 ips:8;
-	UINT32 tups:6;	
-	UINT32 tcp:1;	
-	UINT32 rsv:1;
+	unsigned int mss:16;
+	unsigned int ips:8;
+	unsigned int tups:6;	
+	unsigned int tcp:1;	
+	unsigned int rsv:1;
 }TSO_INFO;
 #else
 typedef struct _TSO_INFO_{
-	UINT32 rsv:1;
-	UINT32 tcp:1;
-	UINT32 tups:6;
-	UINT32 ips:8;
-	UINT32 mss:16;
+	unsigned int rsv:1;
+	unsigned int tcp:1;
+	unsigned int tups:6;
+	unsigned int ips:8;
+	unsigned int mss:16;
 }TSO_INFO;
 #endif /* RT_BIG_ENDIAN */
 
@@ -86,11 +86,11 @@ typedef struct _TSO_INFO_{
  * R: R11[1:0] (eg. R=1 => 0x0, R=3 => 0x2)
  */
 typedef struct _RT8592_FREQ_ITEM {
-	UINT8 Channel;
-	UINT16 N;
-	UINT8 K;
-	UINT8 mod;
-	UINT8 R;
+	unsigned char Channel;
+	unsigned short N;
+	unsigned char K;
+	unsigned char mod;
+	unsigned char R;
 } RT8592_FREQ_ITEM;
 	
 /* 
@@ -114,26 +114,26 @@ typedef struct _RT8592_FREQ_ITEM {
 	R24<1:0> xo_div
 */
 typedef struct _MT76x0_FREQ_ITEM {
-	UINT8 Channel;
-	UINT32 Band;
-	UINT8 pllR37;
-	UINT8 pllR36;
-	UINT8 pllR35;
-	UINT8 pllR34;
-	UINT8 pllR33;
-	UINT8 pllR32_b7b5;
-	UINT8 pllR32_b4b0; /* PLL_DEN */
-	UINT8 pllR31_b7b5;
-	UINT8 pllR31_b4b0; /* PLL_K */
-	UINT8 pllR30_b7; /* sdm_reset_n */
-	UINT8 pllR30_b6b2; /* sdmmash_prbs,sin */
-	UINT8 pllR30_b1; /* sdm_bp */
-	UINT16 pll_n; /* R30<0>, R29<7:0> (hex) */	
-	UINT8 pllR28_b7b6; /* isi,iso */
-	UINT8 pllR28_b5b4; /* pfd_dly */
-	UINT8 pllR28_b3b2; /* clksel option */
-	UINT32 Pll_sdm_k; /* R28<1:0>, R27<7:0>, R26<7:0> (hex) SDM_k */
-	UINT8 pllR24_b1b0; /* xo_div */
+	unsigned char Channel;
+	unsigned int Band;
+	unsigned char pllR37;
+	unsigned char pllR36;
+	unsigned char pllR35;
+	unsigned char pllR34;
+	unsigned char pllR33;
+	unsigned char pllR32_b7b5;
+	unsigned char pllR32_b4b0; /* PLL_DEN */
+	unsigned char pllR31_b7b5;
+	unsigned char pllR31_b4b0; /* PLL_K */
+	unsigned char pllR30_b7; /* sdm_reset_n */
+	unsigned char pllR30_b6b2; /* sdmmash_prbs,sin */
+	unsigned char pllR30_b1; /* sdm_bp */
+	unsigned short pll_n; /* R30<0>, R29<7:0> (hex) */	
+	unsigned char pllR28_b7b6; /* isi,iso */
+	unsigned char pllR28_b5b4; /* pfd_dly */
+	unsigned char pllR28_b3b2; /* clksel option */
+	unsigned int Pll_sdm_k; /* R28<1:0>, R27<7:0>, R26<7:0> (hex) SDM_k */
+	unsigned char pllR24_b1b0; /* xo_div */
 } MT76x0_FREQ_ITEM;
 
 #define RF_G_BAND 		0x0100
@@ -152,20 +152,20 @@ enum PA_TYPE {
 };
 
 typedef struct _RT6590_RF_SWITCH_ITEM {
-	UCHAR Bank;
-	UCHAR Register;
-	UINT32 BwBand; /* (BW_20, BW_40, BW_80) | (G_Band, A_Band_LB, A_Band_MB, A_Band_HB) */
-	UCHAR Value;
+	unsigned char Bank;
+	unsigned char Register;
+	unsigned int BwBand; /* (BW_20, BW_40, BW_80) | (G_Band, A_Band_LB, A_Band_MB, A_Band_HB) */
+	unsigned char Value;
 } MT76x0_RF_SWITCH_ITEM, *PMT76x0_RF_SWITCH_ITEM;
 
 typedef struct _MT76x0_BBP_Table {
-	UINT32 BwBand; /* (BW_20, BW_40, BW_80) | (G_Band, A_Band_LB, A_Band_MB, A_Band_HB) */
+	unsigned int BwBand; /* (BW_20, BW_40, BW_80) | (G_Band, A_Band_LB, A_Band_MB, A_Band_HB) */
 	RTMP_REG_PAIR RegDate;
 } MT76x0_BBP_Table, *PMT76x0_BBP_Table;
 
 typedef struct _MT76x0_RATE_PWR_ITEM {
-	CHAR MCS_Power;
-	UCHAR RF_PA_Mode;
+	char MCS_Power;
+	unsigned char RF_PA_Mode;
 } MT76x0_RATE_PWR_ITEM, *PMT76x0_RATE_PWR_ITEM;
 
 typedef struct _MT76x0_RATE_PWR_TABLE {
@@ -177,60 +177,60 @@ typedef struct _MT76x0_RATE_PWR_TABLE {
 	MT76x0_RATE_PWR_ITEM MCS32;
 } MT76x0_RATE_PWR_Table, *PMT76x0_RATE_PWR_Table;
 
-VOID MT76x0_Init(struct _RTMP_ADAPTER *pAd);
-INT MT76x0_ReadChannelPwr(struct _RTMP_ADAPTER *pAd);
+void MT76x0_Init(struct _RTMP_ADAPTER *pAd);
+int MT76x0_ReadChannelPwr(struct _RTMP_ADAPTER *pAd);
 
-VOID MT76x0_AsicExtraPowerOverMAC(struct _RTMP_ADAPTER *pAd);
+void MT76x0_AsicExtraPowerOverMAC(struct _RTMP_ADAPTER *pAd);
 
 #ifdef DBG
-VOID MT76x0_ShowDmaIndexCupIndex(
+void MT76x0_ShowDmaIndexCupIndex(
 	struct _RTMP_ADAPTER *pAd);
 #endif /* DBG */
 
 #ifdef RT8592
 #endif /* RT8592 */
-VOID mt76x0_read_per_rate_tx_pwr(struct _RTMP_ADAPTER *pAd);
+void mt76x0_read_per_rate_tx_pwr(struct _RTMP_ADAPTER *pAd);
 
-VOID dump_bw_info(struct _RTMP_ADAPTER *pAd);
+void dump_bw_info(struct _RTMP_ADAPTER *pAd);
 
-VOID MT76x0_WLAN_ChipOnOff(
+void MT76x0_WLAN_ChipOnOff(
 	IN struct _RTMP_ADAPTER *pAd,
-	IN BOOLEAN bOn,
-	IN BOOLEAN bResetWLAN);
+	IN char bOn,
+	IN char bResetWLAN);
 
 
-VOID MT76x0_AntennaSelCtrl(
+void MT76x0_AntennaSelCtrl(
 	IN struct _RTMP_ADAPTER *pAd);
 
-VOID MT76x0_dynamic_vga_tuning(
+void MT76x0_dynamic_vga_tuning(
 	IN struct _RTMP_ADAPTER *pAd);
 
-VOID MT76x0_VCO_CalibrationMode3(
+void MT76x0_VCO_CalibrationMode3(
 	IN struct _RTMP_ADAPTER *pAd,
-	IN UCHAR Channel);
+	IN unsigned char Channel);
 
-VOID MT76x0_Calibration(
+void MT76x0_Calibration(
 	IN struct _RTMP_ADAPTER *pAd,
-	IN UCHAR Channel,
-	IN BOOLEAN bPowerOn,
-	IN BOOLEAN bDoTSSI,
-	IN BOOLEAN bFullCal);
+	IN unsigned char Channel,
+	IN char bPowerOn,
+	IN char bDoTSSI,
+	IN char bFullCal);
 
-VOID MT76x0_TempSensor(
+void MT76x0_TempSensor(
 	IN struct _RTMP_ADAPTER *pAd);
 
 #ifdef DFS_SUPPORT
-VOID MT76x0_DFS_CR_Init(
+void MT76x0_DFS_CR_Init(
 	IN struct _RTMP_ADAPTER *pAd);
 #endif /* DFS_SUPPORT */
 #ifdef RTMP_FLASH_SUPPORT
-VOID MT76x0_ReadFlashAndInitAsic(
+void MT76x0_ReadFlashAndInitAsic(
 	IN struct _RTMP_ADAPTER *pAd);
 #endif /* RTMP_FLASH_SUPPORT */
 
-INT Set_AntennaSelect_Proc(
+int Set_AntennaSelect_Proc(
 	IN struct _RTMP_ADAPTER		*pAd,
-	IN PSTRING			arg);
+	IN char *			arg);
 
 #ifdef RTMP_TEMPERATURE_TX_ALC
 void mt76x0_temp_tx_alc(struct _RTMP_ADAPTER *pAd);
@@ -241,27 +241,27 @@ void mt76x0_adjust_per_rate_pwr(struct _RTMP_ADAPTER *pAd);
 void mt76x0_read_tx_alc_info_from_eeprom(struct _RTMP_ADAPTER *pAd);
 
 #ifdef MT76x0_TSSI_CAL_COMPENSATION
-VOID MT76x0_TSSI_DC_Calibration(
+void MT76x0_TSSI_DC_Calibration(
 	IN  struct _RTMP_ADAPTER *pAd);
 
-VOID MT76x0_MakeUpTssiTable(
+void MT76x0_MakeUpTssiTable(
 	IN  struct _RTMP_ADAPTER *pAd);
 
-VOID MT76x0_IntTxAlcProcess(
+void MT76x0_IntTxAlcProcess(
 	IN  struct _RTMP_ADAPTER *pAd);
 #endif /* MT76x0_TSSI_CAL_COMPENSATION */
 
-VOID MT76x0_MakeUpRatePwrTable(
+void MT76x0_MakeUpRatePwrTable(
 	IN struct _RTMP_ADAPTER *pAd);
 
 #ifdef SINGLE_SKU_V2
-UCHAR MT76x0_GetSkuChannelBasePwr(
+unsigned char MT76x0_GetSkuChannelBasePwr(
 	IN struct _RTMP_ADAPTER *pAd,
-	IN UCHAR channel);
+	IN unsigned char channel);
 
-UCHAR MT76x0_UpdateSkuPwr(
+unsigned char MT76x0_UpdateSkuPwr(
 	IN struct _RTMP_ADAPTER *pAd,
-	IN UCHAR channel);
+	IN unsigned char channel);
 #endif /* SINGLE_SKU_V2 */
 
 #endif /* __MT76x0_H__ */

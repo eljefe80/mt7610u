@@ -69,7 +69,7 @@
 
 #include "eeprom.h"
 #if defined(RTMP_PCI_SUPPORT) || defined(RTMP_USB_SUPPORT)
-#include "mcu/mcu.h"
+#include "mcu.h"
 #endif
 
 #undef AP_WSC_INCLUDED

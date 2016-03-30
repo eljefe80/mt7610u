@@ -784,7 +784,7 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 
 #ifdef RTMP_MAC_USB
 #define RTMP_IO_FORCE_READ32(_A, _R, _pV)								\
-	RTUSBReadMACRegister((_A), (_R), (Punsigned int) (_pV))
+	RTUSBReadMACRegister((_A), (_R), (unsigned int*) (_pV))
 
 #define RTMP_IO_FORCE_WRITE32(_A, _R, _V)	\
 	do{\
@@ -798,7 +798,7 @@ void linux_pci_unmap_single(void *handle, ra_dma_addr_t dma_addr, size_t size, i
 
 //BURST_READ(_A, _R, 1, _pV);                             
 #define RTMP_IO_READ32(_A, _R, _pV)								\
-	RTUSBReadMACRegister((_A), (_R), (Punsigned int) (_pV))
+	RTUSBReadMACRegister((_A), (_R), (unsigned int*) (_pV))
 
 #define RTMP_IO_WRITE32(_A, _R, _V)								\
 	RTUSBWriteMACRegister((_A), (_R), (unsigned int) (_V), FALSE)
