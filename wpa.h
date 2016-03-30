@@ -50,7 +50,7 @@
 	_V[1] = (var_len & 0xFF);					\
 }
 
-#define	CONV_ARRARY_TO_unsigned int16(_V)	((_V[0]<<8) | (_V[1]))
+#define	CONV_ARRARY_TO_UINT16(_V)	((_V[0]<<8) | (_V[1]))
 
 #define	ADD_ONE_To_64BIT_VAR(_V)		\
 {										\

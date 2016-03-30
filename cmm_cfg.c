@@ -37,11 +37,11 @@
 /* DisplayTxAgg - display Aggregation statistics from MAC */
 void DisplayTxAgg (RTMP_ADAPTER *pAd)
 {
-	ULONG totalCount;
-	ULONG aggCnt[MAX_AGG_CNT + 2];
+	unsigned long totalCount;
+	unsigned long aggCnt[MAX_AGG_CNT + 2];
 	int i;
 
-	AsicReadAggCnt(pAd, aggCnt, sizeof(aggCnt) / sizeof(ULONG));
+	AsicReadAggCnt(pAd, aggCnt, sizeof(aggCnt) / sizeof(unsigned long));
 	totalCount = aggCnt[0] + aggCnt[1];
 	if (totalCount > 0)
 		for (i=0; i<MAX_AGG_CNT; i++) {
@@ -53,14 +53,14 @@ void DisplayTxAgg (RTMP_ADAPTER *pAd)
 #endif /* DOT11_N_SUPPORT */
 
 static unsigned char RT_isLegalCmdBeforeInfUp(
-       IN PSTRING SetCmd);
+       IN char *SetCmd);
 
 
-INT ComputeChecksum(
-	IN UINT PIN)
+int ComputeChecksum(
+	IN unsigned int PIN)
 {
-	INT digit_s;
-    UINT accum = 0;
+	int digit_s;
+    unsigned int accum = 0;
 
 	PIN *= 10;
 	accum += 3 * ((PIN / 10000000) % 10); 
@@ -75,14 +75,14 @@ INT ComputeChecksum(
 	return ((10 - digit_s) % 10);
 } /* ComputeChecksum*/
 
-UINT GenerateWpsPinCode(
+unsigned int GenerateWpsPinCode(
 	IN	PRTMP_ADAPTER	pAd,
     IN  unsigned char         bFromApcli,	
-	IN	UCHAR			apidx)
+	IN	unsigned char			apidx)
 {
-	UCHAR	macAddr[MAC_ADDR_LEN];
-	UINT 	iPin;
-	UINT	checksum;
+	unsigned char	macAddr[MAC_ADDR_LEN];
+	unsigned int 	iPin;
+	unsigned int	checksum;
 
 	NdisZeroMemory(macAddr, MAC_ADDR_LEN);
 
@@ -113,7 +113,7 @@ char* get_phymode_str(int Mode)
 }
 
 
-static UCHAR *phy_bw_str[] = {"20M", "40M", "80M", "10M"};
+static unsigned char *phy_bw_str[] = {"20M", "40M", "80M", "10M"};
 char* get_bw_str(int bandwidth)
 {
 	if (bandwidth >= BW_20 && bandwidth <= BW_10)
@@ -133,13 +133,13 @@ char* get_bw_str(int bandwidth)
         TRUE if all parameters are OK, FALSE otherwise
     ==========================================================================
 */
-INT RT_CfgSetCountryRegion(
+int RT_CfgSetCountryRegion(
 	IN PRTMP_ADAPTER	pAd, 
-	IN PSTRING			arg,
-	IN INT				band)
+	IN char	*		arg,
+	IN int				band)
 {
-	LONG region;
-	UCHAR *pCountryRegion;
+	long region;
+	unsigned char *pCountryRegion;
 	
 	region = simple_strtol(arg, 0, 10);
 
@@ -164,7 +164,7 @@ INT RT_CfgSetCountryRegion(
 	    ((band == BAND_5G) && (region <= REGION_MAXIMUM_A_BAND) ))
 	  )
 	{
-		*pCountryRegion= (UCHAR) region;
+		*pCountryRegion= (unsigned char) region;
 	}
 	else
 	{
@@ -177,7 +177,7 @@ INT RT_CfgSetCountryRegion(
 }
 
 
-static UCHAR CFG_WMODE_MAP[]={
+static unsigned char CFG_WMODE_MAP[]={
 	PHY_11BG_MIXED, (WMODE_B | WMODE_G), /* 0 => B/G mixed */
 	PHY_11B, (WMODE_B), /* 1 => B only */
 	PHY_11A, (WMODE_A), /* 2 => A only */
@@ -200,13 +200,13 @@ static UCHAR CFG_WMODE_MAP[]={
 };
 
 
-static PSTRING BAND_STR[] = {"Invalid", "2.4G", "5G", "2.4G/5G"};
-static PSTRING WMODE_STR[]= {"", "A", "B", "G", "gN", "aN", "AC"};
+static char *BAND_STR[] = {"Invalid", "2.4G", "5G", "2.4G/5G"};
+static char *WMODE_STR[]= {"", "A", "B", "G", "gN", "aN", "AC"};
 
-UCHAR *wmode_2_str(UCHAR wmode)
+unsigned char *wmode_2_str(unsigned char wmode)
 {
-	UCHAR *str;
-	INT idx, pos, max_len;
+	unsigned char *str;
+	int idx, pos, max_len;
 
 	max_len = WMODE_COMP * 3;
 	if (os_alloc_mem(NULL, &str, max_len) == NDIS_STATUS_SUCCESS)
@@ -236,7 +236,7 @@ UCHAR *wmode_2_str(UCHAR wmode)
 }
 
 
-UCHAR cfgmode_2_wmode(UCHAR cfg_mode)
+unsigned char cfgmode_2_wmode(unsigned char cfg_mode)
 {
 	DBGPRINT(RT_DEBUG_OFF, ("cfg_mode=%d\n", cfg_mode));
 	if (cfg_mode >= PHY_MODE_MAX)
@@ -258,10 +258,10 @@ static unsigned char wmode_valid(RTMP_ADAPTER *pAd, enum WIFI_MODE wmode)
 }
 
 
-unsigned char wmode_band_equal(UCHAR smode, UCHAR tmode)
+unsigned char wmode_band_equal(unsigned char smode, unsigned char tmode)
 {
 	unsigned char eq = FALSE;
-	UCHAR *str1, *str2;
+	unsigned char *str1, *str2;
 	
 	if ((WMODE_CAP_5G(smode) == WMODE_CAP_5G(tmode)) &&
 		(WMODE_CAP_2G(smode) == WMODE_CAP_2G(tmode)))
@@ -293,16 +293,16 @@ unsigned char wmode_band_equal(UCHAR smode, UCHAR tmode)
         TRUE if all parameters are OK, FALSE otherwise
     ==========================================================================
 */
-INT RT_CfgSetWirelessMode(RTMP_ADAPTER *pAd, PSTRING arg)
+int RT_CfgSetWirelessMode(RTMP_ADAPTER *pAd, char *arg)
 {
-	LONG cfg_mode;
-	UCHAR wmode, *mode_str;
+	long cfg_mode;
+	unsigned char wmode, *mode_str;
 
 
 	cfg_mode = simple_strtol(arg, 0, 10);
 
 	/* check if chip support 5G band when WirelessMode is 5G band */
-	wmode = cfgmode_2_wmode((UCHAR)cfg_mode);
+	wmode = cfgmode_2_wmode((unsigned char)cfg_mode);
 	if ((wmode == WMODE_INVALID) || (!wmode_valid(pAd, wmode))) {
 		DBGPRINT(RT_DEBUG_ERROR,
 				("%s(): Invalid wireless mode(%ld, wmode=0x%x), ChipCap(%s)\n",
@@ -335,7 +335,7 @@ INT RT_CfgSetWirelessMode(RTMP_ADAPTER *pAd, PSTRING arg)
 
 
 static unsigned char RT_isLegalCmdBeforeInfUp(
-       IN PSTRING SetCmd)
+       IN char *SetCmd)
 {
 		unsigned char TestFlag;
 		TestFlag =	!strcmp(SetCmd, "Debug") ||
@@ -357,11 +357,11 @@ static unsigned char RT_isLegalCmdBeforeInfUp(
 }
 
 
-INT RT_CfgSetShortSlot(
+int RT_CfgSetShortSlot(
 	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg)
+	IN	char*			arg)
 {
-	LONG ShortSlot;
+	long ShortSlot;
 
 	ShortSlot = simple_strtol(arg, 0, 10);
 
@@ -384,15 +384,15 @@ INT RT_CfgSetShortSlot(
         TRUE if all parameters are OK, FALSE otherwise
     ==========================================================================
 */
-INT	RT_CfgSetWepKey(
+int RT_CfgSetWepKey(
 	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			keyString,
+	IN	char*			keyString,
 	IN	CIPHER_KEY		*pSharedKey,
-	IN	INT				keyIdx)
+	IN	int 			keyIdx)
 {
-	INT				KeyLen;
-	INT				i;
-	/*UCHAR			CipherAlg = CIPHER_NONE;*/
+	int 			KeyLen;
+	int 			i;
+	/*unsigned char			CipherAlg = CIPHER_NONE;*/
 	unsigned char			bKeyIsHex = FALSE;
 
 	/* TODO: Shall we do memset for the original key info??*/
@@ -448,15 +448,15 @@ INT	RT_CfgSetWepKey(
         TRUE if all parameters are OK, FALSE otherwise
     ==========================================================================
 */
-INT RT_CfgSetWPAPSKKey(
+int RT_CfgSetWPAPSKKey(
 	IN RTMP_ADAPTER	*pAd, 
-	IN PSTRING		keyString,
-	IN INT			keyStringLen,
-	IN UCHAR		*pHashStr,
-	IN INT			hashStrLen,
-	PUCHAR		pPMKBuf)
+	IN char	*	keyString,
+	IN int 		keyStringLen,
+	IN unsigned char		*pHashStr,
+	IN int 		hashStrLen,
+	unsigned char*		pPMKBuf)
 {
-	UCHAR keyMaterial[40];
+	unsigned char keyMaterial[40];
 
 	if ((keyStringLen < 8) || (keyStringLen > 64))
 	{
@@ -479,10 +479,10 @@ INT RT_CfgSetWPAPSKKey(
 	return TRUE;
 }
 
-INT	RT_CfgSetFixedTxPhyMode(PSTRING arg)
+int RT_CfgSetFixedTxPhyMode(char* arg)
 {
-	INT fix_tx_mode = FIXED_TXMODE_HT;
-	ULONG value;
+	int fix_tx_mode = FIXED_TXMODE_HT;
+	unsigned long value;
 
 
 	if (rtstrcasecmp(arg, "OFDM") == TRUE)
@@ -512,11 +512,11 @@ INT	RT_CfgSetFixedTxPhyMode(PSTRING arg)
 					
 }	
 
-INT	RT_CfgSetMacAddress(
+int RT_CfgSetMacAddress(
 	IN 	PRTMP_ADAPTER 	pAd,
-	IN	PSTRING			arg)
+	IN	char *			arg)
 {
-	INT	i, mac_len;
+	int i, mac_len;
 	
 	/* Mac address acceptable format 01:02:03:04:05:06 length 17 */
 	mac_len = strlen(arg);
@@ -542,10 +542,10 @@ INT	RT_CfgSetMacAddress(
 	return TRUE;
 }
 
-INT	RT_CfgSetTxMCSProc(PSTRING arg, unsigned char *pAutoRate)
+int RT_CfgSetTxMCSProc(char *arg, unsigned char *pAutoRate)
 {
-	INT	Value = simple_strtol(arg, 0, 10);
-	INT	TxMcs;
+	int Value = simple_strtol(arg, 0, 10);
+	int TxMcs;
 	
 	if ((Value >= 0 && Value <= 23) || (Value == 32)) /* 3*3*/
 	{
@@ -562,12 +562,12 @@ INT	RT_CfgSetTxMCSProc(PSTRING arg, unsigned char *pAutoRate)
 
 }
 
-INT	RT_CfgSetAutoFallBack(
+int RT_CfgSetAutoFallBack(
 	IN 	PRTMP_ADAPTER 	pAd,
-	IN	PSTRING			arg)
+	IN	char*			arg)
 {
 	TX_RTY_CFG_STRUC tx_rty_cfg;
-	UCHAR AutoFallBack = (UCHAR)simple_strtol(arg, 0, 10);
+	unsigned char AutoFallBack = (unsigned char)simple_strtol(arg, 0, 10);
 
 	RTMP_IO_READ32(pAd, TX_RTY_CFG, &tx_rty_cfg.word);
 	tx_rty_cfg.field.TxautoFBEnable = (AutoFallBack) ? 1 : 0;
@@ -593,12 +593,12 @@ Return Value:
 Note:
 ========================================================================
 */
-INT RtmpIoctl_rt_ioctl_giwname(
+int RtmpIoctl_rt_ioctl_giwname(
 	IN	RTMP_ADAPTER			*pAd,
-	IN	VOID					*pData,
-	IN	ULONG					Data)
+	IN	void					*pData,
+	IN	unsigned long					Data)
 {
-	UCHAR CurOpMode = OPMODE_AP;
+	unsigned char CurOpMode = OPMODE_AP;
 
 	if (CurOpMode == OPMODE_AP)
 	{
@@ -609,19 +609,19 @@ INT RtmpIoctl_rt_ioctl_giwname(
 }
 
 
-INT RTMP_COM_IoctlHandle(
-	IN	VOID					*pAdSrc,
+int RTMP_COM_IoctlHandle(
+	IN	void					*pAdSrc,
 	IN	RTMP_IOCTL_INPUT_STRUCT	*wrq,
-	IN	INT						cmd,
-	IN	USHORT					subcmd,
-	IN	VOID					*pData,
-	IN	ULONG					Data)
+	IN	int 					cmd,
+	IN	unsigned short					subcmd,
+	IN	void					*pData,
+	IN	unsigned long					Data)
 {
 	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdSrc;
 	POS_COOKIE pObj = (POS_COOKIE)pAd->OS_Cookie;
-	INT Status = NDIS_STATUS_SUCCESS, i;
-	UCHAR PermanentAddress[MAC_ADDR_LEN];
-	USHORT Addr01, Addr23, Addr45;
+	int Status = NDIS_STATUS_SUCCESS, i;
+	unsigned char PermanentAddress[MAC_ADDR_LEN];
+	unsigned short Addr01, Addr23, Addr45;
 
 
 	pObj = pObj; /* avoid compile warning */
@@ -631,7 +631,7 @@ INT RTMP_COM_IoctlHandle(
 		case CMD_RTPRIV_IOCTL_NETDEV_GET:
 		/* get main net_dev */
 		{
-			void **ppNetDev = (VOID **)pData;
+			void **ppNetDev = (void **)pData;
 			*ppNetDev = (void *)(pAd->net_dev);
 		}
 			break;
@@ -644,7 +644,7 @@ INT RTMP_COM_IoctlHandle(
 
 		case CMD_RTPRIV_IOCTL_OPMODE_GET:
 		/* get Operation Mode */
-			*(ULONG *)pData = pAd->OpMode;
+			*(unsigned long *)pData = pAd->OpMode;
 			break;
 
 
@@ -694,7 +694,7 @@ INT RTMP_COM_IoctlHandle(
                 case CMD_RTPRIV_IOCTL_USB_DEV_GET:
                 /* get USB DEV */
                 {
-                        void **ppUsb_Dev = (VOID **)pData;
+                        void **ppUsb_Dev = (void **)pData;
                         *ppUsb_Dev = (void *)(pObj->pUsb_Dev);
                 }
                         break;
@@ -702,7 +702,7 @@ INT RTMP_COM_IoctlHandle(
                 case CMD_RTPRIV_IOCTL_USB_INTF_GET:
                 /* get USB INTF */
                 {
-                        void **ppINTF = (VOID **)pData;
+                        void **ppINTF = (void **)pData;
                         //*ppINTF = (void *)(pObj->intf);
                 }
                         break;
@@ -726,7 +726,7 @@ INT RTMP_COM_IoctlHandle(
 			{
 				MLME_DISASSOC_REQ_STRUCT	DisReq;
 				MLME_QUEUE_ELEM *MsgElem;/* = (MLME_QUEUE_ELEM *) kmalloc(sizeof(MLME_QUEUE_ELEM), MEM_ALLOC_FLAG);*/
-				os_alloc_mem(NULL, (UCHAR **)&MsgElem, sizeof(MLME_QUEUE_ELEM));
+				os_alloc_mem(NULL, (unsigned char **)&MsgElem, sizeof(MLME_QUEUE_ELEM));
 				if (MsgElem)
 				{
 					COPY_MAC_ADDR(DisReq.Addr, pAd->CommonCfg.Bssid);
@@ -749,12 +749,12 @@ INT RTMP_COM_IoctlHandle(
 			
 		case CMD_RTPRIV_IOCTL_ADAPTER_SUSPEND_TEST:
 		/* test driver state to fRTMP_ADAPTER_SUSPEND */
-			//*(UCHAR *)pData = RTMP_TEST_FLAG(pAd,fRTMP_ADAPTER_SUSPEND);
+			//*(unsigned char *)pData = RTMP_TEST_FLAG(pAd,fRTMP_ADAPTER_SUSPEND);
 			break;
 
 		case CMD_RTPRIV_IOCTL_ADAPTER_IDLE_RADIO_OFF_TEST:
 		/* test driver state to fRTMP_ADAPTER_IDLE_RADIO_OFF */
-			*(UCHAR *)pData = RTMP_TEST_FLAG(pAd,fRTMP_ADAPTER_IDLE_RADIO_OFF);
+			*(unsigned char *)pData = RTMP_TEST_FLAG(pAd,fRTMP_ADAPTER_IDLE_RADIO_OFF);
 			break;
 
 		case CMD_RTPRIV_IOCTL_ADAPTER_RT28XX_USB_ASICRADIO_OFF:
@@ -768,7 +768,7 @@ INT RTMP_COM_IoctlHandle(
 #ifdef WOW_SUPPORT
 #ifdef RTMP_MAC_USB
 		case CMD_RTPRIV_IOCTL_ADAPTER_RT28XX_USB_WOW_STATUS:
-			*(UCHAR *)pData = (UCHAR)pAd->WOW_Cfg.bEnable;
+			*(unsigned char *)pData = (unsigned char)pAd->WOW_Cfg.bEnable;
 			break;
 
 		case CMD_RTPRIV_IOCTL_ADAPTER_RT28XX_USB_WOW_ENABLE:
@@ -803,14 +803,14 @@ INT RTMP_COM_IoctlHandle(
 #endif /* IFUP_IN_PROBE */
 			)
 			{
-				if(pData == NULL ||	RT_isLegalCmdBeforeInfUp((PSTRING) pData) == FALSE)
+				if(pData == NULL ||	RT_isLegalCmdBeforeInfUp((char*) pData) == FALSE)
 				return NDIS_STATUS_FAILURE;
 			}
 			break;
 
 		case CMD_RTPRIV_IOCTL_SIOCGIWFREQ:
 		/* get channel number */
-			*(ULONG *)pData = pAd->CommonCfg.Channel;
+			*(unsigned long *)pData = pAd->CommonCfg.Channel;
 			break;
 
 
@@ -821,17 +821,17 @@ INT RTMP_COM_IoctlHandle(
 
 		case CMD_RTPRIV_IOCTL_RXPATH_GET:
 		/* get the number of rx path */
-			*(ULONG *)pData = pAd->Antenna.field.RxPath;
+			*(unsigned long *)pData = pAd->Antenna.field.RxPath;
 			break;
 
 		case CMD_RTPRIV_IOCTL_CHAN_LIST_NUM_GET:
-			*(ULONG *)pData = pAd->ChannelListNum;
+			*(unsigned long *)pData = pAd->ChannelListNum;
 			break;
 
 		case CMD_RTPRIV_IOCTL_CHAN_LIST_GET:
 		{
-			UINT32 i;
-			UCHAR *pChannel = (UCHAR *)pData;
+			unsigned int i;
+			unsigned char *pChannel = (unsigned char *)pData;
 
 			for (i = 1; i <= pAd->ChannelListNum; i++)
 			{
@@ -843,9 +843,9 @@ INT RTMP_COM_IoctlHandle(
 
 		case CMD_RTPRIV_IOCTL_FREQ_LIST_GET:
 		{
-			UINT32 i;
-			UINT32 *pFreq = (UINT32 *)pData;
-			UINT32 m;
+			unsigned int i;
+			unsigned int *pFreq = (unsigned int *)pData;
+			unsigned int m;
 
 			for (i = 1; i <= pAd->ChannelListNum; i++)
 			{
@@ -869,7 +869,7 @@ INT RTMP_COM_IoctlHandle(
 		case CMD_RTPRIV_IOCTL_USB_MORE_FLAG_SET:
 		{
 			RT_CMD_USB_MORE_FLAG_CONFIG *pConfig;
-			UINT32 VendorID, ProductID;
+			unsigned int VendorID, ProductID;
 
 
 			pConfig = (RT_CMD_USB_MORE_FLAG_CONFIG *)pData;
@@ -903,7 +903,7 @@ INT RTMP_COM_IoctlHandle(
 		case CMD_RTPRIV_IOCTL_USB_CONFIG_INIT:
 		{
 			RT_CMD_USB_DEV_CONFIG *pConfig;
-			UINT32 i;
+			unsigned int i;
 			pConfig = (RT_CMD_USB_DEV_CONFIG *)pData;
 
 			pAd->NumberOfPipes = pConfig->NumberOfPipes;
@@ -944,13 +944,13 @@ INT RTMP_COM_IoctlHandle(
 
 #ifdef INF_PPA_SUPPORT
 		case CMD_RTPRIV_IOCTL_INF_PPA_INIT:
-			os_alloc_mem(NULL, (UCHAR **)&(pAd->pDirectpathCb), sizeof(PPA_DIRECTPATH_CB));
+			os_alloc_mem(NULL, (unsigned char **)&(pAd->pDirectpathCb), sizeof(PPA_DIRECTPATH_CB));
 			break;
 
 		case CMD_RTPRIV_IOCTL_INF_PPA_EXIT:
 			if (ppa_hook_directpath_register_dev_fn && pAd->PPAEnable==TRUE) 
 			{
-				UINT status;
+				unsigned int status;
 				status=ppa_hook_directpath_register_dev_fn(&pAd->g_if_id, pAd->net_dev, NULL, 0);
 				DBGPRINT(RT_DEBUG_TRACE, ("unregister PPA:g_if_id=%d status=%d\n",pAd->g_if_id,status));
 			}
@@ -991,12 +991,12 @@ INT RTMP_COM_IoctlHandle(
 
 		case CMD_RTPRIV_IOCTL_VIRTUAL_INF_GET:
 		/* get virtual interface number */
-			*(ULONG *)pData = VIRTUAL_IF_NUM(pAd);
+			*(unsigned long *)pData = VIRTUAL_IF_NUM(pAd);
 			break;
 
 		case CMD_RTPRIV_IOCTL_INF_TYPE_GET:
 		/* get current interface type */
-			*(ULONG *)pData = pAd->infType;
+			*(unsigned long *)pData = pAd->infType;
 			break;
 
 		case CMD_RTPRIV_IOCTL_INF_STATS_GET:
@@ -1006,13 +1006,13 @@ INT RTMP_COM_IoctlHandle(
 				pStats->pStats = pAd->stats;
 				if(pAd->OpMode == OPMODE_STA)
 				{
-					pStats->rx_packets = pAd->WlanCounters.ReceivedFragmentCount.QuadPart;
-					pStats->tx_packets = pAd->WlanCounters.TransmittedFragmentCount.QuadPart;
+					pStats->rx_packets = pAd->WlanCounters.ReceivedFragmentCount;
+					pStats->tx_packets = pAd->WlanCounters.TransmittedFragmentCount;
 					pStats->rx_bytes = pAd->RalinkCounters.ReceivedByteCount;
 					pStats->tx_bytes = pAd->RalinkCounters.TransmittedByteCount;
 					pStats->rx_errors = pAd->Counters8023.RxErrors;
 					pStats->tx_errors = pAd->Counters8023.TxErrors;
-					pStats->multicast = pAd->WlanCounters.MulticastReceivedFrameCount.QuadPart;   /* multicast packets received*/
+					pStats->multicast = pAd->WlanCounters.MulticastReceivedFrameCount;   /* multicast packets received*/
 					pStats->collisions = pAd->Counters8023.OneCollision + pAd->Counters8023.MoreCollisions;  /* Collision packets*/
 					pStats->rx_over_errors = pAd->Counters8023.RxNoBuffer;                   /* receiver ring buff overflow*/
 					pStats->rx_crc_errors = 0;/*pAd->WlanCounters.FCSErrorCount;      recved pkt with crc error*/
@@ -1025,7 +1025,7 @@ INT RTMP_COM_IoctlHandle(
 		case CMD_RTPRIV_IOCTL_INF_IW_STATUS_GET:
 		/* get wireless statistics */
 		{
-			UCHAR CurOpMode = OPMODE_AP;
+			unsigned char CurOpMode = OPMODE_AP;
 			RT_CMD_IW_STATS *pStats = (RT_CMD_IW_STATS *)pData;
 
 			pStats->qual = 0;
@@ -1078,7 +1078,7 @@ INT RTMP_COM_IoctlHandle(
 			break;
 
 		case CMD_RTPRIV_IOCTL_INF_MAIN_ID_GET:
-			*(ULONG *)pData = INT_MAIN;
+			*(unsigned long *)pData = INT_MAIN;
 			break;
 
 		case CMD_RTPRIV_IOCTL_INF_MAIN_CHECK:
@@ -1125,15 +1125,15 @@ INT RTMP_COM_IoctlHandle(
 			RT28xx_EEPROM_READ16(pAd, 0x06, Addr23);
 			RT28xx_EEPROM_READ16(pAd, 0x08, Addr45);			
 			
-			PermanentAddress[0] = (UCHAR)(Addr01 & 0xff);		
-			PermanentAddress[1] = (UCHAR)(Addr01 >> 8);
-			PermanentAddress[2] = (UCHAR)(Addr23 & 0xff);
-			PermanentAddress[3] = (UCHAR)(Addr23 >> 8);
-			PermanentAddress[4] = (UCHAR)(Addr45 & 0xff);
-			PermanentAddress[5] = (UCHAR)(Addr45 >> 8);				
+			PermanentAddress[0] = (unsigned char)(Addr01 & 0xff);		
+			PermanentAddress[1] = (unsigned char)(Addr01 >> 8);
+			PermanentAddress[2] = (unsigned char)(Addr23 & 0xff);
+			PermanentAddress[3] = (unsigned char)(Addr23 >> 8);
+			PermanentAddress[4] = (unsigned char)(Addr45 & 0xff);
+			PermanentAddress[5] = (unsigned char)(Addr45 >> 8);				
 			
 			for(i=0; i<6; i++)
-				*(UCHAR *)(pData+i) = PermanentAddress[i];
+				*(unsigned char *)(pData+i) = PermanentAddress[i];
 			break;
 
 		case CMD_RTPRIV_IOCTL_SIOCGIWNAME:
@@ -1172,9 +1172,9 @@ INT RTMP_COM_IoctlHandle(
                1.) iwpriv ra0 set site_survey
     ==========================================================================
 */
-INT Set_SiteSurvey_Proc(
+int Set_SiteSurvey_Proc(
 	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg)
+	IN	char*			arg)
 {
 	NDIS_802_11_SSID Ssid;
 	POS_COOKIE pObj;
@@ -1223,9 +1223,9 @@ INT Set_SiteSurvey_Proc(
     return TRUE;
 }
 
-INT	Set_Antenna_Proc(
+int Set_Antenna_Proc(
 	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg)
+	IN	char*			arg)
 {
 	ANT_DIVERSITY_TYPE UsedAnt;
 	int i;
@@ -1263,9 +1263,9 @@ INT	Set_Antenna_Proc(
 
 
 #ifdef MT76x0
-INT set_temp_sensor_proc(
+int set_temp_sensor_proc(
 	IN RTMP_ADAPTER		*pAd,
-	IN PSTRING			arg)
+	IN char*			arg)
 {
 	if (simple_strtol(arg, 0, 10) == 0) {
 		pAd->chipCap.bDoTemperatureSensor = FALSE;

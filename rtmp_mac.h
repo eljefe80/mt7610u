@@ -806,14 +806,14 @@ typedef	union _BCN_TIME_CFG_STRUC {
 		unsigned int bTBTTEnable:1;
 		unsigned int TsfSyncMode:2;		/* Enable TSF sync, 00: disable, 01: infra mode, 10: ad-hoc mode */
 		unsigned int bTsfTicking:1;		/* Enable TSF auto counting */
-		unsigned int Beaconinterval:16;  /* in unit of 1/16 TU */
+		unsigned int BeaconInterval:16;  /* in unit of 1/16 TU */
 	} field;
 	unsigned int word;
 } BCN_TIME_CFG_STRUC;
 #else
 typedef union _BCN_TIME_CFG_STRUC {
 	struct {
-		unsigned int Beaconinterval:16;
+		unsigned int BeaconInterval:16;
 		unsigned int bTsfTicking:1;
 		unsigned int TsfSyncMode:2;
 		unsigned int bTBTTEnable:1;
@@ -830,8 +830,8 @@ typedef union _BCN_TIME_CFG_STRUC {
 #define TSF_TIMER_DW0		0x111c	/* Local TSF timer lsb 32 bits. Read-only */
 #define TSF_TIMER_DW1		0x1120	/* msb 32 bits. Read-only. */
 #define TBTT_TIMER			0x1124	/* TImer remains till next TBTT. Read-only */
-#define int_TIMER_CFG		0x1128
-#define int_TIMER_EN		0x112c	/* GP-timer and pre-tbtt int enable */
+#define INT_TIMER_CFG		0x1128
+#define INT_TIMER_EN		0x112c	/* GP-timer and pre-tbtt int enable */
 #define CH_IDLE_STA			0x1130	/* channel idle time */
 #define CH_BUSY_STA			0x1134	/* channle busy time */
 #define CH_BUSY_STA_SEC	0x1138	/* channel busy time for secondary channel */
@@ -2316,7 +2316,7 @@ typedef	union _QOS_CSR1_STRUC {
 #define H2M_MAILBOX_CSR         0x7010
 #define H2M_MAILBOX_CID         0x7014
 #define H2M_MAILBOX_STATUS      0x701c
-#define H2M_int_SRC             0x7024
+#define H2M_INT_SRC             0x7024
 #define H2M_BBP_AGENT           0x7028
 #define M2H_CMD_DONE_CSR        0x000c
 #define MCU_TXOP_ARRAY_BASE     0x000c   /* TODO: to be provided by Albert */

@@ -130,7 +130,7 @@ static void RtmpTimerQHandle(RTMP_ADAPTER *pAd)
 			if (pTimer)
 			{
 				if ((pTimer->handle != NULL) && (!pAd->PM_FlgSuspend))
-					pTimer->handle(NULL, (PVOID) pTimer->cookie, NULL, pTimer);
+					pTimer->handle(NULL, (void*) pTimer->cookie, NULL, pTimer);
 				if ((pTimer->Repeat) && (pTimer->State == FALSE))
 					RTMP_OS_Add_Timer(&pTimer->TimerObj, pTimer->TimerValue);
 			}
@@ -148,8 +148,8 @@ static void RtmpTimerQHandle(RTMP_ADAPTER *pAd)
 }
 
 
-INT RtmpTimerQThread(
-	IN ULONG Context)
+int RtmpTimerQThread(
+	IN unsigned long Context)
 {
 	RTMP_OS_TASK	*pTask;
 	PRTMP_ADAPTER	pAd = NULL;

@@ -54,11 +54,11 @@
 #endif /* CONFIG_FPGA_MODE */
 
 #include "mlme.h"
-//#include "crypt_md5.h"
-//#include "crypt_sha2.h"
-//#include "crypt_hmac.h"
-//#include "crypt_aes.h"
-//#include "crypt_arc4.h"
+#include "crypt_md5.h"
+#include "crypt_sha2.h"
+#include "crypt_hmac.h"
+#include "crypt_aes.h"
+#include "crypt_arc4.h"
 /*#include "rtmp_cmd.h" */
 #include "rtmp.h"
 #include "ap.h"

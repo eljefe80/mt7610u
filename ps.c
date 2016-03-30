@@ -48,12 +48,12 @@ NDIS_STATUS RtmpInsertPsQueue(
 	IN PRTMP_ADAPTER pAd,
 	IN PNDIS_PACKET pPacket,
 	IN MAC_TABLE_ENTRY *pMacEntry,
-	IN UCHAR QueIdx)
+	IN unsigned char QueIdx)
 {
-	ULONG IrqFlags;
+	unsigned long  IrqFlags;
 #ifdef UAPSD_SUPPORT
 	/* put the U-APSD packet to its U-APSD queue by AC ID */
-	UINT32 ac_id = QueIdx - QID_AC_BE; /* should be >= 0 */
+	unsigned int ac_id = QueIdx - QID_AC_BE; /* should be >= 0 */
 
 
 	if (UAPSD_MR_IS_UAPSD_AC(pMacEntry, ac_id))
@@ -90,14 +90,14 @@ NDIS_STATUS RtmpInsertPsQueue(
 		used whenever a wireless client is deleted.
 	==========================================================================
  */
-VOID RtmpCleanupPsQueue(
+void RtmpCleanupPsQueue(
 	IN  PRTMP_ADAPTER   pAd,
 	IN  PQUEUE_HEADER   pQueue)
 {
 	PQUEUE_ENTRY pEntry;
 	PNDIS_PACKET pPacket;
 
-	DBGPRINT(RT_DEBUG_TRACE, ("RtmpCleanupPsQueue (0x%08lx)...\n", (ULONG)pQueue));
+	DBGPRINT(RT_DEBUG_TRACE, ("RtmpCleanupPsQueue (0x%08lx)...\n", (unsigned long )pQueue));
 
 	while (pQueue->Head)
 	{
@@ -109,7 +109,7 @@ VOID RtmpCleanupPsQueue(
 		pPacket = QUEUE_ENTRY_TO_PACKET(pEntry);
 		RELEASE_NDIS_PACKET(pAd, pPacket, NDIS_STATUS_FAILURE);
 
-		DBGPRINT(RT_DEBUG_TRACE, ("RtmpCleanupPsQueue pkt = %lx...\n", (ULONG)pPacket));
+		DBGPRINT(RT_DEBUG_TRACE, ("RtmpCleanupPsQueue pkt = %lx...\n", (unsigned long )pPacket));
 	}
 }
 
@@ -122,10 +122,10 @@ VOID RtmpCleanupPsQueue(
 	is received from a WSTA which has MAC address FF:FF:FF:FF:FF:FF
   ========================================================================
 */
-VOID RtmpHandleRxPsPoll(
+void RtmpHandleRxPsPoll(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PUCHAR			pAddr,
-	IN	USHORT			Aid,
+	IN	unsigned char*			pAddr,
+	IN	unsigned short 		Aid,
     IN	unsigned char			isActive)
 { 
 	PQUEUE_ENTRY	  pEntry;
@@ -182,7 +182,7 @@ VOID RtmpHandleRxPsPoll(
 			if (pMacEntry->PsQueue.Head)
 			{
 #ifdef UAPSD_SUPPORT
-				UINT32 NumOfOldPsPkt;
+				unsigned int NumOfOldPsPkt;
 				NumOfOldPsPkt = pAd->TxSwQueue[QID_AC_BE].Number;
 #endif /* UAPSD_SUPPORT */
 
@@ -294,12 +294,12 @@ VOID RtmpHandleRxPsPoll(
  */
 unsigned char RtmpPsIndicate(
 	IN PRTMP_ADAPTER pAd, 
-	IN PUCHAR pAddr, 
-	IN ULONG Wcid, 
-	IN UCHAR Psm) 
+	IN unsigned char* pAddr, 
+	IN unsigned long  Wcid, 
+	IN unsigned char Psm) 
 {
 	MAC_TABLE_ENTRY *pEntry;
-    UCHAR old_psmode;
+    unsigned char old_psmode;
 
 	if (Wcid >= MAX_LEN_OF_MAC_TABLE)
 	{
@@ -382,16 +382,16 @@ unsigned char RtmpPktPmBitCheck(
 }
 
 
-VOID RtmpPsActiveExtendCheck(
+void RtmpPsActiveExtendCheck(
 	IN PRTMP_ADAPTER		pAd)
 {
 	/* count down the TDLS active counter */
 }
 
 
-VOID RtmpPsModeChange(
+void RtmpPsModeChange(
 	IN PRTMP_ADAPTER		pAd,
-	IN UINT32				PsMode)
+	IN unsigned int				PsMode)
 {
 	if (pAd->StaCfg.BssType == BSS_INFRA)
 	{

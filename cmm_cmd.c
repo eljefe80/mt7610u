@@ -45,7 +45,7 @@
 	
 	========================================================================
 */
-VOID	RTInitializeCmdQ(
+void	RTInitializeCmdQ(
 	IN	PCmdQ	cmdq)
 {
 	cmdq->head = NULL;
@@ -70,7 +70,7 @@ VOID	RTInitializeCmdQ(
 	
 	========================================================================
 */
-VOID	RTThreadDequeueCmd(
+void	RTThreadDequeueCmd(
 	IN	PCmdQ		cmdq,
 	OUT	PCmdQElmt	*pcmdqelmt)
 {
@@ -104,21 +104,21 @@ VOID	RTThreadDequeueCmd(
 NDIS_STATUS RTEnqueueInternalCmd(
 	IN PRTMP_ADAPTER	pAd,
 	IN NDIS_OID			Oid,
-	IN PVOID			pInformationBuffer,
-	IN UINT32			InformationBufferLength)	
+	IN void*			pInformationBuffer,
+	IN unsigned int			InformationBufferLength)	
 {
 	NDIS_STATUS	status;
 	PCmdQElmt	cmdqelmt = NULL;
 	
 
-	status = os_alloc_mem(pAd, (PUCHAR *)&cmdqelmt, sizeof(CmdQElmt));
+	status = os_alloc_mem(pAd, (unsigned char* *)&cmdqelmt, sizeof(CmdQElmt));
 	if ((status != NDIS_STATUS_SUCCESS) || (cmdqelmt == NULL))
 		return (NDIS_STATUS_RESOURCES);
 	NdisZeroMemory(cmdqelmt, sizeof(CmdQElmt));
 
 	if(InformationBufferLength > 0)
 	{
-		status = os_alloc_mem(pAd, (PUCHAR *)&cmdqelmt->buffer, InformationBufferLength);
+		status = os_alloc_mem(pAd, (unsigned char* *)&cmdqelmt->buffer, InformationBufferLength);
 		if ((status != NDIS_STATUS_SUCCESS) || (cmdqelmt->buffer == NULL))
 		{
 			os_free_mem(pAd, cmdqelmt);

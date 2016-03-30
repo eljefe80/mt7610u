@@ -26,6 +26,7 @@
 
 
 #include	"rt_config.h"
+#include	"link_list.h"
 
 #ifdef OS_ABL_FUNC_SUPPORT
 /* Os utility link: printk, scanf */
@@ -33,7 +34,7 @@ RTMP_OS_ABL_OPS RaOsOps, *pRaOsOps = &RaOsOps;
 #endif /* OS_ABL_FUNC_SUPPORT */
 
 #define RT3090A_DEFAULT_INTERNAL_LNA_GAIN	0x0A
-UCHAR NUM_BIT8[] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
+unsigned char NUM_BIT8[] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
 #ifdef DBG
 char*   CipherName[] = {"none","wep64","wep128","TKIP","AES","CKIP64","CKIP128","CKIP152","SMS4"};
 #endif
@@ -159,13 +160,13 @@ NDIS_SPIN_LOCK TimerSemLock;
 	========================================================================
 */
 NDIS_STATUS	RTMPAllocAdapterBlock(
-	IN  PVOID	handle,
-	OUT	VOID	**ppAdapter)
+	IN  void*	handle,
+	OUT	void	**ppAdapter)
 {
 	PRTMP_ADAPTER	pAd = NULL;
 	NDIS_STATUS		Status;
-	INT 			index;
-	UCHAR			*pBeaconBuf = NULL;
+	int 			index;
+	unsigned char			*pBeaconBuf = NULL;
 
 
 #ifdef OS_ABL_FUNC_SUPPORT
@@ -185,7 +186,7 @@ NDIS_STATUS	RTMPAllocAdapterBlock(
 	{
 		/* Allocate RTMP_ADAPTER memory block*/
 /*		pBeaconBuf = kmalloc(MAX_BEACON_SIZE, MEM_ALLOC_FLAG);*/
-		os_alloc_mem(NULL, (UCHAR **)&pBeaconBuf, MAX_BEACON_SIZE);
+		os_alloc_mem(NULL, (unsigned char **)&pBeaconBuf, MAX_BEACON_SIZE);
 		if (pBeaconBuf == NULL)
 		{
 			Status = NDIS_STATUS_FAILURE;
@@ -194,7 +195,7 @@ NDIS_STATUS	RTMPAllocAdapterBlock(
 		}
 		NdisZeroMemory(pBeaconBuf, MAX_BEACON_SIZE);
 
-		Status = AdapterBlockAllocateMemory(handle, (PVOID *)&pAd, sizeof(RTMP_ADAPTER));
+		Status = AdapterBlockAllocateMemory(handle, (void* *)&pAd, sizeof(RTMP_ADAPTER));
 		if (Status != NDIS_STATUS_SUCCESS)
 		{
 			DBGPRINT_ERR(("Failed to allocate memory - ADAPTER\n"));
@@ -214,11 +215,11 @@ NDIS_STATUS	RTMPAllocAdapterBlock(
 
 			pAd->OS_Cookie = handle;
 #ifdef WORKQUEUE_BH
-			((POS_COOKIE)(handle))->pAd_va = (UINT32)pAd;
+			((POS_COOKIE)(handle))->pAd_va = (unsigned int)pAd;
 #endif /* WORKQUEUE_BH */
 		}
 		pAd->BeaconBuf = pBeaconBuf;
-		DBGPRINT(RT_DEBUG_OFF, ("\n\n=== pAd = %p, size = %d ===\n\n", pAd, (UINT32)sizeof(RTMP_ADAPTER)));
+		DBGPRINT(RT_DEBUG_OFF, ("\n\n=== pAd = %p, size = %d ===\n\n", pAd, (unsigned int)sizeof(RTMP_ADAPTER)));
 
 		if (RtmpOsStatsAlloc(&pAd->stats, &pAd->iw_stats) == FALSE)
 		{
@@ -286,7 +287,7 @@ NDIS_STATUS	RTMPAllocAdapterBlock(
 	}
 
 	if (pAd != NULL) /* compile warning: avoid use NULL pointer when pAd == NULL */
-		*ppAdapter = (VOID *)pAd;
+		*ppAdapter = (void *)pAd;
 
 
 	/*
@@ -323,14 +324,14 @@ NDIS_STATUS	RTMPAllocAdapterBlock(
 		
 	========================================================================
 */
-VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
+void NICReadEEPROMParameters(RTMP_ADAPTER *pAd, char* mac_addr)
 {
-	USHORT i, value, value2;
+	unsigned short i, value, value2;
 	EEPROM_TX_PWR_STRUC Power;
 	EEPROM_VERSION_STRUC Version;
 	EEPROM_ANTENNA_STRUC Antenna;
 	EEPROM_NIC_CONFIG2_STRUC NicConfig2;
-	USHORT  Addr01,Addr23,Addr45 ;
+	unsigned short  Addr01,Addr23,Addr45 ;
 	MAC_DW0_STRUC csr2;
 	MAC_DW1_STRUC csr3;
 
@@ -361,12 +362,12 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
 	RT28xx_EEPROM_READ16(pAd, 0x06, Addr23);
 	RT28xx_EEPROM_READ16(pAd, 0x08, Addr45);
 
-	pAd->PermanentAddress[0] = (UCHAR)(Addr01 & 0xff);
-	pAd->PermanentAddress[1] = (UCHAR)(Addr01 >> 8);
-	pAd->PermanentAddress[2] = (UCHAR)(Addr23 & 0xff);
-	pAd->PermanentAddress[3] = (UCHAR)(Addr23 >> 8);
-	pAd->PermanentAddress[4] = (UCHAR)(Addr45 & 0xff);
-	pAd->PermanentAddress[5] = (UCHAR)(Addr45 >> 8);
+	pAd->PermanentAddress[0] = (unsigned char)(Addr01 & 0xff);
+	pAd->PermanentAddress[1] = (unsigned char)(Addr01 >> 8);
+	pAd->PermanentAddress[2] = (unsigned char)(Addr23 & 0xff);
+	pAd->PermanentAddress[3] = (unsigned char)(Addr23 >> 8);
+	pAd->PermanentAddress[4] = (unsigned char)(Addr45 & 0xff);
+	pAd->PermanentAddress[5] = (unsigned char)(Addr45 >> 8);
 
 	/*more conveninet to test mbssid, so ap's bssid &0xf1*/
 	if (pAd->PermanentAddress[0] == 0xff)
@@ -381,13 +382,13 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
 		DBGPRINT(RT_DEBUG_TRACE, ("Use the MAC address what is assigned from Configuration file(.dat). \n"));
 	}
 	else if (mac_addr && 
-			 strlen((PSTRING)mac_addr) == 17 &&
+			 strlen((char*)mac_addr) == 17 &&
 			 (strcmp(mac_addr, "00:00:00:00:00:00") != 0))
 	{
-		INT j;
-		PSTRING	macptr;
+		int j;
+		char*	macptr;
 
-		macptr = (PSTRING) mac_addr;
+		macptr = (char*) mac_addr;
 		for (j=0; j<MAC_ADDR_LEN; j++)
 		{
 			AtoH(macptr, &pAd->CurrentAddress[j], 1);
@@ -485,7 +486,7 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
 	if (IS_MT76x0(pAd) || IS_MT76x2(pAd)) 
 	{
 		EEPROM_NIC_CONFIG0_STRUC NicCfg0;
-		UINT32 reg_val = 0;
+		unsigned int reg_val = 0;
 
 		RT28xx_EEPROM_READ16(pAd, 0x24, value);
 		RTMP_IO_READ32(pAd, 0x0104, &reg_val);
@@ -586,9 +587,9 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
 	pAd->Antenna.word = Antenna.word;
 
 	/* Set the RfICType here, then we can initialize RFIC related operation callbacks*/
-	pAd->Mlme.RealRxPath = (UCHAR) Antenna.field.RxPath;
+	pAd->Mlme.RealRxPath = (unsigned char) Antenna.field.RxPath;
 
-	pAd->RfIcType = (UCHAR) Antenna.field.RfIcType;
+	pAd->RfIcType = (unsigned char) Antenna.field.RfIcType;
 
 #ifdef MT76x0
 	if (IS_MT7650(pAd))
@@ -713,19 +714,19 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
 		{
 		}
 
-		DBGPRINT(RT_DEBUG_TRACE,("E2PROM: A Tssi[-4 .. +4] = %d %d %d %d - %d -%d %d %d %d, step=%d, tuning=%d\n",
+/*		DBGPRINT(RT_DEBUG_TRACE,("E2PROM: A Tssi[-4 .. +4] = %X %X %X %X - %X -%X %X %X %X, step=%X, tuning=%X\n",
 			pAd->TssiMinusBoundaryA[4], pAd->TssiMinusBoundaryA[3], pAd->TssiMinusBoundaryA[2], pAd->TssiMinusBoundaryA[1],
 			pAd->TssiRefA,
 			pAd->TssiPlusBoundaryA[1], pAd->TssiPlusBoundaryA[2], pAd->TssiPlusBoundaryA[3], pAd->TssiPlusBoundaryA[4],
 			pAd->TxAgcStepA, pAd->bAutoTxAgcA));
-	}	
+*/	}	
 	pAd->BbpRssiToDbmDelta = 0x0;
 	
 	/* Read frequency offset setting for RF*/
 		RT28xx_EEPROM_READ16(pAd, EEPROM_FREQ_OFFSET, value);
 
 	if ((value & 0x00FF) != 0x00FF)
-		pAd->RfFreqOffset = (ULONG) (value & 0x00FF);
+		pAd->RfFreqOffset = (unsigned long) (value & 0x00FF);
 	else
 		pAd->RfFreqOffset = 0;
 	
@@ -740,12 +741,12 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
 	
 	if ((value <= REGION_MAXIMUM_BG_BAND) || (value == REGION_32_BG_BAND) || (value == REGION_33_BG_BAND))
 	{
-		pAd->CommonCfg.CountryRegion = ((UCHAR) value) | 0x80;
+		pAd->CommonCfg.CountryRegion = ((unsigned char) value) | 0x80;
 	}
 
 	if (value2 <= REGION_MAXIMUM_A_BAND)
 	{
-		pAd->CommonCfg.CountryRegionForABand = ((UCHAR) value2) | 0x80;
+		pAd->CommonCfg.CountryRegionForABand = ((unsigned char) value2) | 0x80;
 	}
 	
 	/* Get RSSI Offset on EEPROM 0x9Ah & 0x9Ch.*/
@@ -811,9 +812,9 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
 	}
 
 
-	if (((UCHAR)pAd->ALNAGain1 == 0xFF) || (pAd->ALNAGain1 == 0x00))
+	if (((unsigned char)pAd->ALNAGain1 == 0xFF) || (pAd->ALNAGain1 == 0x00))
 		pAd->ALNAGain1 = pAd->ALNAGain0;
-	if (((UCHAR)pAd->ALNAGain2 == 0xFF) || (pAd->ALNAGain2 == 0x00))
+	if (((unsigned char)pAd->ALNAGain2 == 0xFF) || (pAd->ALNAGain2 == 0x00))
 		pAd->ALNAGain2 = pAd->ALNAGain0;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("ALNAGain0 = %d, ALNAGain1 = %d, ALNAGain2 = %d\n", 
@@ -1052,15 +1053,15 @@ VOID NICReadEEPROMParameters(RTMP_ADAPTER *pAd, PSTRING mac_addr)
 		
 	========================================================================
 */
-VOID	NICInitAsicFromEEPROM(
+void	NICInitAsicFromEEPROM(
 	IN	PRTMP_ADAPTER	pAd)
 {
 #ifdef CONFIG_STA_SUPPORT
-	UINT32 data = 0;
+	unsigned int data = 0;
 #endif /* CONFIG_STA_SUPPORT */
-	USHORT i;
+	unsigned short i;
 #ifdef RALINK_ATE
-	USHORT value;
+	unsigned short value;
 #endif /* RALINK_ATE */
 	EEPROM_NIC_CONFIG2_STRUC NicConfig2;
 	
@@ -1069,12 +1070,12 @@ VOID	NICInitAsicFromEEPROM(
 #ifndef RT65xx
 	for(i = EEPROM_BBP_ARRAY_OFFSET; i < NUM_EEPROM_BBP_PARMS; i++)
 	{
-		UCHAR BbpRegIdx, BbpValue;
+		unsigned char BbpRegIdx, BbpValue;
 	
 		if ((pAd->EEPROMDefaultValue[i] != 0xFFFF) && (pAd->EEPROMDefaultValue[i] != 0))
 		{
-			BbpRegIdx = (UCHAR)(pAd->EEPROMDefaultValue[i] >> 8);
-			BbpValue  = (UCHAR)(pAd->EEPROMDefaultValue[i] & 0xff);
+			BbpRegIdx = (unsigned char)(pAd->EEPROMDefaultValue[i] >> 8);
+			BbpValue  = (unsigned char)(pAd->EEPROMDefaultValue[i] & 0xff);
 			RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, BbpRegIdx, BbpValue);
 		}
 	}
@@ -1242,7 +1243,7 @@ VOID	NICInitAsicFromEEPROM(
 	
 	if ((value != 0x00) && (value != 0xFF))
 	{
-		pAd->TssiGain =  (UCHAR) (value & 0x000F);
+		pAd->TssiGain =  (unsigned char) (value & 0x000F);
 	}
 	
 	DBGPRINT(RT_DEBUG_TRACE, ("%s: EEPROM_TSSI_GAIN_AND_ATTENUATION = 0x%X, pAd->TssiGain=0x%x\n", 
@@ -1281,7 +1282,7 @@ VOID	NICInitAsicFromEEPROM(
 
 
 #ifdef DBG
-VOID dump_pdma_reg(RTMP_ADAPTER *pAd)
+void dump_pdma_reg(RTMP_ADAPTER *pAd)
 {
 	
 
@@ -1291,7 +1292,7 @@ VOID dump_pdma_reg(RTMP_ADAPTER *pAd)
 
 
 
-VOID AsicInitBcnBuf(IN RTMP_ADAPTER *pAd)
+void AsicInitBcnBuf(IN RTMP_ADAPTER *pAd)
 {
 	int idx;
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
@@ -1322,7 +1323,7 @@ VOID AsicInitBcnBuf(IN RTMP_ADAPTER *pAd)
 		};
 		for (idx = 0; idx < 4; idx ++)
 		{
-			RTMP_IO_WRITE32(pAd, (USHORT)bcn_mac_reg_tb[idx].Register, 
+			RTMP_IO_WRITE32(pAd, (unsigned short)bcn_mac_reg_tb[idx].Register, 
 									bcn_mac_reg_tb[idx].Value);
 		}
 	}
@@ -1354,7 +1355,7 @@ NDIS_STATUS	NICInitializeAdapter(
 	IN   unsigned char    bHardReset)
 {
 	NDIS_STATUS     Status = NDIS_STATUS_SUCCESS;
-	ULONG j=0;
+	unsigned long j=0;
 
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> NICInitializeAdapter\n"));
@@ -1414,10 +1415,10 @@ NDIS_STATUS	NICInitializeAsic(
 	IN	PRTMP_ADAPTER	pAd,
 	IN  unsigned char		bHardReset)
 {
-	ULONG			Index = 0;
-	UINT32			MACValue = 0;
+	unsigned long			Index = 0;
+	unsigned int			MACValue = 0;
 #ifdef RTMP_MAC_USB
-	UINT32			Counter = 0;
+	unsigned int			Counter = 0;
 	USB_DMA_CFG_STRUC UsbCfg;
 #endif /* RTMP_MAC_USB */
 
@@ -1565,7 +1566,7 @@ NDIS_STATUS	NICInitializeAsic(
 		(pAd->MACVersion < RALINK_3070_VERSION))) /* 3*3*/
 	{
 		/* enlarge MAX_LEN_CFG*/
-		UINT32 csr;
+		unsigned int csr;
 		RTMP_IO_READ32(pAd, MAX_LEN_CFG, &csr);
 #if defined(RT2883) || defined(RT3883) || defined(RT3593) || defined(RT65xx)
 		if (IS_RT2883(pAd) || IS_RT3883(pAd) || IS_RT3593(pAd) || IS_RT65XX(pAd))
@@ -1583,7 +1584,7 @@ NDIS_STATUS	NICInitializeAsic(
 
 #ifdef RTMP_MAC_USB
 {
-		UINT32 MACValue[254 * 2];
+		unsigned int MACValue[254 * 2];
 	
 		for (Index = 0; Index < 254 * 2; Index += 2)
 		{
@@ -1618,7 +1619,7 @@ NDIS_STATUS	NICInitializeAsic(
 	{
 #ifdef RTMP_MAC_USB
 		{
-			UINT32 MACValue[4];
+			unsigned int MACValue[4];
 
 			for (Index = 0; Index < 4; Index++)
 				MACValue[Index] = 0;
@@ -1628,7 +1629,7 @@ NDIS_STATUS	NICInitializeAsic(
 
 		/* Clear all pairwise key table when initial*/
 		{
-			UINT32 MACValue[256];
+			unsigned int MACValue[256];
 
 			for (Index = 0; Index < 256; Index++)
 				MACValue[Index] = 1;
@@ -1671,7 +1672,7 @@ NDIS_STATUS	NICInitializeAsic(
 #ifdef RT3290
 	if (IS_RT3290(pAd))
 	{
-		UINT32 coex_val;
+		unsigned int coex_val;
 		//halt wlan tx when bt_rx_busy asserted
 		RTMP_IO_READ32(pAd, COEXCFG2, &coex_val);
 		coex_val |= 0x100;
@@ -1687,15 +1688,15 @@ NDIS_STATUS	NICInitializeAsic(
 
 
 
-VOID NICUpdateFifoStaCounters(
+void NICUpdateFifoStaCounters(
 	IN PRTMP_ADAPTER pAd)
 {
 	TX_STA_FIFO_STRUC	StaFifo;
 	MAC_TABLE_ENTRY		*pEntry = NULL;
-	UINT32				i = 0;
-	UCHAR				pid = 0, wcid = 0;
-	INT32				reTry;
-	UCHAR				succMCS;
+	unsigned int				i = 0;
+	unsigned char				pid = 0, wcid = 0;
+	int				reTry;
+	unsigned char				succMCS;
 
 #ifdef RALINK_ATE		
 	/* Nothing to do in ATE mode */
@@ -1725,12 +1726,12 @@ VOID NICUpdateFifoStaCounters(
 			if (StaFifo.field.bValid == 0)
 				break;
 		
-			wcid = (UCHAR)StaFifo.field.wcid;
+			wcid = (unsigned char)StaFifo.field.wcid;
 
 #ifdef DBG_CTRL_SUPPORT
 #ifdef INCLUDE_DEBUG_QUEUE
 		if (pAd->CommonCfg.DebugFlags & DBF_DBQ_TXFIFO) {
-			dbQueueEnqueue(0x73, (UCHAR *)(&StaFifo.word));
+			dbQueueEnqueue(0x73, (unsigned char *)(&StaFifo.word));
 		}
 #endif /* INCLUDE_DEBUG_QUEUE */
 #endif /* DBG_CTRL_SUPPORT */
@@ -1743,7 +1744,7 @@ VOID NICUpdateFifoStaCounters(
 			}
 
 			/* PID store Tx MCS Rate */
-			pid = (UCHAR)StaFifo.field.PidType;
+			pid = (unsigned char)StaFifo.field.PidType;
 
 			pEntry = &pAd->MacTab.Content[wcid];
 
@@ -1934,7 +1935,7 @@ unsigned char NicGetMacFifoTxCnt(
 	if (pEntry->Aid >= 1 && pEntry->Aid <= 8)
 	{
 		WCID_TX_CNT_STRUC wcidTxCnt;
-		UINT32 regAddr;
+		unsigned int regAddr;
 		
 		regAddr = WCID_TX_CNT_0 + (pEntry->Aid - 1) * 4;
 		RTMP_IO_READ32(pAd, regAddr, &wcidTxCnt.word);
@@ -1947,7 +1948,7 @@ unsigned char NicGetMacFifoTxCnt(
 }
 
 
-VOID AsicFifoExtSet(IN RTMP_ADAPTER *pAd)
+void AsicFifoExtSet(IN RTMP_ADAPTER *pAd)
 {
 	if (pAd->chipCap.FlgHwFifoExtCap)
 	{
@@ -1957,12 +1958,12 @@ VOID AsicFifoExtSet(IN RTMP_ADAPTER *pAd)
 }
 
 
-VOID AsicFifoExtEntryClean(
+void AsicFifoExtEntryClean(
 	IN RTMP_ADAPTER * pAd, 
 	IN MAC_TABLE_ENTRY *pEntry)
 {
 	WCID_TX_CNT_STRUC wcidTxCnt;
-	UINT32 regAddr;
+	unsigned int regAddr;
 			
 	if (pAd->chipCap.FlgHwFifoExtCap)
 	{
@@ -1994,7 +1995,7 @@ VOID AsicFifoExtEntryClean(
 
 	========================================================================
 */
-VOID NicGetTxRawCounters(
+void NicGetTxRawCounters(
 	IN RTMP_ADAPTER *pAd,
 	IN TX_STA_CNT0_STRUC *pStaTxCnt0,
 	IN TX_STA_CNT1_STRUC *pStaTxCnt1)
@@ -2010,9 +2011,9 @@ VOID NicGetTxRawCounters(
 	pAd->RalinkCounters.OneSecTxFailCount += pStaTxCnt0->field.TxFailCount;
 
 #ifdef STATS_COUNT_SUPPORT
-	pAd->WlanCounters.TransmittedFragmentCount.u.LowPart += pStaTxCnt1->field.TxSuccess;
-	pAd->WlanCounters.RetryCount.u.LowPart += pStaTxCnt1->field.TxRetransmit;
-	pAd->WlanCounters.FailedCount.u.LowPart += pStaTxCnt0->field.TxFailCount;
+	pAd->WlanCounters.TransmittedFragmentCount += pStaTxCnt1->field.TxSuccess;
+	pAd->WlanCounters.RetryCount += pStaTxCnt1->field.TxRetransmit;
+	pAd->WlanCounters.FailedCount += pStaTxCnt0->field.TxFailCount;
 #endif /* STATS_COUNT_SUPPORT */
 
 
@@ -2033,9 +2034,9 @@ VOID NicGetTxRawCounters(
 
 	========================================================================
 */
-VOID NicResetRawCounters(RTMP_ADAPTER *pAd)
+void NicResetRawCounters(RTMP_ADAPTER *pAd)
 {
-	UINT32 Counter;
+	unsigned int Counter;
 	
 	RTMP_IO_READ32(pAd, RX_STA_CNT0, &Counter);
 	RTMP_IO_READ32(pAd, RX_STA_CNT1, &Counter);
@@ -2063,12 +2064,12 @@ VOID NicResetRawCounters(RTMP_ADAPTER *pAd)
 	
 	========================================================================
 */
-VOID NICUpdateRawCounters(
+void NICUpdateRawCounters(
 	IN PRTMP_ADAPTER pAd)
 {
-	UINT32	OldValue;/*, Value2;*/
-	/*ULONG	PageSum, OneSecTransmitCount;*/
-	/*ULONG	TxErrorRatio, Retry, Fail;*/
+	unsigned int	OldValue;/*, Value2;*/
+	/*unsigned long	PageSum, OneSecTransmitCount;*/
+	/*unsigned long	TxErrorRatio, Retry, Fail;*/
 	RX_STA_CNT0_STRUC	 RxStaCnt0;
 	RX_STA_CNT1_STRUC   RxStaCnt1;
 	RX_STA_CNT2_STRUC   RxStaCnt2;
@@ -2115,23 +2116,23 @@ VOID NICUpdateRawCounters(
 
 #ifdef STATS_COUNT_SUPPORT
 	/* Update FCS counters*/
-	OldValue= pAd->WlanCounters.FCSErrorCount.u.LowPart;
-	pAd->WlanCounters.FCSErrorCount.u.LowPart += (RxStaCnt0.field.CrcErr); /* >> 7);*/
-	if (pAd->WlanCounters.FCSErrorCount.u.LowPart < OldValue)
-		pAd->WlanCounters.FCSErrorCount.u.HighPart++;
+	OldValue= pAd->WlanCounters.FCSErrorCount;
+	pAd->WlanCounters.FCSErrorCount += (RxStaCnt0.field.CrcErr); /* >> 7);*/
+	if (pAd->WlanCounters.FCSErrorCount < OldValue)
+		pAd->WlanCounters.FCSErrorCount++;
 #endif /* STATS_COUNT_SUPPORT */
 
 	/* Add FCS error count to private counters*/
 	pRalinkCounters->OneSecRxFcsErrCnt += RxStaCnt0.field.CrcErr;
-	OldValue = pRalinkCounters->RealFcsErrCount.u.LowPart;
-	pRalinkCounters->RealFcsErrCount.u.LowPart += RxStaCnt0.field.CrcErr;
-	if (pRalinkCounters->RealFcsErrCount.u.LowPart < OldValue)
-		pRalinkCounters->RealFcsErrCount.u.HighPart++;
+	OldValue = pRalinkCounters->RealFcsErrCount;
+	pRalinkCounters->RealFcsErrCount += RxStaCnt0.field.CrcErr;
+	if (pRalinkCounters->RealFcsErrCount < OldValue)
+		pRalinkCounters->RealFcsErrCount++;
 
 	/* Update Duplicate Rcv check*/
 	pRalinkCounters->DuplicateRcv += RxStaCnt2.field.RxDupliCount;
 #ifdef STATS_COUNT_SUPPORT
-	pAd->WlanCounters.FrameDuplicateCount.u.LowPart += RxStaCnt2.field.RxDupliCount;
+	pAd->WlanCounters.FrameDuplicateCount += RxStaCnt2.field.RxDupliCount;
 #endif /* STATS_COUNT_SUPPORT */
 	/* Update RX Overflow counter*/
 	pAd->Counters8023.RxNoBuffer += (RxStaCnt2.field.RxFifoOverflowCount);
@@ -2199,36 +2200,36 @@ VOID NICUpdateRawCounters(
 		pRalinkCounters->TxAgg16MPDUCount += TxAggCnt7.field.AggSize16Count;
 
 		/* Calculate the transmitted A-MPDU count*/
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += TxAggCnt0.field.AggSize1Count;
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt0.field.AggSize2Count >> 1);
+		pRalinkCounters->TransmittedAMPDUCount += TxAggCnt0.field.AggSize1Count;
+		pRalinkCounters->TransmittedAMPDUCount += (TxAggCnt0.field.AggSize2Count >> 1);
 
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt1.field.AggSize3Count / 3);
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt1.field.AggSize4Count >> 2);
+		pRalinkCounters->TransmittedAMPDUCount += (TxAggCnt1.field.AggSize3Count / 3);
+		pRalinkCounters->TransmittedAMPDUCount += (TxAggCnt1.field.AggSize4Count >> 2);
 
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt2.field.AggSize5Count / 5);
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt2.field.AggSize6Count / 6);
+		pRalinkCounters->TransmittedAMPDUCount += (TxAggCnt2.field.AggSize5Count / 5);
+		pRalinkCounters->TransmittedAMPDUCount += (TxAggCnt2.field.AggSize6Count / 6);
 
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt3.field.AggSize7Count / 7);
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt3.field.AggSize8Count >> 3);
+		pRalinkCounters->TransmittedAMPDUCount += (TxAggCnt3.field.AggSize7Count / 7);
+		pRalinkCounters->TransmittedAMPDUCount += (TxAggCnt3.field.AggSize8Count >> 3);
 
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt4.field.AggSize9Count / 9);
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt4.field.AggSize10Count / 10);
+		pRalinkCounters->TransmittedAMPDUCount += (TxAggCnt4.field.AggSize9Count / 9);
+		pRalinkCounters->TransmittedAMPDUCount += (TxAggCnt4.field.AggSize10Count / 10);
 
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt5.field.AggSize11Count / 11);
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt5.field.AggSize12Count / 12);
+		pRalinkCounters->TransmittedAMPDUCount += (TxAggCnt5.field.AggSize11Count / 11);
+		pRalinkCounters->TransmittedAMPDUCount += (TxAggCnt5.field.AggSize12Count / 12);
 
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt6.field.AggSize13Count / 13);
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt6.field.AggSize14Count / 14);
+		pRalinkCounters->TransmittedAMPDUCount += (TxAggCnt6.field.AggSize13Count / 13);
+		pRalinkCounters->TransmittedAMPDUCount += (TxAggCnt6.field.AggSize14Count / 14);
 
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt7.field.AggSize15Count / 15);
-		pRalinkCounters->TransmittedAMPDUCount.u.LowPart += (TxAggCnt7.field.AggSize16Count >> 4);	
+		pRalinkCounters->TransmittedAMPDUCount += (TxAggCnt7.field.AggSize15Count / 15);
+		pRalinkCounters->TransmittedAMPDUCount += (TxAggCnt7.field.AggSize16Count >> 4);	
 	}
 #endif /* STATS_COUNT_SUPPORT */			
 
 #ifdef DBG_DIAGNOSE
 	{
 		RtmpDiagStruct	*pDiag;
-		UCHAR			ArrayCurIdx, i;
+		unsigned char			ArrayCurIdx, i;
 		
 		pDiag = &pAd->DiagStruct;
 		ArrayCurIdx = pDiag->ArrayCurIdx;
@@ -2300,7 +2301,7 @@ NDIS_STATUS NICLoadFirmware(
 	IN PRTMP_ADAPTER pAd)
 {
 	NDIS_STATUS	 status = NDIS_STATUS_SUCCESS;
-	ULONG Old, New, Diff;
+	unsigned long Old, New, Diff;
 	
 	RTMP_GetCurrentSystemTick(&Old);
 	
@@ -2317,7 +2318,7 @@ NDIS_STATUS NICLoadFirmware(
 }
 
 
-VOID NICEraseFirmware(
+void NICEraseFirmware(
 	IN PRTMP_ADAPTER pAd)
 {
 	if (pAd->chipOps.eraseFirmware)
@@ -2347,17 +2348,17 @@ VOID NICEraseFirmware(
 		
 	========================================================================
 */
-ULONG	RTMPCompareMemory(
-	IN	PVOID	pSrc1,
-	IN	PVOID	pSrc2,
-	IN	ULONG	Length)
+unsigned long	RTMPCompareMemory(
+	IN	void*	pSrc1,
+	IN	void*	pSrc2,
+	IN	unsigned long	Length)
 {
-	PUCHAR	pMem1;
-	PUCHAR	pMem2;
-	ULONG	Index = 0;
+	unsigned char*	pMem1;
+	unsigned char*	pMem2;
+	unsigned long	Index = 0;
 
-	pMem1 = (PUCHAR) pSrc1;
-	pMem2 = (PUCHAR) pSrc2;
+	pMem1 = (unsigned char*) pSrc1;
+	pMem2 = (unsigned char*) pSrc2;
 
 	for (Index = 0; Index < Length; Index++)
 	{
@@ -2392,14 +2393,14 @@ ULONG	RTMPCompareMemory(
 		
 	========================================================================
 */
-VOID	RTMPZeroMemory(
-	IN	PVOID	pSrc,
-	IN	ULONG	Length)
+void	RTMPZeroMemory(
+	IN	void*	pSrc,
+	IN	unsigned long	Length)
 {
-	PUCHAR	pMem;
-	ULONG	Index = 0;
+	unsigned char*	pMem;
+	unsigned long	Index = 0;
 
-	pMem = (PUCHAR) pSrc;
+	pMem = (unsigned char*) pSrc;
 
 	for (Index = 0; Index < Length; Index++)
 	{
@@ -2429,19 +2430,19 @@ VOID	RTMPZeroMemory(
 		
 	========================================================================
 */
-VOID RTMPMoveMemory(
-	OUT	PVOID	pDest,
-	IN	PVOID	pSrc,
-	IN	ULONG	Length)
+void RTMPMoveMemory(
+	OUT	void*	pDest,
+	IN	void*	pSrc,
+	IN	unsigned long	Length)
 {
-	PUCHAR	pMem1;
-	PUCHAR	pMem2;
-	UINT	Index;
+	unsigned char*	pMem1;
+	unsigned char*	pMem2;
+	unsigned int	Index;
 
 	ASSERT((Length==0) || (pDest && pSrc));
 
-	pMem1 = (PUCHAR) pDest;
-	pMem2 = (PUCHAR) pSrc;
+	pMem1 = (unsigned char*) pDest;
+	pMem2 = (unsigned char*) pSrc;
 
 	for (Index = 0; Index < Length; Index++)
 	{
@@ -2449,7 +2450,7 @@ VOID RTMPMoveMemory(
 	}
 }
 
-VOID UserCfgExit(
+void UserCfgExit(
 	IN RTMP_ADAPTER *pAd)
 {
 #ifdef DOT11_N_SUPPORT
@@ -2478,12 +2479,12 @@ VOID UserCfgExit(
 		
 	========================================================================
 */
-VOID UserCfgInit(RTMP_ADAPTER *pAd)
+void UserCfgInit(RTMP_ADAPTER *pAd)
 {
-	UINT i;
+	unsigned int i;
 /*	EDCA_PARM DefaultEdcaParm;*/
-    UINT key_index, bss_index;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+    unsigned int key_index, bss_index;
+	unsigned char TXWISize = pAd->chipCap.TXWISize;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> UserCfgInit\n"));    
 	 
@@ -2978,7 +2979,7 @@ VOID UserCfgInit(RTMP_ADAPTER *pAd)
 }
 
 /* IRQL = PASSIVE_LEVEL*/
-UCHAR BtoH(STRING ch)
+unsigned char BtoH(char ch)
 {
 	if (ch >= '0' && ch <= '9') return (ch - '0');        /* Handle numerals*/
 	if (ch >= 'A' && ch <= 'F') return (ch - 'A' + 0xA);  /* Handle capitol hex digits*/
@@ -2987,12 +2988,12 @@ UCHAR BtoH(STRING ch)
 }
 
 
-/*  FUNCTION: AtoH(char *, UCHAR *, int)*/
+/*  FUNCTION: AtoH(char *, unsigned char *, int)*/
 
-/*  PURPOSE:  Converts ascii string to network order hex*/
+/*  PURPOSE:  Converts ascii char to network order hex*/
 
 /*  PARAMETERS:*/
-/*    src    - pointer to input ascii string*/
+/*    src    - pointer to input ascii char*/
 /*    dest   - pointer to output hex*/
 /*    destlen - size of dest*/
 
@@ -3003,13 +3004,13 @@ UCHAR BtoH(STRING ch)
 
 /* IRQL = PASSIVE_LEVEL*/
 
-void AtoH(PSTRING src, PUCHAR dest, int destlen)
+void AtoH(char* src, unsigned char* dest, int destlen)
 {
-	PSTRING srcptr;
-	PUCHAR destTemp;
+	char* srcptr;
+	unsigned char* destTemp;
 
 	srcptr = src;	
-	destTemp = (PUCHAR) dest; 
+	destTemp = (unsigned char*) dest; 
 
 	while(destlen--)
 	{
@@ -3035,9 +3036,9 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID	RTMP_TimerListAdd(
+void	RTMP_TimerListAdd(
 	IN	PRTMP_ADAPTER			pAd,
-	IN	VOID					*pRsc)
+	IN	void					*pRsc)
 {
 	LIST_HEADER *pRscList = &pAd->RscTimerCreateList;
 	LIST_RESOURCE_OBJ_ENTRY *pObj;
@@ -3049,13 +3050,13 @@ VOID	RTMP_TimerListAdd(
 	{
 		if (pObj == NULL)
 			break;
-		if ((ULONG)(pObj->pRscObj) == (ULONG)pRsc)
+		if ((unsigned long)(pObj->pRscObj) == (unsigned long)pRsc)
 			return; /* exists */
 		pObj = pObj->pNext;
 	}
 
 	/* allocate a timer record entry */
-	os_alloc_mem(NULL, (UCHAR **)&(pObj), sizeof(LIST_RESOURCE_OBJ_ENTRY));
+	os_alloc_mem(NULL, (unsigned char **)&(pObj), sizeof(LIST_RESOURCE_OBJ_ENTRY));
 	if (pObj == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: alloc timer obj fail!\n", __FUNCTION__));
@@ -3065,7 +3066,7 @@ VOID	RTMP_TimerListAdd(
 	{
 		pObj->pRscObj = pRsc;
 		insertTailList(pRscList, (LIST_ENTRY *)pObj);
-		DBGPRINT(RT_DEBUG_ERROR, ("%s: add timer obj %lx!\n", __FUNCTION__, (ULONG)pRsc));
+		DBGPRINT(RT_DEBUG_ERROR, ("%s: add timer obj %lx!\n", __FUNCTION__, (unsigned long)pRsc));
 	}
 }
 
@@ -3084,7 +3085,7 @@ Return Value:
 Note:
 ========================================================================
 */
-VOID	RTMP_TimerListRelease(
+void	RTMP_TimerListRelease(
 	IN	PRTMP_ADAPTER			pAd)
 {
 	LIST_HEADER *pRscList = &pAd->RscTimerCreateList;
@@ -3098,7 +3099,7 @@ VOID	RTMP_TimerListRelease(
 	{
 		if (pObj == NULL)
 			break;
-		DBGPRINT(RT_DEBUG_TRACE, ("%s: Cancel timer obj %lx!\n", __FUNCTION__, (ULONG)(pObj->pRscObj)));
+		DBGPRINT(RT_DEBUG_TRACE, ("%s: Cancel timer obj %lx!\n", __FUNCTION__, (unsigned long)(pObj->pRscObj)));
 		RTMPReleaseTimer(pObj->pRscObj, &Cancel);
 		pObjOld = pObj;
 		pObj = pObj->pNext;
@@ -3129,11 +3130,11 @@ VOID	RTMP_TimerListRelease(
 		
 	========================================================================
 */
-VOID	RTMPInitTimer(
+void	RTMPInitTimer(
 	IN	PRTMP_ADAPTER			pAd,
 	IN	PRALINK_TIMER_STRUCT	pTimer,
-	IN	PVOID					pTimerFunc,
-	IN	PVOID					pData,
+	IN	void*					pTimerFunc,
+	IN	void*					pData,
 	IN	unsigned char					Repeat)
 {
 	RTMP_SEM_LOCK(&TimerSemLock);
@@ -3149,11 +3150,11 @@ VOID	RTMPInitTimer(
 	
 	pTimer->PeriodicType = Repeat;
 	pTimer->State      = FALSE;
-	pTimer->cookie = (ULONG) pData;
+	pTimer->cookie = (unsigned long) pData;
 	pTimer->pAd = pAd;
 
-	RTMP_OS_Init_Timer(pAd, &pTimer->TimerObj,	pTimerFunc, (PVOID) pTimer, &pAd->RscTimerMemList);	
-	DBGPRINT(RT_DEBUG_TRACE,("%s: %lx\n",__FUNCTION__, (ULONG)pTimer));
+	RTMP_OS_Init_Timer(pAd, &pTimer->TimerObj,	pTimerFunc, (void*) pTimer, &pAd->RscTimerMemList);	
+	DBGPRINT(RT_DEBUG_TRACE,("%s: %lx\n",__FUNCTION__, (unsigned long)pTimer));
 
 	RTMP_SEM_UNLOCK(&TimerSemLock);
 }
@@ -3177,9 +3178,9 @@ VOID	RTMPInitTimer(
 		
 	========================================================================
 */
-VOID	RTMPSetTimer(
+void	RTMPSetTimer(
 	IN	PRALINK_TIMER_STRUCT	pTimer,
-	IN	ULONG					Value)
+	IN	unsigned long					Value)
 {
 	RTMP_SEM_LOCK(&TimerSemLock);
 
@@ -3208,7 +3209,7 @@ VOID	RTMPSetTimer(
 			RTMP_OS_Add_Timer(&pTimer->TimerObj, Value);
 		}
 
-		DBGPRINT(RT_DEBUG_INFO,("%s: %lx\n",__FUNCTION__, (ULONG)pTimer));
+		DBGPRINT(RT_DEBUG_INFO,("%s: %lx\n",__FUNCTION__, (unsigned long)pTimer));
 	}
 	else
 	{
@@ -3236,9 +3237,9 @@ VOID	RTMPSetTimer(
 		
 	========================================================================
 */
-VOID	RTMPModTimer(
+void	RTMPModTimer(
 	IN	PRALINK_TIMER_STRUCT	pTimer,
-	IN	ULONG					Value)
+	IN	unsigned long					Value)
 {
 	unsigned char	Cancel;
 
@@ -3260,7 +3261,7 @@ VOID	RTMPModTimer(
 			RTMP_OS_Mod_Timer(&pTimer->TimerObj, Value);
 			RTMP_SEM_UNLOCK(&TimerSemLock);
 		}
-		DBGPRINT(RT_DEBUG_TRACE,("%s: %lx\n",__FUNCTION__, (ULONG)pTimer));
+		DBGPRINT(RT_DEBUG_TRACE,("%s: %lx\n",__FUNCTION__, (unsigned long)pTimer));
 	}
 	else
 	{
@@ -3291,7 +3292,7 @@ VOID	RTMPModTimer(
 		
 	========================================================================
 */
-VOID	RTMPCancelTimer(
+void	RTMPCancelTimer(
 	IN	PRALINK_TIMER_STRUCT	pTimer,
 	OUT	unsigned char					*pCancelled)
 {
@@ -3313,7 +3314,7 @@ VOID	RTMPCancelTimer(
 		RtmpTimerQRemove(pTimer->pAd, pTimer);
 #endif /* RTMP_TIMER_TASK_SUPPORT */
 
-		DBGPRINT(RT_DEBUG_INFO,("%s: %lx\n",__FUNCTION__, (ULONG)pTimer));
+		DBGPRINT(RT_DEBUG_INFO,("%s: %lx\n",__FUNCTION__, (unsigned long)pTimer));
 	}
 	else
 	{
@@ -3324,7 +3325,7 @@ VOID	RTMPCancelTimer(
 }
 
 
-VOID	RTMPReleaseTimer(
+void	RTMPReleaseTimer(
 	IN	PRALINK_TIMER_STRUCT	pTimer,
 	OUT	unsigned char					*pCancelled)
 {
@@ -3351,7 +3352,7 @@ VOID	RTMPReleaseTimer(
 
 		pTimer->Valid = FALSE;
 
-		DBGPRINT(RT_DEBUG_INFO,("%s: %lx\n",__FUNCTION__, (ULONG)pTimer));
+		DBGPRINT(RT_DEBUG_INFO,("%s: %lx\n",__FUNCTION__, (unsigned long)pTimer));
 	}
 	else
 	{
@@ -3380,10 +3381,10 @@ VOID	RTMPReleaseTimer(
 		Before Enable RX, make sure you have enabled Interrupt.
 	========================================================================
 */
-VOID RTMPEnableRxTx(
+void RTMPEnableRxTx(
 	IN PRTMP_ADAPTER	pAd)
 {
-	UINT32 rx_filter_flag;
+	unsigned int rx_filter_flag;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("==> RTMPEnableRxTx\n"));
 
@@ -3434,9 +3435,9 @@ void CfgInitHook(PRTMP_ADAPTER pAd)
 }
 
 
-static INT RtmpChipOpsRegister(
+static int RtmpChipOpsRegister(
 	IN RTMP_ADAPTER *pAd,
-	IN INT			infType)
+	IN int			infType)
 {
 	RTMP_CHIP_OP *pChipOps = &pAd->chipOps;
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
@@ -3462,7 +3463,7 @@ static INT RtmpChipOpsRegister(
 }
 
 #ifdef RTMP_USB_SUPPORT
-unsigned char PairEP(RTMP_ADAPTER *pAd, UINT8 EP)
+unsigned char PairEP(RTMP_ADAPTER *pAd, unsigned char EP)
 {
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
 	int i;
@@ -3504,10 +3505,10 @@ unsigned char PairEP(RTMP_ADAPTER *pAd, UINT8 EP)
 }
 #endif /* RTMP_USB_SUPPORT */
 
-INT RtmpRaDevCtrlInit(VOID *pAdSrc, RTMP_INF_TYPE infType)
+int RtmpRaDevCtrlInit(void *pAdSrc, RTMP_INF_TYPE infType)
 {
 	RTMP_ADAPTER *pAd = (PRTMP_ADAPTER)pAdSrc;
-	UINT8 i;
+	unsigned char i;
 	int ret = 0;
 	
 	/* Assign the interface type. We need use it when do register/EEPROM access.*/
@@ -3529,7 +3530,7 @@ INT RtmpRaDevCtrlInit(VOID *pAdSrc, RTMP_INF_TYPE infType)
 	RTMP_SEM_EVENT_INIT(&(pAd->cal_atomic), &pAd->RscSemMemList);
 	RTMP_SEM_EVENT_INIT(&(pAd->wlan_en_atomic), &pAd->RscSemMemList);
 	RTMP_SEM_EVENT_INIT(&(pAd->mcu_atomic), &pAd->RscSemMemList);
-	os_alloc_mem(pAd, (PUCHAR *)&pAd->UsbVendorReqBuf, MAX_PARAM_BUFFER_SIZE - 1);
+	os_alloc_mem(pAd, (unsigned char* *)&pAd->UsbVendorReqBuf, MAX_PARAM_BUFFER_SIZE - 1);
 	if (pAd->UsbVendorReqBuf == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("Allocate vendor request temp buffer failed!\n"));
@@ -3597,13 +3598,13 @@ INT RtmpRaDevCtrlInit(VOID *pAdSrc, RTMP_INF_TYPE infType)
 }
 
 
-unsigned char RtmpRaDevCtrlExit(IN VOID *pAdSrc)
+unsigned char RtmpRaDevCtrlExit(IN void *pAdSrc)
 {
 	PRTMP_ADAPTER	pAd = (PRTMP_ADAPTER)pAdSrc;
-	INT index;
+	int index;
 	
 #ifdef MULTIPLE_CARD_SUPPORT
-extern UINT8  MC_CardUsed[MAX_NUM_OF_MULTIPLE_CARD];
+extern unsigned char  MC_CardUsed[MAX_NUM_OF_MULTIPLE_CARD];
 
 	if ((pAd->MC_RowID >= 0) && (pAd->MC_RowID <= MAX_NUM_OF_MULTIPLE_CARD))
 		MC_CardUsed[pAd->MC_RowID] = 0; /* not clear MAC address*/
@@ -3656,18 +3657,18 @@ extern UINT8  MC_CardUsed[MAX_NUM_OF_MULTIPLE_CARD];
 
 
 #ifdef VENDOR_FEATURE3_SUPPORT
-VOID RTMP_IO_WRITE32(
+void RTMP_IO_WRITE32(
 	PRTMP_ADAPTER pAd,
-	UINT32 Offset,
-	UINT32 Value)
+	unsigned int Offset,
+	unsigned int Value)
 {
 	_RTMP_IO_WRITE32(pAd, Offset, Value);
 }
 
-VOID RTMP_BBP_IO_READ8_BY_REG_ID(
+void RTMP_BBP_IO_READ8_BY_REG_ID(
 	PRTMP_ADAPTER pAd,
-	UINT32 Offset,
-	UINT8 *pValue)
+	unsigned int Offset,
+	unsigned char *pValue)
 {
 #ifdef RT65xx
 	if (IS_RT65XX(pAd))
@@ -3677,10 +3678,10 @@ VOID RTMP_BBP_IO_READ8_BY_REG_ID(
 	_RTMP_BBP_IO_READ8_BY_REG_ID(pAd, Offset, pValue);
 }
 
-VOID RTMP_BBP_IO_READ8(
+void RTMP_BBP_IO_READ8(
 	PRTMP_ADAPTER pAd,
-	UCHAR Offset,
-	UINT8 *pValue,
+	unsigned char Offset,
+	unsigned char *pValue,
 	unsigned char FlgValidMCR)
 {
 #ifdef RT65xx
@@ -3690,10 +3691,10 @@ VOID RTMP_BBP_IO_READ8(
 	_RTMP_BBP_IO_READ8(pAd, Offset, pValue, FlgValidMCR);
 }
 
-VOID RTMP_BBP_IO_WRITE8_BY_REG_ID(
+void RTMP_BBP_IO_WRITE8_BY_REG_ID(
 	PRTMP_ADAPTER pAd,
-	UINT32 Offset,
-	UINT8 Value)
+	unsigned int Offset,
+	unsigned char Value)
 {
 #ifdef RT65xx
 	if (IS_RT65XX(pAd))
@@ -3703,10 +3704,10 @@ VOID RTMP_BBP_IO_WRITE8_BY_REG_ID(
 	_RTMP_BBP_IO_WRITE8_BY_REG_ID(pAd, Offset, Value);
 }
 
-VOID RTMP_BBP_IO_WRITE8(
+void RTMP_BBP_IO_WRITE8(
 	PRTMP_ADAPTER pAd,
-	UCHAR Offset,
-	UINT8 Value,
+	unsigned char Offset,
+	unsigned char Value,
 	unsigned char FlgValidMCR)
 {
 #ifdef RT65xx
@@ -3720,7 +3721,7 @@ VOID RTMP_BBP_IO_WRITE8(
 
 
 
-VOID AntCfgInit(
+void AntCfgInit(
 IN  PRTMP_ADAPTER   pAd)
 {
 

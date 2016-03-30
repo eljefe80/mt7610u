@@ -41,26 +41,26 @@
 #define ROTL32(x,n) ROTL(x,n,32) /* 32 bits word */ 
 
 #define ROUND1(a, b, c, d, x, s, ac) {          \
-    (a) += F((b),(c),(d)) + (x) + (UINT32)(ac); \
+    (a) += F((b),(c),(d)) + (x) + (unsigned int)(ac); \
     (a)  = ROTL32((a),(s));                     \
     (a) += (b);                                 \
 }
 #define ROUND2(a, b, c, d, x, s, ac) {          \
-    (a) += G((b),(c),(d)) + (x) + (UINT32)(ac); \
+    (a) += G((b),(c),(d)) + (x) + (unsigned int)(ac); \
     (a)  = ROTL32((a),(s));                     \
     (a) += (b);                                 \
 }
 #define ROUND3(a, b, c, d, x, s, ac) {          \
-    (a) += H((b),(c),(d)) + (x) + (UINT32)(ac); \
+    (a) += H((b),(c),(d)) + (x) + (unsigned int)(ac); \
     (a)  = ROTL32((a),(s));                     \
     (a) += (b);                                 \
 }
 #define ROUND4(a, b, c, d, x, s, ac) {          \
-    (a) += I((b),(c),(d)) + (x) + (UINT32)(ac); \
+    (a) += I((b),(c),(d)) + (x) + (unsigned int)(ac); \
     (a)  = ROTL32((a),(s));                     \
     (a) += (b);                                 \
 }
-static const UINT32 MD5_DefaultHashValue[4] = {
+static const unsigned int MD5_DefaultHashValue[4] = {
     0x67452301UL, 0xefcdab89UL, 0x98badcfeUL, 0x10325476UL
 };
 #endif /* MD5_SUPPORT */
@@ -111,9 +111,9 @@ Note:
 void RT_MD5_Hash (
     IN  MD5_CTX_STRUC *pMD5_CTX)
 {
-    UINT32 X_i;
-    UINT32 X[16];
-    UINT32 a,b,c,d;
+    unsigned int X_i;
+    unsigned int X[16];
+    unsigned int a,b,c,d;
    
     /* Prepare the message schedule, {X_i} */
     NdisMoveMemory(X, pMD5_CTX->Block, MD5_BLOCK_SIZE);
@@ -247,11 +247,11 @@ Note:
 */
 void RT_MD5_Append (
     IN  MD5_CTX_STRUC *pMD5_CTX, 
-    IN  const UINT8 Message[], 
-    IN  UINT MessageLen)
+    IN  const unsigned char Message[], 
+    IN  unsigned int MessageLen)
 {
-    UINT appendLen = 0;
-    UINT diffLen = 0;
+    unsigned int appendLen = 0;
+    unsigned int diffLen = 0;
     
     while (appendLen != MessageLen) {
         diffLen = MessageLen - appendLen;
@@ -293,10 +293,10 @@ Note:
 */
 void RT_MD5_End (
     IN  MD5_CTX_STRUC *pMD5_CTX, 
-    UINT8 DigestMessage[])
+    unsigned char DigestMessage[])
 {
-    UINT index;
-    UINT64 message_length_bits;
+    unsigned int index;
+    unsigned long message_length_bits;
 
     /* append 1 bits to end of the message */
     NdisFillMemory(pMD5_CTX->Block + pMD5_CTX->BlockLen, 1, 0x80);
@@ -312,7 +312,7 @@ void RT_MD5_End (
     NdisMoveMemory(&pMD5_CTX->Block[56], &message_length_bits, 8);
     RT_MD5_Hash(pMD5_CTX);
 
-    /* Return message digest, transform the UINT32 hash value to bytes */    
+    /* Return message digest, transform the unsigned int hash value to bytes */    
     for (index = 0; index < 4;index++)
         pMD5_CTX->HashValue[index] = cpu2le32(pMD5_CTX->HashValue[index]);
         /* End of for */
@@ -337,9 +337,9 @@ Note:
 ========================================================================
 */
 void RT_MD5 (
-    IN  const UINT8 Message[], 
-    IN  UINT MessageLen, 
-    UINT8 DigestMessage[])
+    IN  const unsigned char Message[], 
+    IN  unsigned int MessageLen, 
+    unsigned char DigestMessage[])
 {
     MD5_CTX_STRUC md5_ctx;
 

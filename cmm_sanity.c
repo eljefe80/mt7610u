@@ -27,23 +27,23 @@
 
 #include "rt_config.h"
 
-extern UCHAR	CISCO_OUI[];
+extern unsigned char	CISCO_OUI[];
 
-extern UCHAR	WPA_OUI[];
-extern UCHAR	RSN_OUI[];
-extern UCHAR	WME_INFO_ELEM[];
-extern UCHAR	WME_PARM_ELEM[];
-extern UCHAR	RALINK_OUI[];
-extern UCHAR	BROADCOM_OUI[];
-extern UCHAR    WPS_OUI[];
+extern unsigned char	WPA_OUI[];
+extern unsigned char	RSN_OUI[];
+extern unsigned char	WME_INFO_ELEM[];
+extern unsigned char	WME_PARM_ELEM[];
+extern unsigned char	RALINK_OUI[];
+extern unsigned char	BROADCOM_OUI[];
+extern unsigned char    WPS_OUI[];
 
 
 
 typedef struct wsc_ie_probreq_data
 {
-	UCHAR	ssid[32];
-	UCHAR	macAddr[6];
-	UCHAR	data[2];
+	unsigned char	ssid[32];
+	unsigned char	macAddr[6];
+	unsigned char	data[2];
 } WSC_IE_PROBREQ_DATA;
 
 /* 
@@ -60,8 +60,8 @@ typedef struct wsc_ie_probreq_data
 unsigned char MlmeAddBAReqSanity(
     IN PRTMP_ADAPTER pAd, 
     IN void *Msg, 
-    IN ULONG MsgLen, 
-    PUCHAR pAddr2) 
+    IN unsigned long MsgLen, 
+    unsigned char* pAddr2) 
 {
     PMLME_ADDBA_REQ_STRUCT   pInfo;
 
@@ -110,7 +110,7 @@ unsigned char MlmeAddBAReqSanity(
 unsigned char MlmeDelBAReqSanity(
     IN PRTMP_ADAPTER pAd, 
     IN void *Msg, 
-    IN ULONG MsgLen) 
+    IN unsigned long MsgLen) 
 {
 	MLME_DELBA_REQ_STRUCT *pInfo;
 	pInfo = (MLME_DELBA_REQ_STRUCT *)Msg;
@@ -145,8 +145,8 @@ unsigned char MlmeDelBAReqSanity(
 unsigned char PeerAddBAReqActionSanity(
     IN PRTMP_ADAPTER pAd, 
     IN void *pMsg, 
-    IN ULONG MsgLen,
-	PUCHAR pAddr2)
+    IN unsigned long MsgLen,
+	unsigned char* pAddr2)
 {
 	PFRAME_802_11 pFrame = (PFRAME_802_11)pMsg;
 	PFRAME_ADDBA_REQ pAddFrame;
@@ -161,12 +161,12 @@ unsigned char PeerAddBAReqActionSanity(
 	{
 		BA_PARM		tmpBaParm;
 
-		NdisMoveMemory((PUCHAR)(&tmpBaParm), (PUCHAR)(&pAddFrame->BaParm), sizeof(BA_PARM));
-		*(USHORT *)(&tmpBaParm) = cpu2le16(*(USHORT *)(&tmpBaParm));
-		NdisMoveMemory((PUCHAR)(&pAddFrame->BaParm), (PUCHAR)(&tmpBaParm), sizeof(BA_PARM));
+		NdisMoveMemory((unsigned char*)(&tmpBaParm), (unsigned char*)(&pAddFrame->BaParm), sizeof(BA_PARM));
+		*(unsigned short *)(&tmpBaParm) = cpu2le16(*(unsigned short *)(&tmpBaParm));
+		NdisMoveMemory((unsigned char*)(&pAddFrame->BaParm), (unsigned char*)(&tmpBaParm), sizeof(BA_PARM));
 	}
 #else
-	*(USHORT *)(&pAddFrame->BaParm) = cpu2le16(*(USHORT *)(&pAddFrame->BaParm));
+	*(unsigned short *)(&pAddFrame->BaParm) = cpu2le16(*(unsigned short *)(&pAddFrame->BaParm));
 #endif
 	pAddFrame->TimeOutValue = cpu2le16(pAddFrame->TimeOutValue);
 	pAddFrame->BaStartSeq.word = cpu2le16(pAddFrame->BaStartSeq.word); 
@@ -186,7 +186,7 @@ unsigned char PeerAddBAReqActionSanity(
 unsigned char PeerAddBARspActionSanity(
     IN PRTMP_ADAPTER pAd, 
     IN void *pMsg, 
-    IN ULONG MsgLen)
+    IN unsigned long MsgLen)
 {
 	/*PFRAME_802_11 pFrame = (PFRAME_802_11)pMsg;*/
 	PFRAME_ADDBA_RSP pAddFrame;
@@ -202,12 +202,12 @@ unsigned char PeerAddBARspActionSanity(
 	{
 		BA_PARM		tmpBaParm;
 
-		NdisMoveMemory((PUCHAR)(&tmpBaParm), (PUCHAR)(&pAddFrame->BaParm), sizeof(BA_PARM));
-		*(USHORT *)(&tmpBaParm) = cpu2le16(*(USHORT *)(&tmpBaParm));
-		NdisMoveMemory((PUCHAR)(&pAddFrame->BaParm), (PUCHAR)(&tmpBaParm), sizeof(BA_PARM));
+		NdisMoveMemory((unsigned char*)(&tmpBaParm), (unsigned char*)(&pAddFrame->BaParm), sizeof(BA_PARM));
+		*(unsigned short *)(&tmpBaParm) = cpu2le16(*(unsigned short *)(&tmpBaParm));
+		NdisMoveMemory((unsigned char*)(&pAddFrame->BaParm), (unsigned char*)(&tmpBaParm), sizeof(BA_PARM));
 	}
 #else
-	*(USHORT *)(&pAddFrame->BaParm) = cpu2le16(*(USHORT *)(&pAddFrame->BaParm));
+	*(unsigned short *)(&pAddFrame->BaParm) = cpu2le16(*(unsigned short *)(&pAddFrame->BaParm));
 #endif
 	pAddFrame->StatusCode = cpu2le16(pAddFrame->StatusCode);
 	pAddFrame->TimeOutValue = cpu2le16(pAddFrame->TimeOutValue);
@@ -224,9 +224,9 @@ unsigned char PeerAddBARspActionSanity(
 
 unsigned char PeerDelBAActionSanity(
     IN PRTMP_ADAPTER pAd, 
-    IN UCHAR Wcid, 
+    IN unsigned char Wcid, 
     IN void *pMsg, 
-    IN ULONG MsgLen )
+    IN unsigned long MsgLen )
 {
 	/*PFRAME_802_11 pFrame = (PFRAME_802_11)pMsg;*/
 	PFRAME_DELBA_REQ  pDelFrame;
@@ -238,7 +238,7 @@ unsigned char PeerDelBAActionSanity(
 	
 	pDelFrame = (PFRAME_DELBA_REQ)(pMsg);
 
-	*(USHORT *)(&pDelFrame->DelbaParm) = cpu2le16(*(USHORT *)(&pDelFrame->DelbaParm));
+	*(unsigned short *)(&pDelFrame->DelbaParm) = cpu2le16(*(unsigned short *)(&pDelFrame->DelbaParm));
 	pDelFrame->ReasonCode = cpu2le16(pDelFrame->ReasonCode);
 
 	return TRUE;
@@ -248,61 +248,61 @@ unsigned char PeerDelBAActionSanity(
 unsigned char PeerBeaconAndProbeRspSanity_Old(
     IN PRTMP_ADAPTER pAd,
     IN void *Msg, 
-    IN ULONG MsgLen, 
-    IN UCHAR  MsgChannel,
-    PUCHAR pAddr2, 
-    PUCHAR pBssid, 
-    CHAR Ssid[], 
-    UCHAR *pSsidLen, 
-    UCHAR *pBssType, 
-    USHORT *pBeaconPeriod, 
-    UCHAR *pChannel, 
-    UCHAR *pNewChannel, 
-    LARGE_INTEGER *pTimestamp, 
+    IN unsigned long MsgLen, 
+    IN unsigned char  MsgChannel,
+    unsigned char* pAddr2, 
+    unsigned char* pBssid, 
+    char Ssid[], 
+    unsigned char *pSsidLen, 
+    unsigned char *pBssType, 
+    unsigned short *pBeaconPeriod, 
+    unsigned char *pChannel, 
+    unsigned char *pNewChannel, 
+    unsigned long long Timestamp, 
     CF_PARM *pCfParm, 
-    USHORT *pAtimWin, 
-    USHORT *pCapabilityInfo, 
-    UCHAR *pErp,
-    UCHAR *pDtimCount, 
-    UCHAR *pDtimPeriod, 
-    UCHAR *pBcastFlag, 
-    UCHAR *pMessageToMe, 
-    UCHAR SupRate[],
-    UCHAR *pSupRateLen,
-    UCHAR ExtRate[],
-    UCHAR *pExtRateLen,
-    UCHAR *pCkipFlag,
-    UCHAR *pAironetCellPowerLimit,
+    unsigned short *pAtimWin, 
+    unsigned short *pCapabilityInfo, 
+    unsigned char *pErp,
+    unsigned char *pDtimCount, 
+    unsigned char *pDtimPeriod, 
+    unsigned char *pBcastFlag, 
+    unsigned char *pMessageToMe, 
+    unsigned char SupRate[],
+    unsigned char *pSupRateLen,
+    unsigned char ExtRate[],
+    unsigned char *pExtRateLen,
+    unsigned char *pCkipFlag,
+    unsigned char *pAironetCellPowerLimit,
     PEDCA_PARM pEdcaParm,
     PQBSS_LOAD_PARM pQbssLoad,
     PQOS_CAPABILITY_PARM pQosCapability,
-    ULONG *pRalinkIe,
-    UCHAR *pHtCapabilityLen,
+    unsigned long *pRalinkIe,
+    unsigned char *pHtCapabilityLen,
 #ifdef CONFIG_STA_SUPPORT
-    UCHAR *pPreNHtCapabilityLen,
+    unsigned char *pPreNHtCapabilityLen,
 #endif /* CONFIG_STA_SUPPORT */
     HT_CAPABILITY_IE *pHtCapability,
     EXT_CAP_INFO_ELEMENT	*pExtCapInfo,
-    UCHAR *AddHtInfoLen,
+    unsigned char *AddHtInfoLen,
     ADD_HT_INFO_IE *AddHtInfo,
-    UCHAR *NewExtChannelOffset,		/* Ht extension channel offset(above or below)*/
-    USHORT *LengthVIE,	
+    unsigned char *NewExtChannelOffset,		/* Ht extension channel offset(above or below)*/
+    unsigned short *LengthVIE,	
     PNDIS_802_11_VARIABLE_IEs pVIE)
 {
-    UCHAR				*Ptr;
+    unsigned char				*Ptr;
 #ifdef CONFIG_STA_SUPPORT
-	UCHAR 				TimLen;
+	unsigned char 				TimLen;
 #endif /* CONFIG_STA_SUPPORT */
     PFRAME_802_11		pFrame;
     PEID_STRUCT         pEid;
-    UCHAR				SubType;
-    UCHAR				Sanity;
-    /*UCHAR				ECWMin, ECWMax;*/
+    unsigned char				SubType;
+    unsigned char				Sanity;
+    /*unsigned char				ECWMin, ECWMax;*/
     /*MAC_CSR9_STRUC		Csr9;*/
-    ULONG				Length = 0;
-	UCHAR				*pPeerWscIe = NULL;
-	INT					PeerWscIeLen = 0;
-    UCHAR				LatchRfChannel = 0;
+    unsigned long				Length = 0;
+	unsigned char				*pPeerWscIe = NULL;
+	int					PeerWscIeLen = 0;
+    unsigned char				LatchRfChannel = 0;
 
 
 	/*
@@ -311,7 +311,7 @@ unsigned char PeerBeaconAndProbeRspSanity_Old(
 		2. If the AP didn't have any info about channel, use the channel we received this 
 			frame as the channel. (May inaccuracy!!)
 	*/
-	UCHAR			CtrlChannel = 0;
+	unsigned char			CtrlChannel = 0;
 	
 	
 	os_alloc_mem(NULL, &pPeerWscIe, 512);
@@ -346,7 +346,7 @@ unsigned char PeerBeaconAndProbeRspSanity_Old(
     pFrame = (PFRAME_802_11)Msg;
     
     /* get subtype from header*/
-    SubType = (UCHAR)pFrame->Hdr.FC.SubType;
+    SubType = (unsigned char)pFrame->Hdr.FC.SubType;
 
     /* get Addr2 and BSSID from header*/
     COPY_MAC_ADDR(pAddr2, pFrame->Hdr.Addr2);
@@ -358,10 +358,10 @@ unsigned char PeerBeaconAndProbeRspSanity_Old(
     Length += LENGTH_802_11;
     
     /* get timestamp from payload and advance the pointer*/
-    NdisMoveMemory(pTimestamp, Ptr, TIMESTAMP_LEN);
+    NdisMoveMemory(&Timestamp, Ptr, TIMESTAMP_LEN);
 
-	pTimestamp->u.LowPart = cpu2le32(pTimestamp->u.LowPart);
-	pTimestamp->u.HighPart = cpu2le32(pTimestamp->u.HighPart);
+//	pTimestamp->u.LowPart = cpu2le32(pTimestamp->u.LowPart);
+//	pTimestamp->u.HighPart = cpu2le32(pTimestamp->u.HighPart);
 
     Ptr += TIMESTAMP_LEN;
     Length += TIMESTAMP_LEN;
@@ -442,16 +442,16 @@ unsigned char PeerBeaconAndProbeRspSanity_Old(
 				NdisMoveMemory(pHtCapability, pEid->Octet, sizeof(HT_CAPABILITY_IE));
 				*pHtCapabilityLen = SIZE_HT_CAP_IE;	/* Nnow we only support 26 bytes.*/
 
-				*(USHORT *)(&pHtCapability->HtCapInfo) = cpu2le16(*(USHORT *)(&pHtCapability->HtCapInfo));
+				*(unsigned short *)(&pHtCapability->HtCapInfo) = cpu2le16(*(unsigned short *)(&pHtCapability->HtCapInfo));
 #ifdef UNALIGNMENT_SUPPORT
 				{
 					EXT_HT_CAP_INFO extHtCapInfo;
-					NdisMoveMemory((PUCHAR)(&extHtCapInfo), (PUCHAR)(&pHtCapability->ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
-					*(USHORT *)(&extHtCapInfo) = cpu2le16(*(USHORT *)(&extHtCapInfo));
-					NdisMoveMemory((PUCHAR)(&pHtCapability->ExtHtCapInfo), (PUCHAR)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+					NdisMoveMemory((unsigned char*)(&extHtCapInfo), (unsigned char*)(&pHtCapability->ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+					*(unsigned short *)(&extHtCapInfo) = cpu2le16(*(unsigned short *)(&extHtCapInfo));
+					NdisMoveMemory((unsigned char*)(&pHtCapability->ExtHtCapInfo), (unsigned char*)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));
 				}
 #else
-				*(USHORT *)(&pHtCapability->ExtHtCapInfo) = cpu2le16(*(USHORT *)(&pHtCapability->ExtHtCapInfo));
+				*(unsigned short *)(&pHtCapability->ExtHtCapInfo) = cpu2le16(*(unsigned short *)(&pHtCapability->ExtHtCapInfo));
 #endif /* UNALIGNMENT_SUPPORT */
 
 #ifdef CONFIG_STA_SUPPORT
@@ -459,7 +459,7 @@ unsigned char PeerBeaconAndProbeRspSanity_Old(
 				{
 					*pPreNHtCapabilityLen = 0;	/* Now we only support 26 bytes.*/
 
-					Ptr = (PUCHAR) pVIE;
+					Ptr = (unsigned char*) pVIE;
 					NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
 					*LengthVIE += (pEid->Len + 2);
 				}
@@ -483,13 +483,13 @@ unsigned char PeerBeaconAndProbeRspSanity_Old(
 
 				CtrlChannel = AddHtInfo->ControlChan;
 				
-				*(USHORT *)(&AddHtInfo->AddHtInfo2) = cpu2le16(*(USHORT *)(&AddHtInfo->AddHtInfo2));
-				*(USHORT *)(&AddHtInfo->AddHtInfo3) = cpu2le16(*(USHORT *)(&AddHtInfo->AddHtInfo3));
+				*(unsigned short *)(&AddHtInfo->AddHtInfo2) = cpu2le16(*(unsigned short *)(&AddHtInfo->AddHtInfo2));
+				*(unsigned short *)(&AddHtInfo->AddHtInfo3) = cpu2le16(*(unsigned short *)(&AddHtInfo->AddHtInfo3));
            
 #ifdef CONFIG_STA_SUPPORT
 				IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 				{
-			                Ptr = (PUCHAR) pVIE;
+			                Ptr = (unsigned char*) pVIE;
 			                NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
 			                *LengthVIE += (pEid->Len + 2);
 				}
@@ -577,7 +577,7 @@ unsigned char PeerBeaconAndProbeRspSanity_Old(
                 {
 					if (INFRA_ON(pAd) && NdisEqualMemory(pBssid, pAd->CommonCfg.Bssid, MAC_ADDR_LEN))
                     {
-                        GetTimBit((PCHAR)pEid, pAd->StaActive.Aid, &TimLen, pBcastFlag, pDtimCount, pDtimPeriod, pMessageToMe);
+                        GetTimBit((char *)pEid, pAd->StaActive.Aid, &TimLen, pBcastFlag, pDtimCount, pDtimPeriod, pMessageToMe);
                     }
                 }
                 break;
@@ -629,13 +629,13 @@ unsigned char PeerBeaconAndProbeRspSanity_Old(
                 else if (NdisEqualMemory(pEid->Octet, WPA_OUI, 4))
                 {
                     /* Copy to pVIE which will report to bssid list.*/
-                    Ptr = (PUCHAR) pVIE;
+                    Ptr = (unsigned char*) pVIE;
                     NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
                     *LengthVIE += (pEid->Len + 2);
                 }
                 else if (NdisEqualMemory(pEid->Octet, WME_PARM_ELEM, 6) && (pEid->Len == 24))
                 {
-                    PUCHAR ptr;
+                    unsigned char* ptr;
                     int i;
 
                     /* parsing EDCA parameters*/
@@ -648,7 +648,7 @@ unsigned char PeerBeaconAndProbeRspSanity_Old(
                     ptr = &pEid->Octet[8];
                     for (i=0; i<4; i++)
                     {
-                        UCHAR aci = (*ptr & 0x60) >> 5; /* b5~6 is AC INDEX*/
+                        unsigned char aci = (*ptr & 0x60) >> 5; /* b5~6 is AC INDEX*/
                         pEdcaParm->bACM[aci]  = (((*ptr) & 0x10) == 0x10);   /* b5 is ACM*/
                         pEdcaParm->Aifsn[aci] = (*ptr) & 0x0f;               /* b0~3 is AIFSN*/
                         pEdcaParm->Cwmin[aci] = *(ptr+1) & 0x0f;             /* b0~4 is Cwmin*/
@@ -729,7 +729,7 @@ unsigned char PeerBeaconAndProbeRspSanity_Old(
             case IE_ERP:
                 if (pEid->Len == 1)
                 {
-                    *pErp = (UCHAR)pEid->Octet[0];
+                    *pErp = (unsigned char)pEid->Octet[0];
                 }
                 break;
 
@@ -763,7 +763,7 @@ unsigned char PeerBeaconAndProbeRspSanity_Old(
                 if (RTMPEqualMemory(pEid->Octet + 2, RSN_OUI, 3))
                 {
                     /* Copy to pVIE which will report to microsoft bssid list.*/
-                    Ptr = (PUCHAR) pVIE;
+                    Ptr = (unsigned char*) pVIE;
                     NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
                     *LengthVIE += (pEid->Len + 2);
                 }
@@ -772,7 +772,7 @@ unsigned char PeerBeaconAndProbeRspSanity_Old(
 #ifdef CONFIG_STA_SUPPORT
 #if defined (EXT_BUILD_CHANNEL_LIST) || defined (RT_CFG80211_SUPPORT)
 			case IE_COUNTRY:
-				Ptr = (PUCHAR) pVIE;
+				Ptr = (unsigned char*) pVIE;
                 NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
                 *LengthVIE += (pEid->Len + 2);
 				break;
@@ -788,7 +788,7 @@ unsigned char PeerBeaconAndProbeRspSanity_Old(
                     pQbssLoad->RemainingAdmissionControl = pEid->Octet[3] + pEid->Octet[4] * 256;
 
 					/* Copy to pVIE*/
-                    Ptr = (PUCHAR) pVIE;
+                    Ptr = (unsigned char*) pVIE;
                     NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
                     *LengthVIE += (pEid->Len + 2);
                 }
@@ -799,8 +799,8 @@ unsigned char PeerBeaconAndProbeRspSanity_Old(
 			case IE_EXT_CAPABILITY:
 				if (pEid->Len >= 1)
 				{
-					UCHAR MaxSize;
-					UCHAR MySize = sizeof(EXT_CAP_INFO_ELEMENT);
+					unsigned char MaxSize;
+					unsigned char MySize = sizeof(EXT_CAP_INFO_ELEMENT);
 
 					MaxSize = min(pEid->Len, MySize);
 
@@ -812,7 +812,7 @@ unsigned char PeerBeaconAndProbeRspSanity_Old(
         }
         
         Length = Length + 2 + pEid->Len;  /* Eid[1] + Len[1]+ content[Len]*/
-        pEid = (PEID_STRUCT)((UCHAR*)pEid + 2 + pEid->Len);        
+        pEid = (PEID_STRUCT)((unsigned char*)pEid + 2 + pEid->Len);        
     }
 
 	LatchRfChannel = MsgChannel;
@@ -828,8 +828,8 @@ unsigned char PeerBeaconAndProbeRspSanity_Old(
 
 		if (pPeerWscIe && (PeerWscIeLen > 0) && (PeerWscIeLen < 512))
 		{
-			UCHAR WscIe[] = {0xdd, 0x00, 0x00, 0x50, 0xF2, 0x04};
-			Ptr = (PUCHAR) pVIE;
+			unsigned char WscIe[] = {0xdd, 0x00, 0x00, 0x50, 0xF2, 0x04};
+			Ptr = (unsigned char*) pVIE;
 			WscIe[1] = PeerWscIeLen + 4;
 			NdisMoveMemory(Ptr + *LengthVIE, WscIe, 6);
 			NdisMoveMemory(Ptr + *LengthVIE + 6, pPeerWscIe, PeerWscIeLen);
@@ -868,24 +868,24 @@ SanityCheck:
 unsigned char PeerBeaconAndProbeRspSanity(
 	IN PRTMP_ADAPTER pAd,
 	IN void *Msg, 
-	IN ULONG MsgLen, 
-	IN UCHAR  MsgChannel,
+	IN unsigned long MsgLen, 
+	IN unsigned char  MsgChannel,
 	BCN_IE_LIST *ie_list,
-	USHORT *LengthVIE,	
+	unsigned short *LengthVIE,	
 	PNDIS_802_11_VARIABLE_IEs pVIE)
 {
-	UCHAR *Ptr;
+	unsigned char *Ptr;
 #ifdef CONFIG_STA_SUPPORT
-	UCHAR TimLen;
+	unsigned char TimLen;
 #endif /* CONFIG_STA_SUPPORT */
 	PFRAME_802_11 pFrame;
 	PEID_STRUCT pEid;
-	UCHAR SubType;
-	UCHAR Sanity;
-	ULONG Length = 0;
-	UCHAR *pPeerWscIe = NULL;
-	INT PeerWscIeLen = 0;
-	UCHAR LatchRfChannel = 0;
+	unsigned char SubType;
+	unsigned char Sanity;
+	unsigned long Length = 0;
+	unsigned char *pPeerWscIe = NULL;
+	int PeerWscIeLen = 0;
+	unsigned char LatchRfChannel = 0;
 	
 
 	/*
@@ -894,7 +894,7 @@ unsigned char PeerBeaconAndProbeRspSanity(
 		2. If the AP didn't have any info about channel, use the channel we received this 
 			frame as the channel. (May inaccuracy!!)
 	*/
-	UCHAR CtrlChannel = 0;
+	unsigned char CtrlChannel = 0;
 	
 
 
@@ -908,7 +908,7 @@ unsigned char PeerBeaconAndProbeRspSanity(
 	pFrame = (PFRAME_802_11)Msg;
     
 	/* get subtype from header*/
-	SubType = (UCHAR)pFrame->Hdr.FC.SubType;
+	SubType = (unsigned char)pFrame->Hdr.FC.SubType;
 
     /* get Addr2 and BSSID from header*/
 	COPY_MAC_ADDR(&ie_list->Addr1[0], pFrame->Hdr.Addr1);
@@ -921,8 +921,8 @@ unsigned char PeerBeaconAndProbeRspSanity(
     /* get timestamp from payload and advance the pointer*/
     NdisMoveMemory(&ie_list->TimeStamp, Ptr, TIMESTAMP_LEN);
 
-	ie_list->TimeStamp.u.LowPart = cpu2le32(ie_list->TimeStamp.u.LowPart);
-	ie_list->TimeStamp.u.HighPart = cpu2le32(ie_list->TimeStamp.u.HighPart);
+	ie_list->TimeStamp = cpu2le32(ie_list->TimeStamp);
+	ie_list->TimeStamp = cpu2le32(ie_list->TimeStamp);
 
     Ptr += TIMESTAMP_LEN;
     Length += TIMESTAMP_LEN;
@@ -1003,16 +1003,16 @@ unsigned char PeerBeaconAndProbeRspSanity(
 				NdisMoveMemory(&ie_list->HtCapability, pEid->Octet, sizeof(HT_CAPABILITY_IE));
 				ie_list->HtCapabilityLen = SIZE_HT_CAP_IE;	/* Nnow we only support 26 bytes.*/
 
-				*(USHORT *)(&ie_list->HtCapability.HtCapInfo) = cpu2le16(*(USHORT *)(&ie_list->HtCapability.HtCapInfo));
+				*(unsigned short *)(&ie_list->HtCapability.HtCapInfo) = cpu2le16(*(unsigned short *)(&ie_list->HtCapability.HtCapInfo));
 #ifdef UNALIGNMENT_SUPPORT
 				{
 					EXT_HT_CAP_INFO extHtCapInfo;
-					NdisMoveMemory((PUCHAR)(&extHtCapInfo), (PUCHAR)(&ie_list->HtCapability.ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
-					*(USHORT *)(&extHtCapInfo) = cpu2le16(*(USHORT *)(&extHtCapInfo));
-					NdisMoveMemory((PUCHAR)(&ie_list->HtCapability.ExtHtCapInfo), (PUCHAR)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+					NdisMoveMemory((unsigned char*)(&extHtCapInfo), (unsigned char*)(&ie_list->HtCapability.ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+					*(unsigned short *)(&extHtCapInfo) = cpu2le16(*(unsigned short *)(&extHtCapInfo));
+					NdisMoveMemory((unsigned char*)(&ie_list->HtCapability.ExtHtCapInfo), (unsigned char*)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));
 				}
 #else
-				*(USHORT *)(&ie_list->HtCapability.ExtHtCapInfo) = cpu2le16(*(USHORT *)(&ie_list->HtCapability.ExtHtCapInfo));
+				*(unsigned short *)(&ie_list->HtCapability.ExtHtCapInfo) = cpu2le16(*(unsigned short *)(&ie_list->HtCapability.ExtHtCapInfo));
 #endif /* UNALIGNMENT_SUPPORT */
 
 #ifdef CONFIG_STA_SUPPORT
@@ -1020,7 +1020,7 @@ unsigned char PeerBeaconAndProbeRspSanity(
 				{
 					ie_list->PreNHtCapabilityLen = 0;	/* Now we only support 26 bytes.*/
 
-					Ptr = (PUCHAR) pVIE;
+					Ptr = (unsigned char*) pVIE;
 					NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
 					*LengthVIE += (pEid->Len + 2);
 				}
@@ -1044,13 +1044,13 @@ unsigned char PeerBeaconAndProbeRspSanity(
 
 				CtrlChannel = ie_list->AddHtInfo.ControlChan;
 
-				*(USHORT *)(&ie_list->AddHtInfo.AddHtInfo2) = cpu2le16(*(USHORT *)(&ie_list->AddHtInfo.AddHtInfo2));
-				*(USHORT *)(&ie_list->AddHtInfo.AddHtInfo3) = cpu2le16(*(USHORT *)(&ie_list->AddHtInfo.AddHtInfo3));
+				*(unsigned short *)(&ie_list->AddHtInfo.AddHtInfo2) = cpu2le16(*(unsigned short *)(&ie_list->AddHtInfo.AddHtInfo2));
+				*(unsigned short *)(&ie_list->AddHtInfo.AddHtInfo3) = cpu2le16(*(unsigned short *)(&ie_list->AddHtInfo.AddHtInfo3));
 
 #ifdef CONFIG_STA_SUPPORT
 				IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 				{
-					Ptr = (PUCHAR) pVIE;
+					Ptr = (unsigned char*) pVIE;
 					NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
 					*LengthVIE += (pEid->Len + 2);
 				}
@@ -1135,7 +1135,7 @@ unsigned char PeerBeaconAndProbeRspSanity(
 			{
 				if (INFRA_ON(pAd) && NdisEqualMemory(&ie_list->Bssid[0], pAd->CommonCfg.Bssid, MAC_ADDR_LEN))
 				{
-					GetTimBit((PCHAR)pEid, pAd->StaActive.Aid, &TimLen, &ie_list->BcastFlag,
+					GetTimBit((char *)pEid, pAd->StaActive.Aid, &TimLen, &ie_list->BcastFlag,
 					&ie_list->DtimCount, &ie_list->DtimPeriod, &ie_list->MessageToMe);
 				}
 			}
@@ -1186,13 +1186,13 @@ unsigned char PeerBeaconAndProbeRspSanity(
 			else if (NdisEqualMemory(pEid->Octet, WPA_OUI, 4))
 			{
 				/* Copy to pVIE which will report to bssid list.*/
-				Ptr = (PUCHAR) pVIE;
+				Ptr = (unsigned char*) pVIE;
 				NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
 				*LengthVIE += (pEid->Len + 2);
 			}
 			else if (NdisEqualMemory(pEid->Octet, WME_PARM_ELEM, 6) && (pEid->Len == 24))
 			{
-				PUCHAR ptr;
+				unsigned char* ptr;
 				int i;
 
 				/* parsing EDCA parameters*/
@@ -1205,7 +1205,7 @@ unsigned char PeerBeaconAndProbeRspSanity(
 				ptr = &pEid->Octet[8];
 				for (i=0; i<4; i++)
 				{
-					UCHAR aci = (*ptr & 0x60) >> 5; /* b5~6 is AC INDEX*/
+					unsigned char aci = (*ptr & 0x60) >> 5; /* b5~6 is AC INDEX*/
 					ie_list->EdcaParm.bACM[aci]  = (((*ptr) & 0x10) == 0x10);   /* b5 is ACM*/
 					ie_list->EdcaParm.Aifsn[aci] = (*ptr) & 0x0f;               /* b0~3 is AIFSN*/
 					ie_list->EdcaParm.Cwmin[aci] = *(ptr+1) & 0x0f;             /* b0~4 is Cwmin*/
@@ -1284,7 +1284,7 @@ unsigned char PeerBeaconAndProbeRspSanity(
 
 		case IE_ERP:
 			if (pEid->Len == 1)
-				ie_list->Erp = (UCHAR)pEid->Octet[0];
+				ie_list->Erp = (unsigned char)pEid->Octet[0];
 			break;
 
 		case IE_AIRONET_CKIP:
@@ -1317,7 +1317,7 @@ unsigned char PeerBeaconAndProbeRspSanity(
 			if (RTMPEqualMemory(pEid->Octet + 2, RSN_OUI, 3))
 			{
 				/* Copy to pVIE which will report to microsoft bssid list.*/
-				Ptr = (PUCHAR) pVIE;
+				Ptr = (unsigned char*) pVIE;
 				NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
 				*LengthVIE += (pEid->Len + 2);
 			}
@@ -1327,7 +1327,7 @@ unsigned char PeerBeaconAndProbeRspSanity(
 #ifdef CONFIG_STA_SUPPORT
 #if defined (EXT_BUILD_CHANNEL_LIST) || defined (RT_CFG80211_SUPPORT)
 		case IE_COUNTRY:
-			Ptr = (PUCHAR) pVIE;
+			Ptr = (unsigned char*) pVIE;
 			NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
 			*LengthVIE += (pEid->Len + 2);
 			break;
@@ -1343,7 +1343,7 @@ unsigned char PeerBeaconAndProbeRspSanity(
 				ie_list->QbssLoad.RemainingAdmissionControl = pEid->Octet[3] + pEid->Octet[4] * 256;
 
 				/* Copy to pVIE*/
-				Ptr = (PUCHAR) pVIE;
+				Ptr = (unsigned char*) pVIE;
 				NdisMoveMemory(Ptr + *LengthVIE, &pEid->Eid, pEid->Len + 2);
 				*LengthVIE += (pEid->Len + 2);
 			}
@@ -1378,7 +1378,7 @@ unsigned char PeerBeaconAndProbeRspSanity(
 		}
         
 		Length = Length + 2 + pEid->Len;  /* Eid[1] + Len[1]+ content[Len]*/
-		pEid = (PEID_STRUCT)((UCHAR*)pEid + 2 + pEid->Len);        
+		pEid = (PEID_STRUCT)((unsigned char*)pEid + 2 + pEid->Len);        
     }
 
 	LatchRfChannel = MsgChannel;
@@ -1394,8 +1394,8 @@ unsigned char PeerBeaconAndProbeRspSanity(
 
 	if (pPeerWscIe && (PeerWscIeLen > 0) && (PeerWscIeLen < 512))
 	{
-		UCHAR WscIe[] = {0xdd, 0x00, 0x00, 0x50, 0xF2, 0x04};
-		Ptr = (PUCHAR) pVIE;
+		unsigned char WscIe[] = {0xdd, 0x00, 0x00, 0x50, 0xF2, 0x04};
+		Ptr = (unsigned char*) pVIE;
 		WscIe[1] = PeerWscIeLen + 4;
 		NdisMoveMemory(Ptr + *LengthVIE, WscIe, 6);
 		NdisMoveMemory(Ptr + *LengthVIE + 6, pPeerWscIe, PeerWscIeLen);
@@ -1434,14 +1434,14 @@ SanityCheck:
 unsigned char PeerBeaconAndProbeRspSanity2(
 	IN PRTMP_ADAPTER pAd, 
 	IN void *Msg, 
-	IN ULONG MsgLen, 
+	IN unsigned long MsgLen, 
 	IN OVERLAP_BSS_SCAN_IE *BssScan,
-	UCHAR 	*RegClass)
+	unsigned char 	*RegClass)
 {
-	CHAR				*Ptr;
+	char				*Ptr;
 	PFRAME_802_11		pFrame;
 	PEID_STRUCT			pEid;
-	ULONG				Length = 0;	
+	unsigned long				Length = 0;	
 	unsigned char				brc;
 
 	pFrame = (PFRAME_802_11)Msg;
@@ -1500,7 +1500,7 @@ unsigned char PeerBeaconAndProbeRspSanity2(
 		}
 
 		Length = Length + 2 + pEid->Len;  /* Eid[1] + Len[1]+ content[Len]	*/
-		pEid = (PEID_STRUCT)((UCHAR*)pEid + 2 + pEid->Len); 	   
+		pEid = (PEID_STRUCT)((unsigned char*)pEid + 2 + pEid->Len); 	   
 	}
 
 	return brc;
@@ -1520,11 +1520,11 @@ unsigned char PeerBeaconAndProbeRspSanity2(
 unsigned char MlmeScanReqSanity(
 	IN PRTMP_ADAPTER pAd, 
 	IN void *Msg, 
-	IN ULONG MsgLen, 
-	UCHAR *pBssType, 
-	CHAR Ssid[], 
-	UCHAR *pSsidLen, 
-	UCHAR *pScanType) 
+	IN unsigned long MsgLen, 
+	unsigned char *pBssType, 
+	char Ssid[], 
+	unsigned char *pSsidLen, 
+	unsigned char *pScanType) 
 {
 	MLME_SCAN_REQ_STRUCT *Info;
 
@@ -1549,9 +1549,9 @@ unsigned char MlmeScanReqSanity(
 #endif
 
 /* IRQL = DISPATCH_LEVEL*/
-UCHAR ChannelSanity(
+unsigned char ChannelSanity(
     IN PRTMP_ADAPTER pAd, 
-    IN UCHAR channel)
+    IN unsigned char channel)
 {
     int i;
 
@@ -1577,11 +1577,11 @@ UCHAR ChannelSanity(
 unsigned char PeerDeauthSanity(
     IN PRTMP_ADAPTER pAd, 
     IN void *Msg, 
-    IN ULONG MsgLen, 
-    PUCHAR pAddr1, 
-    PUCHAR pAddr2, 
-    PUCHAR pAddr3, 
-    USHORT *pReason) 
+    IN unsigned long MsgLen, 
+    unsigned char* pAddr1, 
+    unsigned char* pAddr2, 
+    unsigned char* pAddr3, 
+    unsigned short *pReason) 
 {
     PFRAME_802_11 pFrame = (PFRAME_802_11)Msg;
 
@@ -1607,12 +1607,12 @@ unsigned char PeerDeauthSanity(
 unsigned char PeerAuthSanity(
     IN PRTMP_ADAPTER pAd, 
     IN void *Msg, 
-    IN ULONG MsgLen, 
-    PUCHAR pAddr, 
-    USHORT *pAlg, 
-    USHORT *pSeq, 
-    USHORT *pStatus, 
-    CHAR *pChlgText) 
+    IN unsigned long MsgLen, 
+    unsigned char* pAddr, 
+    unsigned short *pAlg, 
+    unsigned short *pSeq, 
+    unsigned short *pStatus, 
+    char *pChlgText) 
 {
     PFRAME_802_11 pFrame = (PFRAME_802_11)Msg;
 
@@ -1668,10 +1668,10 @@ unsigned char PeerAuthSanity(
 unsigned char MlmeAuthReqSanity(
     IN PRTMP_ADAPTER pAd, 
     IN void *Msg, 
-    IN ULONG MsgLen, 
-    PUCHAR pAddr, 
-    ULONG *pTimeout, 
-    USHORT *pAlg) 
+    IN unsigned long MsgLen, 
+    unsigned char* pAddr, 
+    unsigned long *pTimeout, 
+    unsigned short *pAlg) 
 {
     MLME_AUTH_REQ_STRUCT *pInfo;
 
@@ -1709,11 +1709,11 @@ unsigned char MlmeAuthReqSanity(
 unsigned char MlmeAssocReqSanity(
     IN PRTMP_ADAPTER pAd, 
     IN void *Msg, 
-    IN ULONG MsgLen, 
-    PUCHAR pApAddr, 
-    USHORT *pCapabilityInfo, 
-    ULONG *pTimeout, 
-    USHORT *pListenIntv) 
+    IN unsigned long MsgLen, 
+    unsigned char* pApAddr, 
+    unsigned short *pCapabilityInfo, 
+    unsigned long *pTimeout, 
+    unsigned short *pListenIntv) 
 {
     MLME_ASSOC_REQ_STRUCT *pInfo;
 
@@ -1740,9 +1740,9 @@ unsigned char MlmeAssocReqSanity(
 unsigned char PeerDisassocSanity(
     IN PRTMP_ADAPTER pAd, 
     IN void *Msg, 
-    IN ULONG MsgLen, 
-    PUCHAR pAddr2, 
-    USHORT *pReason) 
+    IN unsigned long MsgLen, 
+    unsigned char* pAddr2, 
+    unsigned short *pReason) 
 {
     PFRAME_802_11 pFrame = (PFRAME_802_11)Msg;
 
@@ -1773,7 +1773,7 @@ NDIS_802_11_NETWORK_TYPE NetworkTypeInUseSanity(
     IN PBSS_ENTRY pBss)
 {
 	NDIS_802_11_NETWORK_TYPE	NetWorkType;
-	UCHAR						rate, i;
+	unsigned char						rate, i;
 
 	NetWorkType = Ndis802_11DS;
 	
@@ -1839,9 +1839,9 @@ NDIS_802_11_NETWORK_TYPE NetworkTypeInUseSanity(
 unsigned char MlmeDlsReqSanity(
 	IN PRTMP_ADAPTER pAd, 
     IN void *Msg, 
-    IN ULONG MsgLen,
+    IN unsigned long MsgLen,
     PRT_802_11_DLS *pDLS,
-    PUSHORT pReason)
+    Punsigned short pReason)
 {
 	MLME_DLS_REQ_STRUCT *pInfo;
 
@@ -1859,17 +1859,17 @@ unsigned char MlmeDlsReqSanity(
 unsigned char PeerDlsReqSanity(
     IN PRTMP_ADAPTER pAd, 
     IN void *Msg, 
-    IN ULONG MsgLen,
-    PUCHAR pDA,
-    PUCHAR pSA,
-    USHORT *pCapabilityInfo, 
-    USHORT *pDlsTimeout,
-    UCHAR *pRatesLen,
-    UCHAR Rates[],
-	UCHAR *pHtCapabilityLen,
+    IN unsigned long MsgLen,
+    unsigned char* pDA,
+    unsigned char* pSA,
+    unsigned short *pCapabilityInfo, 
+    unsigned short *pDlsTimeout,
+    unsigned char *pRatesLen,
+    unsigned char Rates[],
+	unsigned char *pHtCapabilityLen,
     HT_CAPABILITY_IE *pHtCapability)
 {
-	CHAR            *Ptr;
+	char            *Ptr;
     PFRAME_802_11	Fr = (PFRAME_802_11)Msg;
 	PEID_STRUCT  eid_ptr;
 
@@ -1878,7 +1878,7 @@ unsigned char PeerDlsReqSanity(
     *pDlsTimeout	= 0;
 	*pHtCapabilityLen = 0;
 
-    Ptr = (PCHAR)Fr->Octet;
+    Ptr = (char *)Fr->Octet;
 
 	/* offset to destination MAC address (Category and Action field)*/
     Ptr += 2;
@@ -1902,7 +1902,7 @@ unsigned char PeerDlsReqSanity(
 	/* Category and Action field + DA + SA + capability + Timeout*/
 	eid_ptr = (PEID_STRUCT) &Fr->Octet[18];	
 
-	while (((UCHAR*)eid_ptr + eid_ptr->Len + 1) < ((UCHAR*)Fr + MsgLen))
+	while (((unsigned char*)eid_ptr + eid_ptr->Len + 1) < ((unsigned char*)Fr + MsgLen))
 	{
 		switch(eid_ptr->Eid)
 		{
@@ -1947,17 +1947,17 @@ unsigned char PeerDlsReqSanity(
 				{
 					NdisMoveMemory(pHtCapability, eid_ptr->Octet, sizeof(HT_CAPABILITY_IE));
 
-					*(USHORT *)(&pHtCapability->HtCapInfo) = cpu2le16(*(USHORT *)(&pHtCapability->HtCapInfo));
+					*(unsigned short *)(&pHtCapability->HtCapInfo) = cpu2le16(*(unsigned short *)(&pHtCapability->HtCapInfo));
 #ifdef UNALIGNMENT_SUPPORT
 					{
 						EXT_HT_CAP_INFO extHtCapInfo;
 
-						NdisMoveMemory((PUCHAR)(&extHtCapInfo), (PUCHAR)(&pHtCapability->ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
-						*(USHORT *)(&extHtCapInfo) = cpu2le16(*(USHORT *)(&extHtCapInfo));
-						NdisMoveMemory((PUCHAR)(&pHtCapability->ExtHtCapInfo), (PUCHAR)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));		
+						NdisMoveMemory((unsigned char*)(&extHtCapInfo), (unsigned char*)(&pHtCapability->ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+						*(unsigned short *)(&extHtCapInfo) = cpu2le16(*(unsigned short *)(&extHtCapInfo));
+						NdisMoveMemory((unsigned char*)(&pHtCapability->ExtHtCapInfo), (unsigned char*)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));		
 					}
 #else				
-					*(USHORT *)(&pHtCapability->ExtHtCapInfo) = cpu2le16(*(USHORT *)(&pHtCapability->ExtHtCapInfo));
+					*(unsigned short *)(&pHtCapability->ExtHtCapInfo) = cpu2le16(*(unsigned short *)(&pHtCapability->ExtHtCapInfo));
 #endif /* UNALIGNMENT_SUPPORT */
 					*pHtCapabilityLen = sizeof(HT_CAPABILITY_IE);
 
@@ -1973,7 +1973,7 @@ unsigned char PeerDlsReqSanity(
 				break;
 		}
 
-		eid_ptr = (PEID_STRUCT)((UCHAR*)eid_ptr + 2 + eid_ptr->Len);
+		eid_ptr = (PEID_STRUCT)((unsigned char*)eid_ptr + 2 + eid_ptr->Len);
 	}
 
     return TRUE;
@@ -1982,17 +1982,17 @@ unsigned char PeerDlsReqSanity(
 unsigned char PeerDlsRspSanity(
     IN PRTMP_ADAPTER pAd, 
     IN void *Msg, 
-    IN ULONG MsgLen,
-    PUCHAR pDA,
-    PUCHAR pSA,
-    USHORT *pCapabilityInfo, 
-    USHORT *pStatus,
-    UCHAR *pRatesLen,
-    UCHAR Rates[],
-    UCHAR *pHtCapabilityLen,
+    IN unsigned long MsgLen,
+    unsigned char* pDA,
+    unsigned char* pSA,
+    unsigned short *pCapabilityInfo, 
+    unsigned short *pStatus,
+    unsigned char *pRatesLen,
+    unsigned char Rates[],
+    unsigned char *pHtCapabilityLen,
     HT_CAPABILITY_IE *pHtCapability) 
 {
-    CHAR            *Ptr;
+    char            *Ptr;
     PFRAME_802_11	Fr = (PFRAME_802_11)Msg;
 	PEID_STRUCT  eid_ptr;
 
@@ -2002,7 +2002,7 @@ unsigned char PeerDlsRspSanity(
     *pCapabilityInfo	= 0;
 	*pHtCapabilityLen = 0;
 
-    Ptr = (PCHAR)Fr->Octet;
+    Ptr = (char *)Fr->Octet;
 
 	/* offset to destination MAC address (Category and Action field)*/
     Ptr += 2;
@@ -2030,7 +2030,7 @@ unsigned char PeerDlsRspSanity(
 	/* Category and Action field + status code + DA + SA + capability*/
 	eid_ptr = (PEID_STRUCT) &Fr->Octet[18];	
 
-	while (((UCHAR*)eid_ptr + eid_ptr->Len + 1) < ((UCHAR*)Fr + MsgLen))
+	while (((unsigned char*)eid_ptr + eid_ptr->Len + 1) < ((unsigned char*)Fr + MsgLen))
 	{
 		switch(eid_ptr->Eid)
 		{
@@ -2075,17 +2075,17 @@ unsigned char PeerDlsRspSanity(
 				{
 					NdisMoveMemory(pHtCapability, eid_ptr->Octet, sizeof(HT_CAPABILITY_IE));
 
-					*(USHORT *)(&pHtCapability->HtCapInfo) = cpu2le16(*(USHORT *)(&pHtCapability->HtCapInfo));
+					*(unsigned short *)(&pHtCapability->HtCapInfo) = cpu2le16(*(unsigned short *)(&pHtCapability->HtCapInfo));
 #ifdef UNALIGNMENT_SUPPORT
 					{
 						EXT_HT_CAP_INFO extHtCapInfo;
 
-						NdisMoveMemory((PUCHAR)(&extHtCapInfo), (PUCHAR)(&pHtCapability->ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
-						*(USHORT *)(&extHtCapInfo) = cpu2le16(*(USHORT *)(&extHtCapInfo));
-						NdisMoveMemory((PUCHAR)(&pHtCapability->ExtHtCapInfo), (PUCHAR)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));		
+						NdisMoveMemory((unsigned char*)(&extHtCapInfo), (unsigned char*)(&pHtCapability->ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+						*(unsigned short *)(&extHtCapInfo) = cpu2le16(*(unsigned short *)(&extHtCapInfo));
+						NdisMoveMemory((unsigned char*)(&pHtCapability->ExtHtCapInfo), (unsigned char*)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));		
 					}
 #else				
-					*(USHORT *)(&pHtCapability->ExtHtCapInfo) = cpu2le16(*(USHORT *)(&pHtCapability->ExtHtCapInfo));
+					*(unsigned short *)(&pHtCapability->ExtHtCapInfo) = cpu2le16(*(unsigned short *)(&pHtCapability->ExtHtCapInfo));
 #endif /* UNALIGNMENT_SUPPORT */
 					*pHtCapabilityLen = sizeof(HT_CAPABILITY_IE);
 
@@ -2101,7 +2101,7 @@ unsigned char PeerDlsRspSanity(
 				break;
 		}
 
-		eid_ptr = (PEID_STRUCT)((UCHAR*)eid_ptr + 2 + eid_ptr->Len);
+		eid_ptr = (PEID_STRUCT)((unsigned char*)eid_ptr + 2 + eid_ptr->Len);
 	}
 
     return TRUE;
@@ -2110,18 +2110,18 @@ unsigned char PeerDlsRspSanity(
 unsigned char PeerDlsTearDownSanity(
     IN PRTMP_ADAPTER pAd, 
     IN void *Msg, 
-    IN ULONG MsgLen,
-    PUCHAR pDA,
-    PUCHAR pSA,
-    USHORT *pReason) 
+    IN unsigned long MsgLen,
+    unsigned char* pDA,
+    unsigned char* pSA,
+    unsigned short *pReason) 
 {
-    CHAR            *Ptr;
+    char            *Ptr;
     PFRAME_802_11	Fr = (PFRAME_802_11)Msg;
 
     /* to prevent caller from using garbage output value*/
     *pReason	= 0;
 
-    Ptr = (PCHAR)Fr->Octet;
+    Ptr = (char *)Fr->Octet;
 
 	/* offset to destination MAC address (Category and Action field)*/
     Ptr += 2;
@@ -2153,16 +2153,16 @@ unsigned char PeerDlsTearDownSanity(
 unsigned char PeerProbeReqSanity(
     IN PRTMP_ADAPTER pAd, 
     IN void *Msg, 
-    IN ULONG MsgLen, 
-    PUCHAR pAddr2,
-    CHAR Ssid[], 
-    UCHAR *SsidLen, 
+    IN unsigned long MsgLen, 
+    unsigned char* pAddr2,
+    char Ssid[], 
+    unsigned char *SsidLen, 
     unsigned char *bRssiRequested)
 {
     PFRAME_802_11 Fr = (PFRAME_802_11)Msg;
-    UCHAR		*Ptr;
-    UCHAR		eid =0, eid_len = 0, *eid_data;
-	UINT		total_ie_len = 0;	
+    unsigned char		*Ptr;
+    unsigned char		eid =0, eid_len = 0, *eid_data;
+	unsigned int		total_ie_len = 0;	
 
     /* to prevent caller from using garbage output value*/
     *SsidLen = 0;
@@ -2186,7 +2186,7 @@ unsigned char PeerProbeReqSanity(
 	eid_data = Ptr+2;
     
     /* get variable fields from payload and advance the pointer*/
-	while((eid_data + eid_len) <= ((UCHAR*)Fr + MsgLen))
+	while((eid_data + eid_len) <= ((unsigned char*)Fr + MsgLen))
     {    	
         switch(eid)
         {

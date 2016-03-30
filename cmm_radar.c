@@ -65,9 +65,9 @@ void RadarDetectPeriodic(
 */
 unsigned char RadarChannelCheck(
 	IN PRTMP_ADAPTER	pAd,
-	IN UCHAR			Ch)
+	IN unsigned char			Ch)
 {
-	INT 	i;
+	int 	i;
 	unsigned char result = FALSE;
 
 	for (i=0; i<pAd->ChannelListNum; i++)
@@ -82,11 +82,11 @@ unsigned char RadarChannelCheck(
 	return result;
 }
 
-ULONG JapRadarType(
+unsigned long JapRadarType(
 	IN PRTMP_ADAPTER pAd)
 {
-	ULONG		i;
-	const UCHAR	Channel[15]={52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140};
+	unsigned long		i;
+	const unsigned char	Channel[15]={52, 56, 60, 64, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140};
 
 	if (pAd->CommonCfg.RDDurRegion != JAP)
 	{
@@ -119,11 +119,11 @@ ULONG JapRadarType(
         TRUE if all parameters are OK, FALSE otherwise
     ==========================================================================
 */
-INT	Set_CSPeriod_Proc(
+int	Set_CSPeriod_Proc(
 	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg)
+	IN	unsigned char*			arg)
 {
-	pAd->Dot11_H.CSPeriod = (USHORT) simple_strtol(arg, 0, 10);
+	pAd->Dot11_H.CSPeriod = (unsigned short) simple_strtol(arg, 0, 10);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("Set_CSPeriod_Proc::(CSPeriod=%d)\n", pAd->Dot11_H.CSPeriod));
 
@@ -147,13 +147,13 @@ INT	Set_CSPeriod_Proc(
                1.) iwpriv ra0 set ChMovTime=[value]
     ==========================================================================
 */
-INT Set_ChMovingTime_Proc(
+int Set_ChMovingTime_Proc(
 	IN PRTMP_ADAPTER pAd, 
-	IN PSTRING arg)
+	IN unsigned char* arg)
 {
-	UINT8 Value;
+	unsigned char Value;
 
-	Value = (UINT8) simple_strtol(arg, 0, 10);
+	Value = (unsigned char) simple_strtol(arg, 0, 10);
 
 	pAd->Dot11_H.ChMovingTime = Value;
 
@@ -180,11 +180,11 @@ INT Set_ChMovingTime_Proc(
                1.) iwpriv ra0 set ChMovTime=[value]
     ==========================================================================
 */
-INT Set_BlockChReset_Proc(
+int Set_BlockChReset_Proc(
 	IN PRTMP_ADAPTER pAd, 
-	IN PSTRING arg)
+	IN unsigned char* arg)
 {
-	INT i;
+	int i;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s: Reset channel block status.\n", __FUNCTION__));	
 	
@@ -197,13 +197,13 @@ INT Set_BlockChReset_Proc(
 
 #if defined(DFS_SUPPORT) || defined(CARRIER_DETECTION_SUPPORT)
 
-INT	Set_RadarShow_Proc(
+int	Set_RadarShow_Proc(
 	IN	PRTMP_ADAPTER	pAd, 
-	IN	PSTRING			arg)
+	IN	unsigned char*			arg)
 {
 #ifdef DFS_SUPPORT
 	int i;
-	UINT8 idx;
+	unsigned char idx;
 	PRADAR_DETECT_STRUCT pRadarDetect = &pAd->CommonCfg.RadarDetect;
 	PDFS_PROGRAM_PARAM pDfsProgramParam = &pRadarDetect->DfsProgramParam;
 	PDFS_SW_DETECT_PARAM pDfsSwParam = &pRadarDetect->DfsSwParam;

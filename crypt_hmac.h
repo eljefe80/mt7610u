@@ -33,35 +33,35 @@
 
 #ifdef SHA1_SUPPORT
 #define HMAC_SHA1_SUPPORT
-VOID RT_HMAC_SHA1(
-	IN const UINT8 Key[],
-	IN UINT KeyLen,
-	IN const UINT8 Message[],
-	IN UINT MessageLen,
-	UINT8 MAC[],
-	IN UINT MACLen);
+void RT_HMAC_SHA1(
+	IN const unsigned char Key[],
+	IN unsigned int KeyLen,
+	IN const unsigned char Message[],
+	IN unsigned int MessageLen,
+	unsigned char MAC[],
+	IN unsigned int MACLen);
 #endif /* SHA1_SUPPORT */
 
 #ifdef SHA256_SUPPORT
 #define HMAC_SHA256_SUPPORT
-VOID RT_HMAC_SHA256(
-	IN const UINT8 Key[],
-	IN UINT KeyLen,
-	IN const UINT8 Message[],
-	IN UINT MessageLen,
-	UINT8 MAC[],
-	IN UINT MACLen);
+void RT_HMAC_SHA256(
+	IN const unsigned char Key[],
+	IN unsigned int KeyLen,
+	IN const unsigned char Message[],
+	IN unsigned int MessageLen,
+	unsigned char MAC[],
+	IN unsigned int MACLen);
 #endif /* SHA256_SUPPORT */
 
 #ifdef MD5_SUPPORT
 #define HMAC_MD5_SUPPORT
-VOID RT_HMAC_MD5(
-	IN const UINT8 Key[],
-	IN UINT KeyLen,
-	IN const UINT8 Message[],
-	IN UINT MessageLen,
-	UINT8 MAC[],
-	IN UINT MACLen);
+void RT_HMAC_MD5(
+	IN const unsigned char Key[],
+	IN unsigned int KeyLen,
+	IN const unsigned char Message[],
+	IN unsigned int MessageLen,
+	unsigned char MAC[],
+	IN unsigned int MACLen);
 #endif /* MD5_SUPPORT */
 
 

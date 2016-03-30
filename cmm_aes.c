@@ -33,7 +33,7 @@
 /******** SBOX Table *********/
 /*****************************/
 
-UCHAR SboxTable[256] =
+unsigned char SboxTable[256] =
 {
 	0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5,
 	0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
@@ -70,11 +70,11 @@ UCHAR SboxTable[256] =
 };
 
 void xor_32(
-	IN  PUCHAR  a,
-	IN  PUCHAR  b,
-	PUCHAR  out)
+	IN  unsigned char *  a,
+	IN  unsigned char *  b,
+	unsigned char *  out)
 {
-	INT i;
+	int i;
 
 	for (i=0;i<4; i++)
 	{
@@ -83,11 +83,11 @@ void xor_32(
 }
 
 void xor_128(
-	IN  PUCHAR  a,
-	IN  PUCHAR  b,
-	PUCHAR  out)
+	IN  unsigned char *  a,
+	IN  unsigned char *  b,
+	unsigned char *  out)
 {
-	INT i;
+	int i;
 
 	for (i=0;i<16; i++)
 	{
@@ -95,19 +95,19 @@ void xor_128(
 	}
 }
 
-UCHAR RTMPCkipSbox(
-	IN  UCHAR   a)
+unsigned char RTMPCkipSbox(
+	IN  unsigned char   a)
 {
 	return SboxTable[(int)a];
 }
 
 void next_key(
-	IN  PUCHAR  key,
-	IN  INT     round)
+	IN  unsigned char *  key,
+	IN  int     round)
 {
-	UCHAR       rcon;
-	UCHAR       sbox_key[4];
-	UCHAR       rcon_table[12] =
+	unsigned char       rcon;
+	unsigned char       sbox_key[4];
+	unsigned char       rcon_table[12] =
 	{
 		0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80,
 		0x1b, 0x36, 0x36, 0x36
@@ -129,10 +129,10 @@ void next_key(
 }
 
 void byte_sub(
-	IN  PUCHAR  in,
-	PUCHAR  out)
+	IN  unsigned char *  in,
+	unsigned char *  out)
 {
-	INT i;
+	int i;
 
 	for (i=0; i< 16; i++)
 	{
@@ -155,8 +155,8 @@ void bitwise_xor(unsigned char *ina, unsigned char *inb, unsigned char *out)
 }
 
 void shift_row(
-	IN  PUCHAR  in,
-	PUCHAR  out)
+	IN  unsigned char *  in,
+	unsigned char *  out)
 {
 	out[0] =  in[0];
 	out[1] =  in[5];
@@ -177,18 +177,18 @@ void shift_row(
 }
 
 void mix_column(
-	IN  PUCHAR  in,
-	PUCHAR  out)
+	IN  unsigned char *  in,
+	unsigned char *  out)
 {
-	INT         i;
-	UCHAR       add1b[4];
-	UCHAR       add1bf7[4];
-	UCHAR       rotl[4];
-	UCHAR       swap_halfs[4];
-	UCHAR       andf7[4];
-	UCHAR       rotr[4];
-	UCHAR       temp[4];
-	UCHAR       tempb[4];
+	int         i;
+	unsigned char       add1b[4];
+	unsigned char       add1bf7[4];
+	unsigned char       rotl[4];
+	unsigned char       swap_halfs[4];
+	unsigned char       andf7[4];
+	unsigned char       rotr[4];
+	unsigned char       temp[4];
+	unsigned char       tempb[4];
 
 	for (i=0 ; i<4; i++)
 	{
@@ -432,44 +432,44 @@ void construct_ctr_preload(
 
 unsigned char RTMPSoftDecryptAES(
 	IN PRTMP_ADAPTER pAd,
-	IN PUCHAR	pData,
-	IN ULONG	DataByteCnt, 
+	IN unsigned char *	pData,
+	IN unsigned long	DataByteCnt, 
 	IN PCIPHER_KEY	pWpaKey)
 {
-	UINT			HeaderLen;
-	UCHAR			PN[6];
-	UINT			payload_len;	
-	UINT			num_blocks;
-	UINT			payload_remainder;
-	USHORT			fc;
-	UCHAR			fc0;
-	UCHAR			fc1;	
-	UINT			frame_type;
-	UINT			frame_subtype;
-	UINT			from_ds;
-	UINT			to_ds;
-	INT				a4_exists;
-	INT				qc_exists;
-	UCHAR			aes_out[16];
+	unsigned int			HeaderLen;
+	unsigned char			PN[6];
+	unsigned int			payload_len;	
+	unsigned int			num_blocks;
+	unsigned int			payload_remainder;
+	unsigned short			fc;
+	unsigned char			fc0;
+	unsigned char			fc1;	
+	unsigned int			frame_type;
+	unsigned int			frame_subtype;
+	unsigned int			from_ds;
+	unsigned int			to_ds;
+	int				a4_exists;
+	int				qc_exists;
+	unsigned char			aes_out[16];
 	int 			payload_index;
-	UINT 			i;
-	UCHAR 			ctr_preload[16];
-	UCHAR 			chain_buffer[16];
-	UCHAR 			padded_buffer[16];
-	UCHAR 			mic_iv[16];
-	UCHAR 			mic_header1[16];
-	UCHAR 			mic_header2[16];	
-	UCHAR			MIC[8];
-	UCHAR			TrailMIC[8];
+	unsigned int 			i;
+	unsigned char 			ctr_preload[16];
+	unsigned char 			chain_buffer[16];
+	unsigned char 			padded_buffer[16];
+	unsigned char 			mic_iv[16];
+	unsigned char 			mic_header1[16];
+	unsigned char 			mic_header2[16];	
+	unsigned char			MIC[8];
+	unsigned char			TrailMIC[8];
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (PUCHAR)pData, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, (unsigned char *)pData, DIR_READ, FALSE);
 #endif
 
 	fc0 = *pData;
 	fc1 = *(pData + 1);
 
-	fc = *((PUSHORT)pData);	
+	fc = *((unsigned short*)pData);	
 
 	frame_type = ((fc0 >> 2) & 0x03);
 	frame_subtype = ((fc0 >> 4) & 0x0f);	
@@ -636,7 +636,7 @@ unsigned char RTMPSoftDecryptAES(
 	}
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (PUCHAR)pData, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, (unsigned char *)pData, DIR_READ, FALSE);
 #endif
 
 	return TRUE;
@@ -660,14 +660,14 @@ unsigned char RTMPSoftDecryptAES(
 	========================================================================
 */
 void RTMPConstructCCMPAAD(
-	IN PUCHAR pHdr,
+	IN unsigned char * pHdr,
 	IN unsigned char isDataFrame,
-	IN UINT8 a4_exists,
-	IN UINT8 qc_exists,
-	UCHAR *aad_hdr,
-	UINT *aad_len)
+	IN unsigned char a4_exists,
+	IN unsigned char qc_exists,
+	unsigned char *aad_hdr,
+	unsigned int *aad_len)
 {
-	UINT len = 0;
+	unsigned int len = 0;
 
 	/* Frame control -
 		Subtype bits (bits 4 5 6) in a Data MPDU masked to 0
@@ -739,16 +739,16 @@ void RTMPConstructCCMPAAD(
 	========================================================================
 */
 void RTMPConstructCCMPNonce(
-	IN PUCHAR pHdr,
-	IN UINT8 a4_exists,
-	IN UINT8 qc_exists,
+	IN unsigned char * pHdr,
+	IN unsigned char a4_exists,
+	IN unsigned char qc_exists,
 	IN unsigned char isMgmtFrame,
-	IN UCHAR *pn,		
-	UCHAR *nonce_hdr,
-	UINT *nonce_hdr_len)
+	IN unsigned char *pn,		
+	unsigned char *nonce_hdr,
+	unsigned int *nonce_hdr_len)
 {
-	UINT n_offset = 0;
-	INT i;
+	unsigned int n_offset = 0;
+	int i;
 
 	/* Decide the Priority Octet 
 		The Priority sub-field of the Nonce Flags field shall 
@@ -794,9 +794,9 @@ void RTMPConstructCCMPNonce(
 	========================================================================
 */
 void RTMPConstructCCMPHdr(
-        IN UINT8 key_idx,
-	IN UCHAR *pn,		
-	UCHAR *ccmp_hdr)
+        IN unsigned char key_idx,
+	IN unsigned char *pn,		
+	unsigned char *ccmp_hdr)
 {
 	NdisZeroMemory(ccmp_hdr, LEN_CCMP_HDR);
 
@@ -824,23 +824,23 @@ void RTMPConstructCCMPHdr(
 */
 unsigned char RTMPSoftEncryptCCMP(
 	IN PRTMP_ADAPTER pAd,
-	IN PUCHAR pHdr,
-	IN PUCHAR pIV,
-	IN PUCHAR pKey,
-	INPUCHAR pData,
-	IN UINT32 DataLen)
+	IN unsigned char * pHdr,
+	IN unsigned char * pIV,
+	IN unsigned char * pKey,
+	IN unsigned char * pData,
+	IN unsigned int DataLen)
 {
-	UINT8 frame_type, frame_subtype;
-	UINT8 from_ds, to_ds;
-	UINT8 a4_exists, qc_exists;
-	UINT8 aad_hdr[30];
-	UINT aad_len = 0;
-	UINT8 nonce_hdr[13];	
-	UINT32 nonce_hdr_len = 0;
-	UINT32 out_len = DataLen + 8;
+	unsigned char frame_type, frame_subtype;
+	unsigned char from_ds, to_ds;
+	unsigned char a4_exists, qc_exists;
+	unsigned char aad_hdr[30];
+	unsigned int aad_len = 0;
+	unsigned char nonce_hdr[13];	
+	unsigned int nonce_hdr_len = 0;
+	unsigned int out_len = DataLen + 8;
 		
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (PUCHAR)pHdr, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, (unsigned char *)pHdr, DIR_READ, FALSE);
 #endif
 
 	/* Initial variable */
@@ -894,7 +894,7 @@ unsigned char RTMPSoftEncryptCCMP(
 		return FALSE;
 		
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (PUCHAR)pHdr, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, (unsigned char *)pHdr, DIR_READ, FALSE);
 #endif
 	
 	return TRUE;
@@ -916,25 +916,25 @@ unsigned char RTMPSoftEncryptCCMP(
 */
 unsigned char RTMPSoftDecryptCCMP(
 	IN PRTMP_ADAPTER pAd,
-	IN PUCHAR pHdr,
+	IN unsigned char * pHdr,
 	IN PCIPHER_KEY pKey,
-	INPUCHAR pData,
-	INUINT16 *DataLen)
+	IN unsigned char * pData,
+	IN unsigned short *DataLen)
 {
-	UINT8 frame_type, frame_subtype;
-	UINT8 from_ds, to_ds;
-	UINT8 a4_exists, qc_exists;
-	UINT8 aad_hdr[30];
-	UINT aad_len = 0;
-	UINT8 pn[LEN_PN];	
-	PUCHAR cipherData_ptr;
-	UINT32 cipherData_len;
-	UINT8 nonce_hdr[13];	
-	UINT32 nonce_hdr_len = 0;	
-	UINT32 out_len = *DataLen;
+	unsigned char frame_type, frame_subtype;
+	unsigned char from_ds, to_ds;
+	unsigned char a4_exists, qc_exists;
+	unsigned char aad_hdr[30];
+	unsigned int aad_len = 0;
+	unsigned char pn[LEN_PN];	
+	unsigned char * cipherData_ptr;
+	unsigned int cipherData_len;
+	unsigned char nonce_hdr[13];	
+	unsigned int nonce_hdr_len = 0;	
+	unsigned int out_len = *DataLen;
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (PUCHAR)pHdr, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, (unsigned char *)pHdr, DIR_READ, FALSE);
 #endif
 
 	/* Check the key is valid */
@@ -1009,7 +1009,7 @@ unsigned char RTMPSoftDecryptCCMP(
 	*DataLen = out_len;
 
 #ifdef RT_BIG_ENDIAN
-	RTMPFrameEndianChange(pAd, (PUCHAR)pHdr, DIR_READ, FALSE);
+	RTMPFrameEndianChange(pAd, (unsigned char *)pHdr, DIR_READ, FALSE);
 #endif
 
 	return TRUE;
@@ -1031,33 +1031,33 @@ unsigned char RTMPSoftDecryptCCMP(
 */
 void CCMP_test_vector(
 	IN PRTMP_ADAPTER pAd,
-	IN INT input)
+	IN int input)
 {
-	UINT8 Key_ID = 0;
-	/*UINT8 A1[6] =  {0x0f, 0xd2, 0xe1, 0x28, 0xa5, 0x7c};*/
-	/*UINT8 A2[6] =  {0x50, 0x30, 0xf1, 0x84, 0x44, 0x08};*/
-	/*UINT8 A3[6] =  {0xab, 0xae, 0xa5, 0xb8, 0xfc, 0xba};*/
-	UINT8 TK[16] = {0xc9, 0x7c, 0x1f, 0x67, 0xce, 0x37, 0x11, 0x85, 
+	unsigned char Key_ID = 0;
+	/*unsigned char A1[6] =  {0x0f, 0xd2, 0xe1, 0x28, 0xa5, 0x7c};*/
+	/*unsigned char A2[6] =  {0x50, 0x30, 0xf1, 0x84, 0x44, 0x08};*/
+	/*unsigned char A3[6] =  {0xab, 0xae, 0xa5, 0xb8, 0xfc, 0xba};*/
+	unsigned char TK[16] = {0xc9, 0x7c, 0x1f, 0x67, 0xce, 0x37, 0x11, 0x85, 
 				  	0x51, 0x4a, 0x8a, 0x19, 0xf2, 0xbd, 0xd5, 0x2f};
-	UINT8 PN[6] =  {0x0C, 0xE7, 0x76, 0x97, 0x03, 0xB5};					
-	UINT8 HDR[24]= {0x08, 0x48, 0xc3, 0x2c, 0x0f, 0xd2, 0xe1, 0x28, 
+	unsigned char PN[6] =  {0x0C, 0xE7, 0x76, 0x97, 0x03, 0xB5};					
+	unsigned char HDR[24]= {0x08, 0x48, 0xc3, 0x2c, 0x0f, 0xd2, 0xe1, 0x28, 
 					0xa5, 0x7c, 0x50, 0x30, 0xf1, 0x84, 0x44, 0x08, 
 					0xab, 0xae, 0xa5, 0xb8, 0xfc, 0xba, 0x80, 0x33};
-	UINT8 AAD[22] = {0x08, 0x40, 0x0f, 0xd2, 0xe1, 0x28, 0xa5, 0x7c, 
+	unsigned char AAD[22] = {0x08, 0x40, 0x0f, 0xd2, 0xe1, 0x28, 0xa5, 0x7c, 
 				     0x50, 0x30, 0xf1, 0x84, 0x44, 0x08, 0xab, 0xae, 
 				     0xa5, 0xb8, 0xfc, 0xba, 0x00, 0x00};
-	UINT8 CCMP_HDR[8] = {0x0c, 0xe7, 0x00, 0x20, 0x76, 0x97, 0x03, 0xb5};
-	UINT8 CCM_NONCE[13] = {0x00, 0x50, 0x30, 0xf1, 0x84, 0x44, 0x08, 0xb5, 
+	unsigned char CCMP_HDR[8] = {0x0c, 0xe7, 0x00, 0x20, 0x76, 0x97, 0x03, 0xb5};
+	unsigned char CCM_NONCE[13] = {0x00, 0x50, 0x30, 0xf1, 0x84, 0x44, 0x08, 0xb5, 
 						   0x03, 0x97, 0x76, 0xe7, 0x0c};
-	UINT8 P_TEXT_DATA[20] = {0xf8, 0xba, 0x1a, 0x55, 0xd0, 0x2f, 0x85, 0xae, 
+	unsigned char P_TEXT_DATA[20] = {0xf8, 0xba, 0x1a, 0x55, 0xd0, 0x2f, 0x85, 0xae, 
 						     0x96, 0x7b, 0xb6, 0x2f, 0xb6, 0xcd, 0xa8, 0xeb, 
 						     0x7e, 0x78, 0xa0, 0x50};
-	UINT8 C_TEXT_DATA[28] = {0xf3, 0xd0, 0xa2, 0xfe, 0x9a, 0x3d, 0xbf, 0x23,
+	unsigned char C_TEXT_DATA[28] = {0xf3, 0xd0, 0xa2, 0xfe, 0x9a, 0x3d, 0xbf, 0x23,
 							 0x42, 0xa6, 0x43, 0xe4, 0x32, 0x46, 0xe8, 0x0c, 
 							 0x3c, 0x04, 0xd0, 0x19, 0x78, 0x45, 0xce, 0x0b,
 							 0x16, 0xf9, 0x76, 0x23};		
-	UINT8 res_buf[100];
-	UINT res_len = 0;
+	unsigned char res_buf[100];
+	unsigned int res_len = 0;
 
 	printk("== CCMP test vector == \n");
 

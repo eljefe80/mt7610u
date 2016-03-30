@@ -27,7 +27,7 @@
 
 #include "rt_config.h"
 
-void inc_byte_array(UCHAR *counter, int len);
+void inc_byte_array(unsigned char *counter, int len);
 
 /*
 	========================================================================
@@ -48,12 +48,12 @@ void inc_byte_array(UCHAR *counter, int len);
 	
 	========================================================================
 */
-VOID	RTMPReportMicError(
+void	RTMPReportMicError(
 	IN	PRTMP_ADAPTER	pAd, 
 	IN	PCIPHER_KEY 	pWpaKey)
 {
-	ULONG	Now;
-    UCHAR   unicastKey = (pWpaKey->Type == PAIRWISE_KEY ? 1:0);
+	unsigned long	Now;
+    unsigned char   unicastKey = (pWpaKey->Type == PAIRWISE_KEY ? 1:0);
 
 	/* Record Last MIC error time and count */
 	NdisGetSystemUpTime(&Now);
@@ -111,12 +111,12 @@ VOID	RTMPReportMicError(
 /* If the received frame is EAP-Packet ,find out its EAP-Code (Request(0x01), Response(0x02), Success(0x03), Failure(0x04)). */
 INT	    WpaCheckEapCode(
 	IN  PRTMP_ADAPTER   		pAd,
-	IN  PUCHAR				pFrame,
-	IN  USHORT				FrameLen,
-	IN  USHORT				OffSet)
+	IN  unsigned char *				pFrame,
+	IN  unsigned short				FrameLen,
+	IN  unsigned short				OffSet)
 {
 	
-	PUCHAR	pData;
+	unsigned char *	pData;
 	INT	result = 0;
 		
 	if( FrameLen < OffSet + LENGTH_EAPOL_H + LENGTH_EAP_H ) 
@@ -134,16 +134,16 @@ INT	    WpaCheckEapCode(
 
 #endif /* WPA_SUPPLICANT_SUPPORT */
 
-VOID	WpaMicFailureReportFrame(
+void	WpaMicFailureReportFrame(
 	IN  PRTMP_ADAPTER   pAd,
 	IN MLME_QUEUE_ELEM *Elem)
 {
-	PUCHAR              pOutBuffer = NULL;
-	UCHAR               Header802_3[14];
-	ULONG               FrameLen = 0;
-	UCHAR				*mpool;
+	unsigned char *              pOutBuffer = NULL;
+	unsigned char               Header802_3[14];
+	unsigned long               FrameLen = 0;
+	unsigned char				*mpool;
 	PEAPOL_PACKET       pPacket;
-	UCHAR               Mic[16];
+	unsigned char               Mic[16];
     unsigned char             bUnicast;
         
 	DBGPRINT(RT_DEBUG_TRACE, ("WpaMicFailureReportFrame ----->\n"));
@@ -155,7 +155,7 @@ VOID	WpaMicFailureReportFrame(
 	MAKE_802_3_HEADER(Header802_3, pAd->CommonCfg.Bssid, pAd->CurrentAddress, EAPOL);	
 
 	/* Allocate memory for output */
-	os_alloc_mem(NULL, (PUCHAR *)&mpool, TX_EAPOL_BUFFER);
+	os_alloc_mem(NULL, (unsigned char * *)&mpool, TX_EAPOL_BUFFER);
 	if (mpool == NULL)
     {
         DBGPRINT(RT_DEBUG_ERROR, ("!!!%s : no memory!!!\n", __FUNCTION__));
@@ -198,10 +198,10 @@ VOID	WpaMicFailureReportFrame(
     inc_byte_array(pAd->StaCfg.ReplayCounter, 8);
 
 	/* Convert to little-endian format. */
-	*((USHORT *)&pPacket->KeyDesc.KeyInfo) = cpu2le16(*((USHORT *)&pPacket->KeyDesc.KeyInfo));
+	*((unsigned short *)&pPacket->KeyDesc.KeyInfo) = cpu2le16(*((unsigned short *)&pPacket->KeyDesc.KeyInfo));
 
 
-	MlmeAllocateMemory(pAd, (PUCHAR *)&pOutBuffer);  /* allocate memory */
+	MlmeAllocateMemory(pAd, (unsigned char * *)&pOutBuffer);  /* allocate memory */
 	if(pOutBuffer == NULL)
 	{
 		os_free_mem(NULL, mpool);
@@ -220,7 +220,7 @@ VOID	WpaMicFailureReportFrame(
 	NdisZeroMemory(Mic, sizeof(Mic));
 	if(pAd->StaCfg.WepStatus  == Ndis802_11Encryption3Enabled)
 	{	/* AES */
-        UCHAR digest[20] = {0};
+        unsigned char digest[20] = {0};
 		RT_HMAC_SHA1(pAd->StaCfg.PTK, LEN_PTK_KCK, pOutBuffer, FrameLen, digest, SHA1_DIGEST_SIZE);
 		NdisMoveMemory(Mic, digest, LEN_KEY_DESC_MIC);
 	} 
@@ -233,10 +233,10 @@ VOID	WpaMicFailureReportFrame(
 	/* copy frame to Tx ring and send MIC failure report frame to authenticator */
 	RTMPToWirelessSta(pAd, &pAd->MacTab.Content[BSSID_WCID],
 					  Header802_3, LENGTH_802_3, 
-					  (PUCHAR)pPacket, 
+					  (unsigned char *)pPacket, 
 					  CONV_ARRARY_TO_UINT16(pPacket->Body_Len) + 4, FALSE);
 
-	MlmeFreeMemory(pAd, (PUCHAR)pOutBuffer);
+	MlmeFreeMemory(pAd, (unsigned char *)pOutBuffer);
 
 	os_free_mem(NULL, mpool);
 
@@ -252,7 +252,7 @@ VOID	WpaMicFailureReportFrame(
  * rolling over to more significant bytes if the byte was incremented from
  * 0xff to 0x00.
  */
-void inc_byte_array(UCHAR *counter, int len)
+void inc_byte_array(unsigned char *counter, int len)
 {
 	int pos = len - 1;
 	while (pos >= 0) {
@@ -263,11 +263,11 @@ void inc_byte_array(UCHAR *counter, int len)
 	}
 }
 
-VOID WpaDisassocApAndBlockAssoc(
-    IN PVOID SystemSpecific1, 
-    IN PVOID FunctionContext, 
-    IN PVOID SystemSpecific2, 
-    IN PVOID SystemSpecific3) 
+void WpaDisassocApAndBlockAssoc(
+    IN void* SystemSpecific1, 
+    IN void* FunctionContext, 
+    IN void* SystemSpecific2, 
+    IN void* SystemSpecific3) 
 {
     RTMP_ADAPTER                *pAd = (PRTMP_ADAPTER)FunctionContext;
     MLME_DISASSOC_REQ_STRUCT    DisassocReq;
@@ -281,7 +281,7 @@ VOID WpaDisassocApAndBlockAssoc(
 	pAd->StaCfg.bBlockAssoc = TRUE;
 }
 
-VOID WpaStaPairwiseKeySetting(
+void WpaStaPairwiseKeySetting(
 	IN	PRTMP_ADAPTER	pAd)
 {
 	PCIPHER_KEY pSharedKey;
@@ -336,7 +336,7 @@ VOID WpaStaPairwiseKeySetting(
 
 }
 
-VOID WpaStaGroupKeySetting(
+void WpaStaGroupKeySetting(
 	IN	PRTMP_ADAPTER	pAd)
 {
 	PCIPHER_KEY 		pSharedKey;
@@ -392,16 +392,16 @@ VOID WpaStaGroupKeySetting(
 		
 	========================================================================
 */
-VOID    WpaSendEapolStart(
+void    WpaSendEapolStart(
 	IN	PRTMP_ADAPTER	pAd,
-	IN  PUCHAR          pBssid)
+	IN  unsigned char *          pBssid)
 {
 	IEEE8021X_FRAME		Packet;
-	UCHAR               Header802_3[14];
+	unsigned char               Header802_3[14];
 	
 	DBGPRINT(RT_DEBUG_TRACE, ("-----> WpaSendEapolStart\n"));
 
-	NdisZeroMemory(Header802_3,sizeof(UCHAR)*14);
+	NdisZeroMemory(Header802_3,sizeof(unsigned char)*14);
 
 	MAKE_802_3_HEADER(Header802_3, pBssid, &pAd->CurrentAddress[0], EAPOL);
 	
@@ -413,7 +413,7 @@ VOID    WpaSendEapolStart(
 	
 	/* Copy frame to Tx ring */
 	RTMPToWirelessSta((PRTMP_ADAPTER)pAd, &pAd->MacTab.Content[BSSID_WCID],
-					 Header802_3, LENGTH_802_3, (PUCHAR)&Packet, 4, TRUE);
+					 Header802_3, LENGTH_802_3, (unsigned char *)&Packet, 4, TRUE);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("<----- WpaSendEapolStart\n"));
 }

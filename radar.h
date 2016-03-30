@@ -59,15 +59,15 @@ void RadarDetectPeriodic(
 
 int	Set_CSPeriod_Proc(
 	PRTMP_ADAPTER	pAdapter, 
-	char*			arg);
+	unsigned char*			arg);
 
 int Set_ChMovingTime_Proc(
 	PRTMP_ADAPTER pAd, 
-	char* arg);
+	unsigned char* arg);
 
 int Set_BlockChReset_Proc(
 	PRTMP_ADAPTER pAd, 
-	char* arg);
+	unsigned char* arg);
 
 #if defined(DFS_SUPPORT) || defined(CARRIER_DETECTION_SUPPORT)
 int	Set_RadarShow_Proc(

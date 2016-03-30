@@ -43,126 +43,126 @@
 #define AES_CBC_IV_LENGTH 16
 
 typedef struct {
-    UINT8 State[AES_STATE_ROWS][AES_STATE_COLUMNS];
-    UINT8 KeyWordExpansion[AES_KEY_ROWS][AES_KEY_ROWS*((AES_KEY256_LENGTH >> 2) + 6 + 1)];
+    unsigned char State[AES_STATE_ROWS][AES_STATE_COLUMNS];
+    unsigned char KeyWordExpansion[AES_KEY_ROWS][AES_KEY_ROWS*((AES_KEY256_LENGTH >> 2) + 6 + 1)];
 } AES_CTX_STRUC, *PAES_CTX_STRUC;
 
 
 /* AES operations */
-VOID RT_AES_KeyExpansion (
-    IN UINT8 Key[],
-    IN UINT KeyLength,
-    INAES_CTX_STRUC *paes_ctx);
+void RT_AES_KeyExpansion (
+    IN unsigned char Key[],
+    IN unsigned int KeyLength,
+    IN AES_CTX_STRUC *paes_ctx);
 
-VOID RT_AES_Encrypt (
-    IN UINT8 PlainBlock[],
-    IN UINT PlainBlockSize,
-    IN UINT8 Key[],
-    IN UINT KeyLength,
-    UINT8 CipherBlock[],
-    INUINT *CipherBlockSize);
+void RT_AES_Encrypt (
+    IN unsigned char PlainBlock[],
+    IN unsigned int PlainBlockSize,
+    IN unsigned char Key[],
+    IN unsigned int KeyLength,
+    unsigned char CipherBlock[],
+    unsigned int *CipherBlockSize);
 
-VOID RT_AES_Decrypt (
-    IN UINT8 CipherBlock[],
-    IN UINT CipherBlockSize,
-    IN UINT8 Key[],
-    IN UINT KeyLength,
-    UINT8 PlainBlock[],
-    INUINT *PlainBlockSize);
+void RT_AES_Decrypt (
+    IN unsigned char CipherBlock[],
+    IN unsigned int CipherBlockSize,
+    IN unsigned char Key[],
+    IN unsigned int KeyLength,
+    unsigned char PlainBlock[],
+    unsigned int *PlainBlockSize);
 
 /* AES Counter with CBC-MAC operations */
-VOID AES_CCM_MAC (
-    IN UINT8 Payload[],
-    IN UINT  PayloadLength,
-    IN UINT8 Key[],
-    IN UINT  KeyLength,
-    IN UINT8 Nonce[],
-    IN UINT  NonceLength,
-    IN UINT8 AAD[],
-    IN UINT  AADLength,
-    IN UINT  MACLength,
-    UINT8 MACText[]);
+void AES_CCM_MAC (
+    IN unsigned char Payload[],
+    IN unsigned int  PayloadLength,
+    IN unsigned char Key[],
+    IN unsigned int  KeyLength,
+    IN unsigned char Nonce[],
+    IN unsigned int  NonceLength,
+    IN unsigned char AAD[],
+    IN unsigned int  AADLength,
+    IN unsigned int  MACLength,
+    unsigned char MACText[]);
 
-INT AES_CCM_Encrypt (
-    IN UINT8 PlainText[],
-    IN UINT  PlainTextLength,
-    IN UINT8 Key[],
-    IN UINT  KeyLength,
-    IN UINT8 Nonce[],
-    IN UINT  NonceLength,
-    IN UINT8 AAD[],
-    IN UINT  AADLength,
-    IN UINT  MACLength,
-    UINT8 CipherText[],
-    INUINT *CipherTextLength);
+int AES_CCM_Encrypt (
+    IN unsigned char Plaintext[],
+    IN unsigned int  PlaintextLength,
+    IN unsigned char Key[],
+    IN unsigned int  KeyLength,
+    IN unsigned char Nonce[],
+    IN unsigned int  NonceLength,
+    IN unsigned char AAD[],
+    IN unsigned int  AADLength,
+    IN unsigned int  MACLength,
+    unsigned char CipherText[],
+    unsigned int *CipherTextLength);
 
-INT AES_CCM_Decrypt (
-    IN UINT8 CipherText[],
-    IN UINT  CipherTextLength,
-    IN UINT8 Key[],
-    IN UINT  KeyLength,
-    IN UINT8 Nonce[],
-    IN UINT  NonceLength,
-    IN UINT8 AAD[],
-    IN UINT  AADLength,
-    IN UINT  MACLength,
-    UINT8 PlainText[],
-    INUINT *PlainTextLength);
+int AES_CCM_Decrypt (
+    IN unsigned char CipherText[],
+    IN unsigned int  CipherTextLength,
+    IN unsigned char Key[],
+    IN unsigned int  KeyLength,
+    IN unsigned char Nonce[],
+    IN unsigned int  NonceLength,
+    IN unsigned char AAD[],
+    IN unsigned int  AADLength,
+    IN unsigned int  MACLength,
+    unsigned char Plaintext[],
+    unsigned int *PlaintextLength);
 
 /* AES-CMAC operations */
-VOID AES_CMAC_GenerateSubKey (
-    IN UINT8 Key[],
-    IN UINT KeyLength,
-    UINT8 SubKey1[],
-    UINT8 SubKey2[]);
+void AES_CMAC_GenerateSubKey (
+    IN unsigned char Key[],
+    IN unsigned int KeyLength,
+    unsigned char SubKey1[],
+    unsigned char SubKey2[]);
 
-VOID AES_CMAC (
-    IN UINT8 PlainText[],
-    IN UINT PlainTextLength,
-    IN UINT8 Key[],
-    IN UINT KeyLength,
-    UINT8 MACText[],
-    INUINT *MACTextLength);
+void AES_CMAC (
+    IN unsigned char Plaintext[],
+    IN unsigned int PlaintextLength,
+    IN unsigned char Key[],
+    IN unsigned int KeyLength,
+    unsigned char MACText[],
+    unsigned int *MACTextLength);
 
 
 
 /* AES-CBC operations */
-VOID AES_CBC_Encrypt (
-    IN UINT8 PlainText[],
-    IN UINT PlainTextLength,
-    IN UINT8 Key[],
-    IN UINT KeyLength,
-    IN UINT8 IV[],
-    IN UINT IVLength,
-    UINT8 CipherText[],
-    INUINT *CipherTextLength);
+void AES_CBC_Encrypt (
+    IN unsigned char Plaintext[],
+    IN unsigned int PlaintextLength,
+    IN unsigned char Key[],
+    IN unsigned int KeyLength,
+    IN unsigned char IV[],
+    IN unsigned int IVLength,
+    unsigned char CipherText[],
+    unsigned int *CipherTextLength);
 
-VOID AES_CBC_Decrypt (
-    IN UINT8 CipherText[],
-    IN UINT CipherTextLength,
-    IN UINT8 Key[],
-    IN UINT KeyLength,
-    IN UINT8 IV[],
-    IN UINT IVLength,
-    UINT8 PlainText[],
-    INUINT *PlainTextLength);
+void AES_CBC_Decrypt (
+    IN unsigned char CipherText[],
+    IN unsigned int CipherTextLength,
+    IN unsigned char Key[],
+    IN unsigned int KeyLength,
+    IN unsigned char IV[],
+    IN unsigned int IVLength,
+    unsigned char Plaintext[],
+    unsigned int *PlaintextLength);
 
 /* AES key wrap operations */
-INT AES_Key_Wrap (
-    IN UINT8 PlainText[],
-    IN UINT  PlainTextLength,
-    IN UINT8 Key[],
-    IN UINT  KeyLength,
-    UINT8 CipherText[],
-    UINT *CipherTextLength);
+int AES_Key_Wrap (
+    IN unsigned char Plaintext[],
+    IN unsigned int  PlaintextLength,
+    IN unsigned char Key[],
+    IN unsigned int  KeyLength,
+    unsigned char CipherText[],
+    unsigned int *CipherTextLength);
         
-INT AES_Key_Unwrap (
-    IN UINT8 CipherText[],
-    IN UINT  CipherTextLength,
-    IN UINT8 Key[],
-    IN UINT  KeyLength,
-    UINT8 PlainText [],
-    UINT *PlainTextLength);
+int AES_Key_Unwrap (
+    IN unsigned char CipherText[],
+    IN unsigned int  CipherTextLength,
+    IN unsigned char Key[],
+    IN unsigned int  KeyLength,
+    unsigned char Plaintext [],
+    unsigned int *PlaintextLength);
 
 
 #endif /* __CRYPT_AES_H__ */

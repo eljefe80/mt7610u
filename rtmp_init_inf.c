@@ -42,9 +42,9 @@ RTMP_NET_ABL_OPS RtmpDrvNetOps, *pRtmpDrvNetOps = &RtmpDrvNetOps;
 RTMP_PCI_CONFIG RtmpPciConfig, *pRtmpPciConfig = &RtmpPciConfig;
 RTMP_USB_CONFIG RtmpUsbConfig, *pRtmpUsbConfig = &RtmpUsbConfig;
 
-VOID RtmpDrvOpsInit(
-	VOID *pDrvOpsOrg,
-	INVOID *pDrvNetOpsOrg,
+void RtmpDrvOpsInit(
+	void *pDrvOpsOrg,
+	void *pDrvNetOpsOrg,
 	IN RTMP_PCI_CONFIG *pPciConfig,
 	IN RTMP_USB_CONFIG *pUsbConfig)
 {
@@ -111,10 +111,10 @@ RTMP_BUILD_DRV_OPS_FUNCTION_BODY
 #endif /* LINUX */
 
 
-int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
+int rt28xx_init(void *pAdSrc, char* pDefaultMac, char* pHostName)
 {
 	RTMP_ADAPTER *pAd = (RTMP_ADAPTER *)pAdSrc;
-	UINT index;
+	unsigned int index;
 	NDIS_STATUS Status;
 	
 	if (pAd == NULL)
@@ -129,7 +129,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 	DBGPRINT(RT_DEBUG_OFF, ("MACVersion=0x%x\n", pAd->MACVersion));
 	if (IS_RT3290(pAd))
 	{
-		UINT32 MacRegValue;
+		unsigned int MacRegValue;
 		OSCCTL_STRUC osCtrl = {.word = 0};
 		CMB_CTRL_STRUC cmbCtrl = {.word = 0};
 		WLAN_FUN_CTRL_STRUC WlanFunCtrl = {.word = 0};
@@ -343,14 +343,14 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 #ifdef DOT11_N_SUPPORT
    	/*Init Ba Capability parameters.*/
 /*	RT28XX_BA_INIT(pAd);*/
-	pAd->CommonCfg.DesiredHtPhy.MpduDensity = (UCHAR)pAd->CommonCfg.BACapability.field.MpduDensity;
-	pAd->CommonCfg.DesiredHtPhy.AmsduEnable = (USHORT)pAd->CommonCfg.BACapability.field.AmsduEnable;
-	pAd->CommonCfg.DesiredHtPhy.AmsduSize = (USHORT)pAd->CommonCfg.BACapability.field.AmsduSize;
-	pAd->CommonCfg.DesiredHtPhy.MimoPs = (USHORT)pAd->CommonCfg.BACapability.field.MMPSmode;
+	pAd->CommonCfg.DesiredHtPhy.MpduDensity = (unsigned char)pAd->CommonCfg.BACapability.field.MpduDensity;
+	pAd->CommonCfg.DesiredHtPhy.AmsduEnable = (unsigned short)pAd->CommonCfg.BACapability.field.AmsduEnable;
+	pAd->CommonCfg.DesiredHtPhy.AmsduSize = (unsigned short)pAd->CommonCfg.BACapability.field.AmsduSize;
+	pAd->CommonCfg.DesiredHtPhy.MimoPs = (unsigned short)pAd->CommonCfg.BACapability.field.MMPSmode;
 	/* UPdata to HT IE*/
-	pAd->CommonCfg.HtCapability.HtCapInfo.MimoPs = (USHORT)pAd->CommonCfg.BACapability.field.MMPSmode;
-	pAd->CommonCfg.HtCapability.HtCapInfo.AMsduSize = (USHORT)pAd->CommonCfg.BACapability.field.AmsduSize;
-	pAd->CommonCfg.HtCapability.HtCapParm.MpduDensity = (UCHAR)pAd->CommonCfg.BACapability.field.MpduDensity;
+	pAd->CommonCfg.HtCapability.HtCapInfo.MimoPs = (unsigned short)pAd->CommonCfg.BACapability.field.MMPSmode;
+	pAd->CommonCfg.HtCapability.HtCapInfo.AMsduSize = (unsigned short)pAd->CommonCfg.BACapability.field.AmsduSize;
+	pAd->CommonCfg.HtCapability.HtCapParm.MpduDensity = (unsigned char)pAd->CommonCfg.BACapability.field.MpduDensity;
 #endif /* DOT11_N_SUPPORT */
 
 	/* after reading Registry, we now know if in AP mode or STA mode*/
@@ -358,7 +358,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 	DBGPRINT(RT_DEBUG_OFF, ("2. Phy Mode = %d\n", pAd->CommonCfg.PhyMode));
 
 	/* We should read EEPROM for all cases.  rt2860b*/
-	NICReadEEPROMParameters(pAd, (PSTRING)pDefaultMac);
+	NICReadEEPROMParameters(pAd, (char*)pDefaultMac);
 #ifdef CONFIG_STA_SUPPORT
 #endif /* CONFIG_STA_SUPPORT */
 
@@ -470,7 +470,7 @@ int rt28xx_init(VOID *pAdSrc, PSTRING pDefaultMac, PSTRING pHostName)
 
 	/* Set up the Mac address*/
 #ifdef CONFIG_STA_SUPPORT
-	RtmpOSNetDevAddrSet(pAd->OpMode, pAd->net_dev, &pAd->CurrentAddress[0], (PUCHAR)(pAd->StaCfg.dev_name));
+	RtmpOSNetDevAddrSet(pAd->OpMode, pAd->net_dev, &pAd->CurrentAddress[0], (unsigned char*)(pAd->StaCfg.dev_name));
 #endif /* CONFIG_STA_SUPPORT */
 
 	/* Various AP function init*/
@@ -614,11 +614,11 @@ err0:
 
 
 #ifdef CONFIG_STA_SUPPORT
-VOID RTMPDrvSTAOpen(
-	IN VOID *pAdSrc)
+void RTMPDrvSTAOpen(
+	IN void *pAdSrc)
 {
 	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdSrc;
-	UINT32 reg = 0;
+	unsigned int reg = 0;
 
 	RTMP_CLEAR_PSFLAG(pAd, fRTMP_PS_MCU_SLEEP);
 
@@ -676,13 +676,13 @@ VOID RTMPDrvSTAOpen(
 
 }
 
-VOID RTMPDrvSTAClose(
-	IN VOID *pAdSrc,
-	IN VOID *net_dev)
+void RTMPDrvSTAClose(
+	IN void *pAdSrc,
+	IN void *net_dev)
 {
 	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdSrc;
 	unsigned char Cancelled;
-	UINT32 i = 0;
+	unsigned int i = 0;
 	Cancelled = FALSE;
 
 #ifdef CREDENTIAL_STORE
@@ -836,8 +836,8 @@ VOID RTMPDrvSTAClose(
 }
 #endif
 
-VOID RTMPInfClose(
-	IN VOID				*pAdSrc)
+void RTMPInfClose(
+	IN void				*pAdSrc)
 {
 	PRTMP_ADAPTER	pAd = (PRTMP_ADAPTER)pAdSrc;
 
@@ -856,7 +856,7 @@ VOID RTMPInfClose(
 		/* send DLS-TEAR_DOWN message, */
 		if (pAd->CommonCfg.bDLSCapable)
 		{
-			UCHAR i;
+			unsigned char i;
 
 			/* tear down local dls table entry*/
 			for (i=0; i<MAX_NUM_OF_INIT_DLS_ENTRY; i++)
@@ -892,7 +892,7 @@ VOID RTMPInfClose(
 			MLME_DISASSOC_REQ_STRUCT	DisReq;
 			MLME_QUEUE_ELEM *MsgElem;/* = (MLME_QUEUE_ELEM *) kmalloc(sizeof(MLME_QUEUE_ELEM), MEM_ALLOC_FLAG);*/
     
-			os_alloc_mem(NULL, (UCHAR **)&MsgElem, sizeof(MLME_QUEUE_ELEM));
+			os_alloc_mem(NULL, (unsigned char **)&MsgElem, sizeof(MLME_QUEUE_ELEM));
 			if (MsgElem)
 			{
 			COPY_MAC_ADDR(DisReq.Addr, pAd->CommonCfg.Bssid);
@@ -948,11 +948,11 @@ VOID RTMPInfClose(
 
 
 PNET_DEV RtmpPhyNetDevMainCreate(
-	IN VOID				*pAdSrc)
+	IN void				*pAdSrc)
 {
 	PRTMP_ADAPTER pAd = (PRTMP_ADAPTER)pAdSrc;
 	PNET_DEV pDevNew;
-	UINT32 MC_RowID = 0, IoctlIF = 0;
+	unsigned int MC_RowID = 0, IoctlIF = 0;
 
 
 	pAd = pAd;
@@ -964,7 +964,7 @@ PNET_DEV RtmpPhyNetDevMainCreate(
 	IoctlIF = pAd->IoctlIF;
 #endif /* HOSTAPD_SUPPORT */
 
-	pDevNew = RtmpOSNetDevCreate((INT32)MC_RowID, (UINT32 *)&IoctlIF,
+	pDevNew = RtmpOSNetDevCreate((int)MC_RowID, (unsigned int *)&IoctlIF,
 					INT_MAIN, 0, sizeof(PRTMP_ADAPTER), INF_MAIN_DEV_NAME);
 
 #ifdef HOSTAPD_SUPPORT
@@ -980,12 +980,12 @@ static void	WriteConfToDatFile(
     IN  PRTMP_ADAPTER pAd)
 {
 	char	*cfgData = 0;
-	PSTRING			fileName = NULL;
+	char*			fileName = NULL;
 	RTMP_OS_FD		file_r, file_w;
 	RTMP_OS_FS_INFO		osFSInfo;
 	LONG			rv, fileLen = 0;
 	char			*offset = 0;
-	PSTRING			pTempStr = 0;
+	char*			pTempStr = 0;
 //	INT				tempStrLen = 0;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("-----> WriteConfToDatFile\n"));
@@ -1007,7 +1007,7 @@ static void	WriteConfToDatFile(
 		{
 			fileLen += rv;
 		}
-		os_alloc_mem(NULL, (UCHAR **)&cfgData, fileLen);
+		os_alloc_mem(NULL, (unsigned char **)&cfgData, fileLen);
 		if (cfgData == NULL)
 		{
 			RtmpOSFileClose(file_r);
@@ -1016,7 +1016,7 @@ static void	WriteConfToDatFile(
 		}
 		NdisZeroMemory(cfgData, fileLen);
 		RtmpOSFileSeek(file_r, 0);
-		rv = RtmpOSFileRead(file_r, (PSTRING)cfgData, fileLen);
+		rv = RtmpOSFileRead(file_r, (char*)cfgData, fileLen);
 		RtmpOSFileClose(file_r);
 		if (rv != fileLen)
 		{
@@ -1032,10 +1032,10 @@ static void	WriteConfToDatFile(
 	}
 	else 
 	{
-		offset = (PCHAR) rtstrstr((PSTRING) cfgData, "Default\n");
+		offset = (PCHAR) rtstrstr((char*) cfgData, "Default\n");
 		offset += strlen("Default\n");
-		RtmpOSFileWrite(file_w, (PSTRING)cfgData, (int)(offset-cfgData));
-		os_alloc_mem(NULL, (UCHAR **)&pTempStr, 512);
+		RtmpOSFileWrite(file_w, (char*)cfgData, (int)(offset-cfgData));
+		os_alloc_mem(NULL, (unsigned char **)&pTempStr, 512);
 		if (!pTempStr)
 		{
 			DBGPRINT(RT_DEBUG_TRACE, ("pTempStr kmalloc fail. (512)\n"));
@@ -1046,10 +1046,10 @@ static void	WriteConfToDatFile(
 		for (;;)
 		{
 			int i = 0;
-			PSTRING ptr;
+			char* ptr;
 
 			NdisZeroMemory(pTempStr, 512);
-			ptr = (PSTRING) offset;
+			ptr = (char*) offset;
 			while(*ptr && *ptr != '\n')
 			{
 				pTempStr[i++] = *ptr++;

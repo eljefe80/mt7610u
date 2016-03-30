@@ -34,9 +34,9 @@ obj_cmm := \
         cmm_cmd.o\
         uapsd.o\
 	ps.o\
-	rate_ctrl/ra_ctrl.o\
-        rate_ctrl/alg_legacy.o\
-        rate_ctrl/alg_ags.o\
+	ra_ctrl.o\
+        alg_legacy.o\
+        alg_ags.o\
 	rtmp_chip.o\
 		txpower.o\
 	rtmp_mac.o\

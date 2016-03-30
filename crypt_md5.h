@@ -37,23 +37,23 @@
 #define MD5_DIGEST_SIZE   16	/* 128 bits = 16 bytes */
 typedef struct {
 	unsigned int HashValue[4];
-	UINT64 MessageLen;
+	unsigned long MessageLen;
 	unsigned char Block[MD5_BLOCK_SIZE];
 	unsigned int BlockLen;
 } MD5_CTX_STRUC, *PMD5_CTX_STRUC;
 
-VOID RT_MD5_Init(
+void RT_MD5_Init(
 	MD5_CTX_STRUC * pMD5_CTX);
-VOID RT_MD5_Hash(
+void RT_MD5_Hash(
 	MD5_CTX_STRUC * pMD5_CTX);
-VOID RT_MD5_Append(
+void RT_MD5_Append(
 	MD5_CTX_STRUC * pMD5_CTX,
 	const unsigned char Message[],
-	UINT MessageLen);
-VOID RT_MD5_End(
+	unsigned int MessageLen);
+void RT_MD5_End(
 	MD5_CTX_STRUC * pMD5_CTX,
 	unsigned char DigestMessage[]);
-VOID RT_MD5(
+void RT_MD5(
 	const unsigned char Message[],
 	unsigned int MessageLen,
 	unsigned char DigestMessage[]);

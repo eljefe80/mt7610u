@@ -170,15 +170,15 @@ void PeerSpectrumAction(
  */
 int Set_MeasureReq_Proc(
 	IN	PRTMP_ADAPTER	pAd, 
-	IN	char*			arg);
+	IN	unsigned char*			arg);
 
 int Set_TpcReq_Proc(
 	IN	PRTMP_ADAPTER	pAd, 
-	IN	char*			arg);
+	IN	unsigned char*			arg);
 
 int Set_PwrConstraint(
 	IN	PRTMP_ADAPTER	pAd, 
-	IN	char*			arg);
+	IN	unsigned char*			arg);
 
 
 NDIS_STATUS	MeasureReqTabInit(
@@ -203,7 +203,7 @@ void InsertChannelRepIE(
 	IN PRTMP_ADAPTER pAd,
 	unsigned char* pFrameBuf,
 	unsigned long* pFrameLen,
-	IN char* pCountry,
+	IN unsigned char* pCountry,
 	IN unsigned char RegulatoryClass);
 
 void InsertTpcReportIE(

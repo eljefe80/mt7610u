@@ -32,9 +32,9 @@
 #ifdef CONFIG_STA_SUPPORT
 void AsicUpdateAutoFallBackTable(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	PUCHAR			pRateTable)
+	IN	unsigned char*			pRateTable)
 {
-	UCHAR					i;
+	unsigned char					i;
 	HT_FBK_CFG0_STRUC		HtCfg0;
 	HT_FBK_CFG1_STRUC		HtCfg1;
 	LG_FBK_CFG0_STRUC		LgCfg0;
@@ -100,7 +100,7 @@ void AsicUpdateAutoFallBackTable(
 #endif /* AGS_SUPPORT */
 		pNextTxRate = (RTMP_RA_LEGACY_TB *)pRateTable+1;
 
-	for (i = 1; i < *((PUCHAR) pRateTable); i++)
+	for (i = 1; i < *((unsigned char*) pRateTable); i++)
 	{
 #ifdef AGS_SUPPORT
 		if (bUseAGS)
@@ -319,16 +319,16 @@ typedef enum _PROT_REG_IDX_{
 
 void AsicUpdateProtect(
 	IN PRTMP_ADAPTER pAd,
-	IN USHORT OperationMode,
-	IN UCHAR SetMask,
+	IN unsigned short OperationMode,
+	IN unsigned char SetMask,
 	IN unsigned char bDisableBGProtect,
 	IN unsigned char bNonGFExist)	
 {
 	PROT_CFG_STRUC	ProtCfg, ProtCfg4;
-	UINT32 Protect[6];
-	USHORT offset;
-	UCHAR i, PhyMode = 0x4000;
-	UINT32 MacReg = 0;
+	unsigned int Protect[6];
+	unsigned short offset;
+	unsigned char i, PhyMode = 0x4000;
+	unsigned int MacReg = 0;
 
 #ifdef RALINK_ATE
 	if (ATE_ON(pAd))
@@ -773,10 +773,10 @@ void AsicBBPAdjust(RTMP_ADAPTER *pAd)
  */
 void AsicSwitchChannel(
 	IN RTMP_ADAPTER *pAd, 
-	IN UCHAR Channel,
+	IN unsigned char Channel,
 	IN unsigned char bScan) 
 {
-	UCHAR bw;
+	unsigned char bw;
 #ifdef CONFIG_STA_SUPPORT
 #ifdef CONFIG_PM
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
@@ -850,7 +850,7 @@ void AsicSwitchChannel(
  */
 void AsicLockChannel(
 	IN PRTMP_ADAPTER pAd, 
-	IN UCHAR Channel) 
+	IN unsigned char Channel) 
 {
 }
 
@@ -875,10 +875,10 @@ void InitLookupTable(
 	int band_nums = 1;
 	const int Offset = 7;
 	EEPROM_WORD_STRUC WordStruct = {{0}};
-	UCHAR PlusStepNum[IEEE80211_BAND_NUMS][8] = {{0, 1, 3, 2, 3, 3, 3, 2}, {0, 1, 3, 2, 3, 3, 3, 2}};
-	UCHAR MinusStepNum[IEEE80211_BAND_NUMS][8] = {{1, 1, 1, 1, 1, 1, 0, 1}, {1, 1, 1, 1, 1, 1, 0, 1}};
-	UCHAR Step[IEEE80211_BAND_NUMS] = {10, 10};
-	UCHAR RFValue = 0, BbpValue = 0;
+	unsigned char PlusStepNum[IEEE80211_BAND_NUMS][8] = {{0, 1, 3, 2, 3, 3, 3, 2}, {0, 1, 3, 2, 3, 3, 3, 2}};
+	unsigned char MinusStepNum[IEEE80211_BAND_NUMS][8] = {{1, 1, 1, 1, 1, 1, 0, 1}, {1, 1, 1, 1, 1, 1, 0, 1}};
+	unsigned char Step[IEEE80211_BAND_NUMS] = {10, 10};
+	unsigned char RFValue = 0, BbpValue = 0;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("==> InitLookupTable\n"));
 	
@@ -915,7 +915,7 @@ void InitLookupTable(
 	DBGPRINT(RT_DEBUG_TRACE, ("[temp. compensation 2.4G] EEPROM 76 = %x\n", WordStruct.word));
 	pAd->TxPowerCtrl.TssiGain[IEEE80211_BAND_2G] = (WordStruct.field.Byte0 & 0x0F);
 	Step[IEEE80211_BAND_2G] = (WordStruct.field.Byte0 >> 4);
-	pAd->TxPowerCtrl.RefTemp[IEEE80211_BAND_2G] = (CHAR)WordStruct.field.Byte1;
+	pAd->TxPowerCtrl.RefTemp[IEEE80211_BAND_2G] = (char)WordStruct.field.Byte1;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("[temp. compensation 2.4G] Plus = %u %u %u %u %u %u %u %u\n",
 		PlusStepNum[IEEE80211_BAND_2G][0],
@@ -977,7 +977,7 @@ void InitLookupTable(
 		DBGPRINT(RT_DEBUG_TRACE, ("[temp. compensation 5G] EEPROM dc = %x\n", WordStruct.word));
 		pAd->TxPowerCtrl.TssiGain[IEEE80211_BAND_5G] = (WordStruct.field.Byte0 & 0x0F);
 		Step[IEEE80211_BAND_5G] = (WordStruct.field.Byte0 >> 4);
-		pAd->TxPowerCtrl.RefTemp[IEEE80211_BAND_5G] = (CHAR)WordStruct.field.Byte1;
+		pAd->TxPowerCtrl.RefTemp[IEEE80211_BAND_5G] = (char)WordStruct.field.Byte1;
 
 		DBGPRINT(RT_DEBUG_TRACE, ("[temp. compensation 5G] Plus = %u %u %u %u %u %u %u %u\n",
 			PlusStepNum[IEEE80211_BAND_5G][0],
@@ -1087,10 +1087,10 @@ void InitLookupTable(
 
 void AsicGetAutoAgcOffsetForTemperatureSensor(
 	IN PRTMP_ADAPTER 		pAd,
-	IN PCHAR				pDeltaPwr,
-	IN PCHAR				pTotalDeltaPwr,
-	IN PCHAR				pAgcCompensate,
-	IN PCHAR 				pDeltaPowerByBbpR1)
+	IN char*				pDeltaPwr,
+	IN char*				pTotalDeltaPwr,
+	IN char*				pAgcCompensate,
+	IN char* 				pDeltaPowerByBbpR1)
 {
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
 	const TX_POWER_TUNING_ENTRY_STRUCT *TxPowerTuningTable;
@@ -1098,13 +1098,13 @@ void AsicGetAutoAgcOffsetForTemperatureSensor(
 	TX_POWER_TUNING_ENTRY_STRUCT *TxPowerTuningTableEntry1 = NULL; /* Ant1 */
 	BBP_R49_STRUC	BbpR49;
 	unsigned char			bAutoTxAgc = FALSE;
-	PCHAR			pTxAgcCompensate = NULL;
-	UCHAR 			RFValue = 0;
-	CHAR			TuningTableUpperBound = 0, TuningTableIndex0 = 0, TuningTableIndex1 = 0;
-	INT 				CurrentTemp = 0;
-	INT RefTemp;
-	INT *LookupTable;
-	INT	LookupTableIndex = pAd->TxPowerCtrl.LookupTableIndex + TEMPERATURE_COMPENSATION_LOOKUP_TABLE_OFFSET;
+	char*			pTxAgcCompensate = NULL;
+	unsigned char 			RFValue = 0;
+	char			TuningTableUpperBound = 0, TuningTableIndex0 = 0, TuningTableIndex1 = 0;
+	int 				CurrentTemp = 0;
+	int RefTemp;
+	int *LookupTable;
+	int LookupTableIndex = pAd->TxPowerCtrl.LookupTableIndex + TEMPERATURE_COMPENSATION_LOOKUP_TABLE_OFFSET;
 
 	DBGPRINT(RT_DEBUG_INFO, ("-->%s\n", __FUNCTION__));
 	
@@ -1141,15 +1141,15 @@ void AsicGetAutoAgcOffsetForTemperatureSensor(
 #ifdef RT65xx
 		if (IS_RT65XX(pAd))
 		{
-			UINT32 bbp_val;	
+			unsigned int bbp_val;	
 			RTMP_BBP_IO_READ32(pAd, CORE_R35, &bbp_val);
-			CurrentTemp = (UCHAR)(bbp_val & 0xff);
+			CurrentTemp = (unsigned char)(bbp_val & 0xff);
 		}
 		else
 #endif /* RT65xx */
 		{
 			RTMP_BBP_IO_READ8_BY_REG_ID(pAd, BBP_R49, &BbpR49.byte);
-			CurrentTemp = (CHAR)BbpR49.byte;
+			CurrentTemp = (char)BbpR49.byte;
 		}
 		DBGPRINT(RT_DEBUG_INFO, ("[temp. compensation] BBP_R49 = %02x, current temp = %d\n", BbpR49.byte, CurrentTemp));
 		DBGPRINT(RT_DEBUG_INFO, ("[temp. compensation] RefTemp = %d\n", RefTemp));
@@ -1265,7 +1265,7 @@ void AsicResetBBPAgent(PRTMP_ADAPTER pAd)
  */
 void AsicSleepThenAutoWakeup(
 	IN PRTMP_ADAPTER pAd, 
-	IN USHORT TbttNumToNextWakeUp) 
+	IN unsigned short TbttNumToNextWakeUp) 
 {
 	RTMP_STA_SLEEP_THEN_AUTO_WAKEUP(pAd, TbttNumToNextWakeUp);
 }
@@ -1315,17 +1315,17 @@ void AsicForceWakeup(
  */
 void AsicSetBssid(
 	IN PRTMP_ADAPTER pAd, 
-	IN PUCHAR pBssid) 
+	IN unsigned char* pBssid) 
 {
-	ULONG		  Addr4;
+	unsigned long 		  Addr4;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("===> AsicSetBssid %x:%x:%x:%x:%x:%x\n",
 				PRINT_MAC(pBssid)));
 	
-	Addr4 = (ULONG)(pBssid[0]) | 
-			(ULONG)(pBssid[1] << 8)  | 
-			(ULONG)(pBssid[2] << 16) |
-			(ULONG)(pBssid[3] << 24);
+	Addr4 = (unsigned long )(pBssid[0]) | 
+			(unsigned long )(pBssid[1] << 8)  | 
+			(unsigned long )(pBssid[2] << 16) |
+			(unsigned long )(pBssid[3] << 24);
 	RTMP_IO_WRITE32(pAd, MAC_BSSID_DW0, Addr4);
 
 #ifdef HDR_TRANS_SUPPORT
@@ -1334,7 +1334,7 @@ void AsicSetBssid(
 
 	Addr4 = 0;
 	/* always one BSSID in STA mode*/
-	Addr4 = (ULONG)(pBssid[4]) | (ULONG)(pBssid[5] << 8);
+	Addr4 = (unsigned long )(pBssid[4]) | (unsigned long )(pBssid[5] << 8);
 
 
 	RTMP_IO_WRITE32(pAd, MAC_BSSID_DW1, Addr4);
@@ -1366,7 +1366,7 @@ void AsicEnableRDG(
 	IN PRTMP_ADAPTER pAd) 
 {
 	TX_LINK_CFG_STRUC	TxLinkCfg;
-	UINT32				Data = 0;
+	unsigned int 			Data = 0;
 
 	RTMP_IO_READ32(pAd, TX_LINK_CFG, &TxLinkCfg.word);
 	TxLinkCfg.field.TxRDGEn = 1;
@@ -1390,7 +1390,7 @@ void AsicDisableRDG(
 	IN PRTMP_ADAPTER pAd) 
 {
 	TX_LINK_CFG_STRUC	TxLinkCfg;
-	UINT32				Data = 0;
+	unsigned int 			Data = 0;
 
 
 
@@ -1496,20 +1496,20 @@ void AsicEnableIbssSync(
 	IN PRTMP_ADAPTER pAd)
 {
 	BCN_TIME_CFG_STRUC csr9;
-	PUCHAR			ptr;
-	UINT i;
-	ULONG beaconBaseLocation = 0;
-	USHORT			beaconLen = (USHORT) pAd->BeaconTxWI.TxWIMPDUByteCnt;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
-	UINT32 longptr;
+	unsigned char*			ptr;
+	unsigned int i;
+	unsigned long  beaconBaseLocation = 0;
+	unsigned short 		beaconLen = (unsigned short) pAd->BeaconTxWI.TxWIMPDUByteCnt;
+	unsigned char TXWISize = pAd->chipCap.TXWISize;
+	unsigned int longptr;
 	
 #ifdef RT_BIG_ENDIAN
 	{
 	TXWI_STRUC		localTxWI;
 	
-	NdisMoveMemory((PUCHAR)&localTxWI, (PUCHAR)&pAd->BeaconTxWI, TXWISize);
-	RTMPWIEndianChange(pAd, (PUCHAR)&localTxWI, TYPE_TXWI);
-	beaconLen = (USHORT) localTxWI.TxWIMPDUByteCnt;
+	NdisMoveMemory((unsigned char*)&localTxWI, (unsigned char*)&pAd->BeaconTxWI, TXWISize);
+	RTMPWIEndianChange(pAd, (unsigned char*)&localTxWI, TYPE_TXWI);
+	beaconLen = (unsigned short) localTxWI.TxWIMPDUByteCnt;
 	}
 #endif /* RT_BIG_ENDIAN */
 
@@ -1528,7 +1528,7 @@ void AsicEnableIbssSync(
 
 #ifdef RTMP_MAC_USB
 	/* move BEACON TXD and frame content to on-chip memory*/
-	ptr = (PUCHAR)&pAd->BeaconTxWI;
+	ptr = (unsigned char*)&pAd->BeaconTxWI;
 	for (i=0; i < TXWISize; i+=2)
 	{
 		longptr =  *ptr + (*(ptr+1)<<8);
@@ -1887,8 +1887,8 @@ void 	AsicSetSlotTime(
 	IN PRTMP_ADAPTER pAd,
 	IN unsigned char bUseShortSlotTime) 
 {
-	ULONG	SlotTime;
-	UINT32	RegValue = 0;
+	unsigned long 	SlotTime;
+	unsigned int RegValue = 0;
 
 #ifdef CONFIG_STA_SUPPORT
 	if (pAd->CommonCfg.Channel > 14)
@@ -1962,18 +1962,18 @@ void 	AsicSetSlotTime(
 */
 void AsicAddSharedKeyEntry(
 	IN PRTMP_ADAPTER 	pAd,
-	IN UCHAR		 	BssIndex,
-	IN UCHAR		 	KeyIdx,
+	IN unsigned char		 	BssIndex,
+	IN unsigned char		 	KeyIdx,
 	IN PCIPHER_KEY		pCipherKey)
 {
-	ULONG offset; /*, csr0;*/
+	unsigned long  offset; /*, csr0;*/
 	SHAREDKEY_MODE_STRUC csr1;
-	UINT16 SharedKeyTableBase, SharedKeyModeBase;
+	unsigned short SharedKeyTableBase, SharedKeyModeBase;
 
-	PUCHAR		pKey = pCipherKey->Key;
-	PUCHAR		pTxMic = pCipherKey->TxMic;
-	PUCHAR		pRxMic = pCipherKey->RxMic;
-	UCHAR		CipherAlg = pCipherKey->CipherAlg;
+	unsigned char*		pKey = pCipherKey->Key;
+	unsigned char*		pTxMic = pCipherKey->TxMic;
+	unsigned char*		pRxMic = pCipherKey->RxMic;
+	unsigned char		CipherAlg = pCipherKey->CipherAlg;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("AsicAddSharedKeyEntry BssIndex=%d, KeyIdx=%d\n", BssIndex,KeyIdx));
 /*============================================================================================*/
@@ -2062,12 +2062,12 @@ void AsicAddSharedKeyEntry(
 /*	IRQL = DISPATCH_LEVEL*/
 void AsicRemoveSharedKeyEntry(
 	IN PRTMP_ADAPTER pAd,
-	IN UCHAR		 BssIndex,
-	IN UCHAR		 KeyIdx)
+	IN unsigned char		 BssIndex,
+	IN unsigned char		 KeyIdx)
 {
-	/*ULONG SecCsr0;*/
+	/*unsigned long  SecCsr0;*/
 	SHAREDKEY_MODE_STRUC csr1;
-	UINT16 SharedKeyTableBase, SharedKeyModeBase;
+	unsigned short SharedKeyTableBase, SharedKeyModeBase;
 
 	DBGPRINT(RT_DEBUG_TRACE,("AsicRemoveSharedKeyEntry: #%d \n", BssIndex*4 + KeyIdx));
 
@@ -2115,11 +2115,11 @@ void AsicRemoveSharedKeyEntry(
 
 void AsicUpdateWCIDIVEIV(
 	IN PRTMP_ADAPTER pAd,
-	IN USHORT		WCID,
-	IN ULONG        uIV,
-	IN ULONG        uEIV)
+	IN unsigned short 	WCID,
+	IN unsigned long         uIV,
+	IN unsigned long         uEIV)
 {
-	ULONG	offset;
+	unsigned long 	offset;
 
 	offset = MAC_IVEIV_TABLE_BASE + (WCID * HW_IVEIV_ENTRY_SIZE);
 
@@ -2133,11 +2133,11 @@ void AsicUpdateWCIDIVEIV(
 
 void AsicUpdateRxWCIDTable(
 	IN PRTMP_ADAPTER pAd,
-	IN USHORT		WCID,
-	IN PUCHAR        pAddr)
+	IN unsigned short 	WCID,
+	IN unsigned char*        pAddr)
 {
-	ULONG offset;
-	ULONG Addr;
+	unsigned long  offset;
+	unsigned long  Addr;
 	
 	offset = MAC_WCID_BASE + (WCID * HW_WCID_ENTRY_SIZE);	
 	Addr = pAddr[0] + (pAddr[1] << 8) +(pAddr[2] << 16) +(pAddr[3] << 24);
@@ -2164,16 +2164,16 @@ void AsicUpdateRxWCIDTable(
 
 	========================================================================
 */
-VOID	AsicUpdateWcidAttributeEntry(
+void	AsicUpdateWcidAttributeEntry(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	UCHAR			BssIdx,
-	IN 	UCHAR		 	KeyIdx,
-	IN 	UCHAR		 	CipherAlg,
-	IN	UINT8			Wcid,
-	IN	UINT8			KeyTabFlag)
+	IN	unsigned char			BssIdx,
+	IN 	unsigned char		 	KeyIdx,
+	IN 	unsigned char		 	CipherAlg,
+	IN	unsigned char 		Wcid,
+	IN	unsigned char 		KeyTabFlag)
 {
 	WCID_ATTRIBUTE_STRUC WCIDAttri;	
-	USHORT		offset;
+	unsigned short 	offset;
 
 	/* Initialize the content of WCID Attribue  */
 	WCIDAttri.word = 0;
@@ -2217,12 +2217,12 @@ VOID	AsicUpdateWcidAttributeEntry(
 
 	==========================================================================
  */
-void AsicDelWcidTab(RTMP_ADAPTER *pAd, UCHAR wcid_idx) 
+void AsicDelWcidTab(RTMP_ADAPTER *pAd, unsigned char wcid_idx) 
 {
-	UINT32 offset;
-	UCHAR cnt, cnt_s, cnt_e;
+	unsigned int offset;
+	unsigned char cnt, cnt_s, cnt_e;
 #ifdef MCS_LUT_SUPPORT
-	UCHAR mcs_tb_offset = 0;
+	unsigned char mcs_tb_offset = 0;
 #endif /* MCS_LUT_SUPPORT */
 
 
@@ -2266,15 +2266,15 @@ void AsicDelWcidTab(RTMP_ADAPTER *pAd, UCHAR wcid_idx)
 */
 void AsicAddPairwiseKeyEntry(
 	IN PRTMP_ADAPTER 	pAd,
-	IN UCHAR			WCID,
+	IN unsigned char			WCID,
 	IN PCIPHER_KEY		pCipherKey)
 {
-	INT i;
-	ULONG 		offset;
-	PUCHAR		 pKey = pCipherKey->Key;
-	PUCHAR		 pTxMic = pCipherKey->TxMic;
-	PUCHAR		 pRxMic = pCipherKey->RxMic;
-	UCHAR		CipherAlg = pCipherKey->CipherAlg;
+	int i;
+	unsigned long  		offset;
+	unsigned char*		 pKey = pCipherKey->Key;
+	unsigned char*		 pTxMic = pCipherKey->TxMic;
+	unsigned char*		 pRxMic = pCipherKey->RxMic;
+	unsigned char		CipherAlg = pCipherKey->CipherAlg;
 
 	/* EKEY*/
 	offset = PAIRWISE_KEY_TABLE_BASE + (WCID * HW_KEY_ENTRY_SIZE);
@@ -2283,7 +2283,7 @@ void AsicAddPairwiseKeyEntry(
 #endif /* RTMP_MAC_USB */
 	for (i=0; i<MAX_LEN_OF_PEER_KEY; i+=4)
 	{
-		UINT32 Value;
+		unsigned int Value;
 		RTMP_IO_READ32(pAd, offset + i, &Value);
 	}
 
@@ -2328,7 +2328,7 @@ void AsicAddPairwiseKeyEntry(
 */	
 void AsicRemovePairwiseKeyEntry(
 	IN PRTMP_ADAPTER pAd,
-	IN UCHAR		 Wcid)
+	IN unsigned char		 Wcid)
 {
 	/* Set the specific WCID attribute entry as OPEN-NONE */
 	AsicUpdateWcidAttributeEntry(pAd, 
@@ -2343,10 +2343,10 @@ void AsicRemovePairwiseKeyEntry(
 
 unsigned char AsicSendCommandToMcu(
 	IN RTMP_ADAPTER *pAd,
-	IN UCHAR Command,
-	IN UCHAR Token,
-	IN UCHAR Arg0,
-	IN UCHAR Arg1,
+	IN unsigned char Command,
+	IN unsigned char Token,
+	IN unsigned char Arg0,
+	IN unsigned char Arg1,
 	IN unsigned char in_atomic)
 {
 #ifdef RT65xx
@@ -2364,10 +2364,10 @@ unsigned char AsicSendCommandToMcu(
 
 unsigned char AsicSendCommandToMcuBBP(
 	IN PRTMP_ADAPTER pAd,
-	IN UCHAR		 Command,
-	IN UCHAR		 Token,
-	IN UCHAR		 Arg0,
-	IN UCHAR		 Arg1,
+	IN unsigned char		 Command,
+	IN unsigned char		 Token,
+	IN unsigned char		 Arg0,
+	IN unsigned char		 Arg1,
 	IN unsigned char		FlgIsNeedLocked)
 {
 #ifdef RT65xx
@@ -2396,7 +2396,7 @@ unsigned char AsicSendCommandToMcuBBP(
  */
 void AsicSetRxAnt(
 	IN PRTMP_ADAPTER	pAd,
-	IN UCHAR			Ant)
+	IN unsigned char			Ant)
 {
 	if (pAd->chipOps.SetRxAnt)
 		pAd->chipOps.SetRxAnt(pAd, Ant);
@@ -2405,7 +2405,7 @@ void AsicSetRxAnt(
 
 void AsicTurnOffRFClk(
 	IN PRTMP_ADAPTER pAd, 
-	IN	UCHAR		Channel) 
+	IN	unsigned char		Channel) 
 {
 	if (pAd->chipOps.AsicRfTurnOff)
 	{
@@ -2415,8 +2415,8 @@ void AsicTurnOffRFClk(
 	{
 #if defined(RT28xx) || defined(RT2880) || defined(RT2883)
 		/* RF R2 bit 18 = 0*/
-		UINT32			R1 = 0, R2 = 0, R3 = 0;
-		UCHAR			index;
+		unsigned int 		R1 = 0, R2 = 0, R3 = 0;
+		unsigned char			index;
 		RTMP_RF_REGS	*RFRegTable;
 	
 		RFRegTable = RF2850RegTable;
@@ -2476,10 +2476,10 @@ void AsicTurnOffRFClk(
 
 #ifdef STREAM_MODE_SUPPORT
 // StreamModeRegVal - return MAC reg value for StreamMode setting
-UINT32 StreamModeRegVal(
+unsigned int StreamModeRegVal(
 	IN RTMP_ADAPTER *pAd)
 {
-	UINT32 streamWord;
+	unsigned int streamWord;
 
 	switch (pAd->CommonCfg.StreamMode)
 	{
@@ -2517,12 +2517,12 @@ UINT32 StreamModeRegVal(
 */
 void AsicSetStreamMode(
 	IN RTMP_ADAPTER *pAd,
-	IN PUCHAR pMacAddr,
-	IN INT chainIdx,
+	IN unsigned char* pMacAddr,
+	IN int chainIdx,
 	IN unsigned char bEnabled)
 {
-	UINT32 streamWord;
-	UINT32 regAddr, regVal;
+	unsigned int streamWord;
+	unsigned int regAddr, regVal;
 
 	
 	if (!pAd->chipCap.FlgHwStreamMode)
@@ -2534,17 +2534,17 @@ void AsicSetStreamMode(
 
 	regAddr = TX_CHAIN_ADDR0_L + chainIdx * 8;
 	RTMP_IO_WRITE32(pAd, regAddr,  
-					(UINT32)(pMacAddr[0]) | 
-					(UINT32)(pMacAddr[1] << 8)  | 
-					(UINT32)(pMacAddr[2] << 16) | 
-					(UINT32)(pMacAddr[3] << 24));
+					(unsigned int)(pMacAddr[0]) | 
+					(unsigned int)(pMacAddr[1] << 8)  | 
+					(unsigned int)(pMacAddr[2] << 16) | 
+					(unsigned int)(pMacAddr[3] << 24));
 	
 	RTMP_IO_READ32(pAd, regAddr + 4, &regVal);
 	regVal &= (~0x000f0000);
 	RTMP_IO_WRITE32(pAd, regAddr + 4, 
 					(regVal | streamWord) | 
-					(UINT32)(pMacAddr[4]) | 
-					(UINT32)(pMacAddr[5] << 8));
+					(unsigned int)(pMacAddr[4]) | 
+					(unsigned int)(pMacAddr[5] << 8));
 	
 }
 
@@ -2553,7 +2553,7 @@ void RtmpStreamModeInit(
 	IN RTMP_ADAPTER *pAd)
 {
 	int chainIdx;
-	UCHAR *pMacAddr;
+	unsigned char *pMacAddr;
 
 	if (pAd->chipCap.FlgHwStreamMode == FALSE)
 		return;	
@@ -2579,7 +2579,7 @@ void RtmpStreamModeInit(
 void AsicEnableRalinkBurstMode(
 	IN PRTMP_ADAPTER pAd) 
 {
-	UINT32				Data = 0;
+	unsigned int 			Data = 0;
 
 	RTMP_IO_READ32(pAd, EDCA_AC0_CFG, &Data);
 	pAd->CommonCfg.RestoreBurstMode = Data;
@@ -2599,7 +2599,7 @@ void AsicEnableRalinkBurstMode(
 void AsicDisableRalinkBurstMode(
 	IN PRTMP_ADAPTER pAd) 
 {
-	UINT32				Data = 0;
+	unsigned int 			Data = 0;
 
 	RTMP_IO_READ32(pAd, EDCA_AC0_CFG, &Data);
 
@@ -2645,28 +2645,28 @@ void AsicLoadWOWFirmware(
  * the null frame includes TxWI and 802.11 header 						*/
 void AsicWOWSendNullFrame(
 	IN PRTMP_ADAPTER pAd,
-	IN UCHAR TxRate,
+	IN unsigned char TxRate,
 	IN unsigned char bQosNull)
 {
 	
 	TXWI_STRUC *TxWI;
-	PUCHAR NullFrame;
-	UINT8  packet_len;
-	PUCHAR ptr;
-	USHORT offset;
-	UINT32 cipher = pAd->StaCfg.GroupCipher;
-	UINT32 Value;
-	UINT8 TXWISize = pAd->chipCap.TXWISize;
+	unsigned char* NullFrame;
+	unsigned char  packet_len;
+	unsigned char* ptr;
+	unsigned short offset;
+	unsigned int cipher = pAd->StaCfg.GroupCipher;
+	unsigned int Value;
+	unsigned char TXWISize = pAd->chipCap.TXWISize;
 	
 
 	ComposeNullFrame(pAd);	
 	TxWI = (TXWI_STRUC *)&pAd->NullContext.TransferBuffer->field.WirelessPacket[TXINFO_SIZE];
-	NullFrame = (PUCHAR)&pAd->NullFrame;
+	NullFrame = (unsigned char*)&pAd->NullFrame;
 	packet_len = TxWI->TxWIMPDUByteCnt;
 
 	DBGPRINT(RT_DEBUG_OFF, ("TxWI:\n"));
 	/* copy TxWI to MCU memory */
-	ptr = (PUCHAR)TxWI;
+	ptr = (unsigned char*)TxWI;
 	for (offset = 0; offset < TXWISize; offset += 4)  
 	{
 		RTMPMoveMemory(&Value, ptr+offset, 4);
@@ -2676,7 +2676,7 @@ void AsicWOWSendNullFrame(
 
 	DBGPRINT(RT_DEBUG_OFF, ("802.11 header:\n"));
 	/* copy 802.11 header to memory */
-	ptr = (PUCHAR)NullFrame;
+	ptr = (unsigned char*)NullFrame;
 	for (offset = 0; offset < packet_len; offset += 4)
 	{
 		RTMPMoveMemory(&Value, ptr+offset, 4);
@@ -2705,9 +2705,9 @@ void AsicWOWSendNullFrame(
 #endif /* WOW_SUPPORT */
 
 
-INT AsicSetPreTbttInt(RTMP_ADAPTER *pAd, unsigned char enable)
+int AsicSetPreTbttInt(RTMP_ADAPTER *pAd, unsigned char enable)
 {
-	UINT32 val;
+	unsigned int val;
 	
 	RTMP_IO_READ32(pAd, INT_TIMER_CFG, &val);
 	val &= 0xffff0000;
@@ -2722,9 +2722,9 @@ INT AsicSetPreTbttInt(RTMP_ADAPTER *pAd, unsigned char enable)
 }
 
 
-unsigned char AsicWaitPDMAIdle(struct _RTMP_ADAPTER *pAd, INT round, INT wait_us)
+unsigned char AsicWaitPDMAIdle(struct _RTMP_ADAPTER *pAd, int round, int wait_us)
 {
-	INT i = 0;
+	int i = 0;
 	WPDMA_GLO_CFG_STRUC GloCfg;
 
 
@@ -2753,12 +2753,12 @@ unsigned char AsicWaitPDMAIdle(struct _RTMP_ADAPTER *pAd, INT round, INT wait_us
 #else
 #define MAX_AGG_CNT	8
 #endif
-INT AsicReadAggCnt(RTMP_ADAPTER *pAd, ULONG *aggCnt, int cnt_len)
+int AsicReadAggCnt(RTMP_ADAPTER *pAd, unsigned long  *aggCnt, int cnt_len)
 {
-	UINT32 reg_addr;
+	unsigned int reg_addr;
 	TX_AGG_CNT_STRUC reg_val;
 	int i, cnt, seg;
-	static USHORT aggReg[] = {
+	static unsigned short aggReg[] = {
 						TX_AGG_CNT, TX_AGG_CNT3,
 #if MAX_AGG_CNT > 8
 						TX_AGG_CNT4, TX_AGG_CNT7,
@@ -2769,8 +2769,8 @@ INT AsicReadAggCnt(RTMP_ADAPTER *pAd, ULONG *aggCnt, int cnt_len)
 	};
 
 
-	NdisZeroMemory(aggCnt, cnt_len * sizeof(ULONG));
-	seg = (sizeof(aggReg) /sizeof(USHORT));
+	NdisZeroMemory(aggCnt, cnt_len * sizeof(unsigned long ));
+	seg = (sizeof(aggReg) /sizeof(unsigned short));
 
 	cnt = 0;
 	for (i = 0; i < seg; i += 2)
@@ -2797,7 +2797,7 @@ INT AsicReadAggCnt(RTMP_ADAPTER *pAd, ULONG *aggCnt, int cnt_len)
 #endif /* DOT11_N_SUPPORT */
 
 
-INT AsicSetChannel(RTMP_ADAPTER *pAd, UCHAR ch, UCHAR bw, UCHAR ext_ch, unsigned char bScan)
+int AsicSetChannel(RTMP_ADAPTER *pAd, unsigned char ch, unsigned char bw, unsigned char ext_ch, unsigned char bScan)
 {
 	rtmp_bbp_set_bw(pAd, bw);
 
@@ -2828,22 +2828,22 @@ INT AsicSetChannel(RTMP_ADAPTER *pAd, UCHAR ch, UCHAR bw, UCHAR ext_ch, unsigned
  */
 void AsicSetApCliBssid(
 	IN PRTMP_ADAPTER pAd, 
-	IN PUCHAR pBssid,
-	IN UCHAR index) 
+	IN unsigned char* pBssid,
+	IN unsigned char index) 
 {
-	UINT32		  Addr4 = 0;
+	unsigned int 	  Addr4 = 0;
 	
 	DBGPRINT(RT_DEBUG_TRACE, ("===> AsicSetApCliBssid %x:%x:%x:%x:%x:%x\n",
 				PRINT_MAC(pBssid)));
 	
-	Addr4 = (UINT32)(pBssid[0]) | 
-			(UINT32)(pBssid[1] << 8)  | 
-			(UINT32)(pBssid[2] << 16) |
-			(UINT32)(pBssid[3] << 24);
+	Addr4 = (unsigned int)(pBssid[0]) | 
+			(unsigned int)(pBssid[1] << 8)  | 
+			(unsigned int)(pBssid[2] << 16) |
+			(unsigned int)(pBssid[3] << 24);
 	RTMP_IO_WRITE32(pAd, MAC_APCLI_BSSID_DW0, Addr4);
 
 	Addr4 = 0;
-	Addr4 = (ULONG)(pBssid[4]) | (ULONG)(pBssid[5] << 8);
+	Addr4 = (unsigned long )(pBssid[4]) | (unsigned long )(pBssid[5] << 8);
 	/* Enable APCLI mode */
 	Addr4 |= 0x10000;
 
@@ -2862,22 +2862,22 @@ void AsicSetApCliBssid(
  */
 void AsicSetExtendedMacAddr(
 	IN PRTMP_ADAPTER pAd, 
-	IN PUCHAR pMacAddr,
-	IN UINT32 Idx) 
+	IN unsigned char* pMacAddr,
+	IN unsigned int Idx) 
 {
-	UINT32		  Addr4 = 0;
+	unsigned int 	  Addr4 = 0;
 	
 	DBGPRINT(RT_DEBUG_TRACE, ("===> AsicSetExtendedMacAddr %x:%x:%x:%x:%x:%x\n",
 				PRINT_MAC(pMacAddr)));
 	
-	Addr4 = (UINT32)(pMacAddr[0]) | 
-			(UINT32)(pMacAddr[1] << 8)  | 
-			(UINT32)(pMacAddr[2] << 16) |
-			(UINT32)(pMacAddr[3] << 24);
+	Addr4 = (unsigned int)(pMacAddr[0]) | 
+			(unsigned int)(pMacAddr[1] << 8)  | 
+			(unsigned int)(pMacAddr[2] << 16) |
+			(unsigned int)(pMacAddr[3] << 24);
 	RTMP_IO_WRITE32(pAd, MAC_ADDR_EXT0_31_0 + (Idx*8), Addr4);
 
 	Addr4 = 0;
-	Addr4 = (ULONG)(pMacAddr[4]) | (ULONG)(pMacAddr[5] << 8);
+	Addr4 = (unsigned long )(pMacAddr[4]) | (unsigned long )(pMacAddr[5] << 8);
 	/* Enable APCLI mode */
 	Addr4 |= 0x10000;
 

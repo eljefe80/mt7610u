@@ -185,7 +185,7 @@ typedef enum _CMD_RTPRIV_IOCTL_COMMON {
 //#ifdef CONFIG_PM
 //#ifdef USB_SUPPORT_SELECTIVE_SUSPEND
 	CMD_RTPRIV_IOCTL_USB_DEV_GET,
-	CMD_RTPRIV_IOCTL_USB_intF_GET,
+	CMD_RTPRIV_IOCTL_USB_INTF_GET,
 	CMD_RTPRIV_IOCTL_ADAPTER_SUSPEND_SET,
 	CMD_RTPRIV_IOCTL_ADAPTER_SUSPEND_CLEAR,
 	CMD_RTPRIV_IOCTL_ADAPTER_SEND_DISSASSOCIATE,
@@ -401,7 +401,7 @@ typedef struct __CMD_RTPRIV_IOCTL_80211_CHAN {
 
 typedef struct __CMD_RTPRIV_IOCTL_80211_IBSS {
 
-	unsigned int Beaconinterval;
+	unsigned int BeaconInterval;
 	unsigned char *pSsid;
 } CMD_RTPRIV_IOCTL_80211_IBSS;
 
@@ -585,8 +585,8 @@ unsigned short Reason;
 } RT_CMD_MBSS_KICKOUT;
 
 typedef struct __RT_CMD_USB_MORE_FLAG_CONFIG {
-unsigned intVendorID;
-unsigned intProductID;
+unsigned int VendorID;
+unsigned int ProductID;
 } RT_CMD_USB_MORE_FLAG_CONFIG;
 
 typedef struct __RT_CMD_USB_DEV_CONFIG {

@@ -94,7 +94,7 @@ CH_FREQ_MAP CH_HZ_ID_MAP[]=
 			{216, 5080},	/* Japan, means J16 */
 };
 
-INT	CH_HZ_ID_MAP_NUM = (sizeof(CH_HZ_ID_MAP)/sizeof(CH_FREQ_MAP));
+int	CH_HZ_ID_MAP_NUM = (sizeof(CH_HZ_ID_MAP)/sizeof(CH_FREQ_MAP));
 
 CH_DESC Country_Region0_ChDesc_2GHZ[] =
 {
@@ -180,7 +180,7 @@ COUNTRY_REGION_CH_DESC Country_Region_ChDesc_2GHZ[] =
 	{}
 };
 
-UINT16 const Country_Region_GroupNum_2GHZ = sizeof(Country_Region_ChDesc_2GHZ) / sizeof(COUNTRY_REGION_CH_DESC);
+unsigned short const Country_Region_GroupNum_2GHZ = sizeof(Country_Region_ChDesc_2GHZ) / sizeof(COUNTRY_REGION_CH_DESC);
 
 CH_DESC Country_Region0_ChDesc_5GHZ[] =
 {
@@ -376,11 +376,11 @@ COUNTRY_REGION_CH_DESC Country_Region_ChDesc_5GHZ[] =
 	{}
 };
 
-UINT16 const Country_Region_GroupNum_5GHZ = sizeof(Country_Region_ChDesc_5GHZ) / sizeof(COUNTRY_REGION_CH_DESC);
+unsigned short const Country_Region_GroupNum_5GHZ = sizeof(Country_Region_ChDesc_5GHZ) / sizeof(COUNTRY_REGION_CH_DESC);
 
-UINT16 TotalChNum(PCH_DESC pChDesc)
+unsigned short TotalChNum(PCH_DESC pChDesc)
 {
-	UINT16 TotalChNum = 0;
+	unsigned short TotalChNum = 0;
 	
 	while(pChDesc->FirstChannel)
 	{
@@ -391,7 +391,7 @@ UINT16 TotalChNum(PCH_DESC pChDesc)
 	return TotalChNum;
 }
 
-UCHAR GetChannel_5GHZ(PCH_DESC pChDesc, UCHAR index)
+unsigned char GetChannel_5GHZ(PCH_DESC pChDesc, unsigned char index)
 {
 	while (pChDesc->FirstChannel)
 	{
@@ -407,7 +407,7 @@ UCHAR GetChannel_5GHZ(PCH_DESC pChDesc, UCHAR index)
 	return 0;
 }
 
-UCHAR GetChannel_2GHZ(PCH_DESC pChDesc, UCHAR index)
+unsigned char GetChannel_2GHZ(PCH_DESC pChDesc, unsigned char index)
 {
 
 	while (pChDesc->FirstChannel)
@@ -424,7 +424,7 @@ UCHAR GetChannel_2GHZ(PCH_DESC pChDesc, UCHAR index)
 	return 0;
 }
 
-UCHAR GetChannelFlag(PCH_DESC pChDesc, UCHAR index)
+unsigned char GetChannelFlag(PCH_DESC pChDesc, unsigned char index)
 {
 
 	while (pChDesc->FirstChannel)
@@ -1597,9 +1597,9 @@ CH_REGION ChRegion[] =
 };
 
 static PCH_REGION GetChRegion(
-	IN PUCHAR CntryCode)
+	IN unsigned char* CntryCode)
 {
-	INT loop = 0;
+	int loop = 0;
 	PCH_REGION pChRegion = NULL;
 
 	while (strcmp((PSTRING) ChRegion[loop].CountReg, "") != 0)
@@ -1619,9 +1619,9 @@ static PCH_REGION GetChRegion(
 	return pChRegion;
 }
 
-static VOID ChBandCheck(
-	IN UCHAR PhyMode,
-	PUCHAR pChType)
+static void ChBandCheck(
+	IN unsigned char PhyMode,
+	unsigned char* pChType)
 {
 	*pChType = 0;
 	if (WMODE_CAP_5G(PhyMode))
@@ -1633,15 +1633,15 @@ static VOID ChBandCheck(
 		*pChType = BAND_24G;
 }
 
-static UCHAR FillChList(
+static unsigned char FillChList(
 	IN PRTMP_ADAPTER pAd,
 	IN PCH_DESP pChDesp,
-	IN UCHAR Offset, 
-	IN UCHAR increment,
-	IN UCHAR regulatoryDomain)
+	IN unsigned char Offset, 
+	IN unsigned char increment,
+	IN unsigned char regulatoryDomain)
 {
-	INT i, j, l;
-	UCHAR channel;
+	int i, j, l;
+	unsigned char channel;
 
 	j = Offset;
 	for (i = 0; i < pChDesp->NumOfCh; i++)
@@ -1700,17 +1700,17 @@ static UCHAR FillChList(
 }
 
 
-static inline VOID CreateChList(
+static inline void CreateChList(
 	IN PRTMP_ADAPTER pAd,
 	IN PCH_REGION pChRegion,
-	IN UCHAR Geography)
+	IN unsigned char Geography)
 {
-	INT i;
-	UCHAR offset = 0;
+	int i;
+	unsigned char offset = 0;
 	PCH_DESP pChDesp;
-	UCHAR ChType;
-	UCHAR increment;
-	UCHAR regulatoryDomain;
+	unsigned char ChType;
+	unsigned char increment;
+	unsigned char regulatoryDomain;
 
 	if (pChRegion == NULL)
 		return;
@@ -1756,7 +1756,7 @@ static inline VOID CreateChList(
 }
 
 
-VOID BuildChannelListEx(
+void BuildChannelListEx(
 	IN PRTMP_ADAPTER pAd)
 {
 	PCH_REGION pChReg;
@@ -1765,16 +1765,16 @@ VOID BuildChannelListEx(
 	CreateChList(pAd, pChReg, pAd->CommonCfg.Geography);
 }
 
-VOID BuildBeaconChList(
+void BuildBeaconChList(
 	IN PRTMP_ADAPTER pAd,
-	PUCHAR pBuf,
-	OUT	PULONG pBufLen)
+	unsigned char* pBuf,
+	OUT	Punsigned long pBufLen)
 {
-	INT i;
-	ULONG TmpLen;
+	int i;
+	unsigned long TmpLen;
 	PCH_REGION pChRegion;
 	PCH_DESP pChDesp;
-	UCHAR ChType;
+	unsigned char ChType;
 
 	pChRegion = GetChRegion(pAd->CommonCfg.CountryCode);
 
@@ -1822,10 +1822,10 @@ VOID BuildBeaconChList(
 #ifdef DOT11_N_SUPPORT
 static unsigned char IsValidChannel(
 	IN PRTMP_ADAPTER pAd,
-	IN UCHAR channel)
+	IN unsigned char channel)
 
 {
-	INT i;
+	int i;
 
 	for (i = 0; i < pAd->ChannelListNum; i++)
 	{
@@ -1839,11 +1839,11 @@ static unsigned char IsValidChannel(
 		return TRUE;
 }
 
-static UCHAR GetExtCh(
-	IN UCHAR Channel,
-	IN UCHAR Direction)
+static unsigned char GetExtCh(
+	IN unsigned char Channel,
+	IN unsigned char Direction)
 {
-	CHAR ExtCh;
+	char ExtCh;
 
 	if (Direction == EXTCHA_ABOVE)
 		ExtCh = Channel + 4;
@@ -1855,7 +1855,7 @@ static UCHAR GetExtCh(
 
 unsigned char N_ChannelGroupCheck(
 	IN PRTMP_ADAPTER pAd,
-	IN UCHAR Channel)
+	IN unsigned char Channel)
 {
 	unsigned char	RetVal = FALSE;
 	
@@ -1876,7 +1876,7 @@ unsigned char N_ChannelGroupCheck(
 	{
 		do
 		{
-			UCHAR ExtCh;
+			unsigned char ExtCh;
 
 			if (Channel == 14)
 			{
@@ -1900,11 +1900,11 @@ unsigned char N_ChannelGroupCheck(
 }
 
 
-VOID N_ChannelCheck(RTMP_ADAPTER *pAd)
+void N_ChannelCheck(RTMP_ADAPTER *pAd)
 {
-	INT idx;
-	UCHAR Channel = pAd->CommonCfg.Channel;
-	static const UCHAR wfa_ht_ch_ext[] = {
+	int idx;
+	unsigned char Channel = pAd->CommonCfg.Channel;
+	static const unsigned char wfa_ht_ch_ext[] = {
 			36, EXTCHA_ABOVE, 40, EXTCHA_BELOW,
 			44, EXTCHA_ABOVE, 48, EXTCHA_BELOW,
 			52, EXTCHA_ABOVE, 56, EXTCHA_BELOW,
@@ -1938,8 +1938,8 @@ VOID N_ChannelCheck(RTMP_ADAPTER *pAd)
 		{
 			do
 			{
-				UCHAR ExtCh;
-				UCHAR Dir = pAd->CommonCfg.RegTransmitSetting.field.EXTCHA;
+				unsigned char ExtCh;
+				unsigned char Dir = pAd->CommonCfg.RegTransmitSetting.field.EXTCHA;
 				ExtCh = GetExtCh(Channel, Dir);
 				if (IsValidChannel(pAd, ExtCh))
 					break;
@@ -1964,7 +1964,7 @@ VOID N_ChannelCheck(RTMP_ADAPTER *pAd)
 }
 
 
-UCHAR N_SetCenCh(RTMP_ADAPTER *pAd, UCHAR prim_ch)
+unsigned char N_SetCenCh(RTMP_ADAPTER *pAd, unsigned char prim_ch)
 {
 	if (pAd->CommonCfg.RegTransmitSetting.field.BW == BW_40)
 	{
@@ -1986,9 +1986,9 @@ UCHAR N_SetCenCh(RTMP_ADAPTER *pAd, UCHAR prim_ch)
 #endif /* DOT11_N_SUPPORT */
 
 
-UINT8 GetCuntryMaxTxPwr(
+unsigned char GetCuntryMaxTxPwr(
 	IN PRTMP_ADAPTER pAd,
-	IN UINT8 channel)
+	IN unsigned char channel)
 {
 	int i;
 	for (i = 0; i < pAd->ChannelListNum; i++)
@@ -2002,7 +2002,7 @@ UINT8 GetCuntryMaxTxPwr(
 #ifdef SINGLE_SKU
 	if (pAd->CommonCfg.bSKUMode == TRUE)
 	{
-		UINT deltaTxStreamPwr = 0;
+		unsigned int deltaTxStreamPwr = 0;
 
 #ifdef DOT11_N_SUPPORT
 		if (WMODE_CAP_N(pAd->CommonCfg.PhyMode) && (pAd->CommonCfg.TxStream == 2))
@@ -2035,9 +2035,9 @@ UINT8 GetCuntryMaxTxPwr(
 
 
 /* for OS_ABL */
-VOID RTMP_MapChannelID2KHZ(
-	IN UCHAR Ch,
-	UINT32 *pFreq)
+void RTMP_MapChannelID2KHZ(
+	IN unsigned char Ch,
+	unsigned int *pFreq)
 {
 	int chIdx;
 	for (chIdx = 0; chIdx < CH_HZ_ID_MAP_NUM; chIdx++)
@@ -2053,9 +2053,9 @@ VOID RTMP_MapChannelID2KHZ(
 }
 
 /* for OS_ABL */
-VOID RTMP_MapKHZ2ChannelID(
-	IN ULONG Freq,
-	INT *pCh)
+void RTMP_MapKHZ2ChannelID(
+	IN unsigned long Freq,
+	int *pCh)
 {
 	int chIdx;
 	for (chIdx = 0; chIdx < CH_HZ_ID_MAP_NUM; chIdx++)

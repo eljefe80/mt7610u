@@ -34,25 +34,25 @@
 #define ARC4_KEY_BLOCK_SIZE 256
 
 typedef struct {
-	UINT BlockIndex1;
-	UINT BlockIndex2;
-	UINT8 KeyBlock[256];
+	unsigned int BlockIndex1;
+	unsigned int BlockIndex2;
+	unsigned char KeyBlock[256];
 } ARC4_CTX_STRUC, *PARC4_CTX_STRUC;
 
 /* ARC4 operations */
-VOID ARC4_INIT(
+void ARC4_INIT(
 	IN ARC4_CTX_STRUC * pARC4_CTX,
-	IN PUCHAR pKey,
-	IN UINT KeyLength);
+	IN unsigned char * pKey,
+	IN unsigned int KeyLength);
 
-VOID ARC4_Compute(
+void ARC4_Compute(
 	IN ARC4_CTX_STRUC * pARC4_CTX,
-	IN UINT8 InputBlock[],
-	IN UINT InputBlockSize,
-	UINT8 OutputBlock[]);
+	IN unsigned char InputBlock[],
+	IN unsigned int InputBlockSize,
+	unsigned char OutputBlock[]);
 
-VOID ARC4_Discard_KeyLength(
+void ARC4_Discard_KeyLength(
 	IN ARC4_CTX_STRUC * pARC4_CTX,
-	IN UINT Length);
+	IN unsigned int Length);
 
 #endif /* __CRYPT_ARC4_H__ */

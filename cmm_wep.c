@@ -27,7 +27,7 @@
 
 #include	"rt_config.h"
 
-UINT FCSTAB_32[256] = 
+unsigned int FCSTAB_32[256] = 
 {
 	0x00000000, 0x77073096, 0xee0e612c, 0x990951ba,
 	0x076dc419, 0x706af48f, 0xe963a535, 0x9e6495a3,
@@ -107,7 +107,7 @@ UINT FCSTAB_32[256] =
 		Len         the length of the data
 		
 	Return Value:
-		UINT - FCS 32 bits
+		unsigned int - FCS 32 bits
 		        
 	IRQL = DISPATCH_LEVEL
 
@@ -115,10 +115,10 @@ UINT FCSTAB_32[256] =
 	
 	========================================================================
 */
-UINT	RTMP_CALC_FCS32(
-	IN	UINT	Fcs,
-	IN	PUCHAR	Cp,
-	IN	INT		Len)
+unsigned int	RTMP_CALC_FCS32(
+	IN	unsigned int	Fcs,
+	IN	unsigned char*	Cp,
+	IN	int		Len)
 {
 	while (Len--)
 	   Fcs = (((Fcs) >> 8) ^ FCSTAB_32[((Fcs) ^ (*Cp++)) & 0xff]);
@@ -148,17 +148,17 @@ UINT	RTMP_CALC_FCS32(
 	
 	========================================================================
 */
-VOID	RTMPInitWepEngine(
-	IN	PUCHAR			pIv,
-	IN	PUCHAR			pKey,
-	IN	UCHAR			KeyLen,
+void	RTMPInitWepEngine(
+	IN	unsigned char*			pIv,
+	IN	unsigned char*			pKey,
+	IN	unsigned char			KeyLen,
 	OUT	ARC4_CTX_STRUC  *pARC4_CTX)
 {	
-/*	UCHAR   seed[16];*/
-	PUCHAR	seed = NULL;
-	UINT8	seed_len;
+/*	unsigned char   seed[16];*/
+	unsigned char*	seed = NULL;
+	unsigned char	seed_len;
 		
-	os_alloc_mem(NULL, (UCHAR **)&seed, sizeof(UCHAR)*16);
+	os_alloc_mem(NULL, (unsigned char **)&seed, sizeof(unsigned char)*16);
 	if (seed == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: seed Allocate memory fail!!!\n", __FUNCTION__));
@@ -195,9 +195,9 @@ VOID	RTMPInitWepEngine(
 	========================================================================
 */
 void RTMPConstructWEPIVHdr(
-	IN	UINT8 			key_idx,
-	IN	UCHAR			*pn,	
-	OUT	UCHAR			*iv_hdr)
+	IN	unsigned char 			key_idx,
+	IN	unsigned char			*pn,	
+	OUT	unsigned char			*iv_hdr)
 {	
 	NdisZeroMemory(iv_hdr, LEN_WEP_IV_HDR);
 
@@ -226,15 +226,15 @@ void RTMPConstructWEPIVHdr(
 */
 unsigned char	RTMPSoftEncryptWEP(
 	IN 		PRTMP_ADAPTER 	pAd,
-	IN 		PUCHAR			pIvHdr,
+	IN 		unsigned char*			pIvHdr,
 	IN 		PCIPHER_KEY		pKey,
-	IN	PUCHAR			pData,
-	IN 		ULONG			DataByteCnt)
+	IN	unsigned char*			pData,
+	IN 		unsigned long			DataByteCnt)
 {
 	ARC4_CTX_STRUC *ARC4_CTX = NULL;
-	UINT 	FCSCRC32;
+	unsigned int 	FCSCRC32;
 
-	os_alloc_mem(NULL, (UCHAR **)&ARC4_CTX, sizeof(ARC4_CTX_STRUC));
+	os_alloc_mem(NULL, (unsigned char **)&ARC4_CTX, sizeof(ARC4_CTX_STRUC));
 	if (ARC4_CTX == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: ARC4_CTX Allocate memory fail!!!\n", __FUNCTION__));
@@ -259,7 +259,7 @@ unsigned char	RTMPSoftEncryptWEP(
 	FCSCRC32 = cpu2le32(FCSCRC32);
 
 	/* Append 4-bytes ICV after the MPDU data */
-	NdisMoveMemory(pData + DataByteCnt, (PUCHAR)&FCSCRC32, LEN_ICV);
+	NdisMoveMemory(pData + DataByteCnt, (unsigned char*)&FCSCRC32, LEN_ICV);
 
 	/* Encrypt the MPDU plaintext data and ICV using ARC4 with a seed */
 	ARC4_Compute(ARC4_CTX, pData, DataByteCnt + LEN_ICV, pData);
@@ -293,19 +293,19 @@ unsigned char	RTMPSoftEncryptWEP(
 unsigned char	RTMPSoftDecryptWEP(
 	IN 		PRTMP_ADAPTER 	pAd,
 	IN 		PCIPHER_KEY		pKey,
-	IN	PUCHAR			pData,
-	IN	UINT16			*DataByteCnt)
+	IN	unsigned char*			pData,
+	IN	unsigned short			*DataByteCnt)
 {
 	/*ARC4_CTX_STRUC 	ARC4_CTX;*/
 	ARC4_CTX_STRUC 	*ARC4_CTX = NULL;
-	PUCHAR			plaintext_ptr;
-	UINT16			plaintext_len;
-	PUCHAR			ciphertext_ptr;
-	UINT16			ciphertext_len;
-	UINT			trailfcs;
-	UINT    		crc32;
+	unsigned char*			plaintext_ptr;
+	unsigned short			plaintext_len;
+	unsigned char*			ciphertext_ptr;
+	unsigned short			ciphertext_len;
+	unsigned int			trailfcs;
+	unsigned int    		crc32;
 	
-	os_alloc_mem(NULL, (UCHAR **)&ARC4_CTX, sizeof(ARC4_CTX_STRUC));
+	os_alloc_mem(NULL, (unsigned char **)&ARC4_CTX, sizeof(ARC4_CTX_STRUC));
 	if (ARC4_CTX == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: ARC4_CTX Allocate memory fail!!!\n", __FUNCTION__));

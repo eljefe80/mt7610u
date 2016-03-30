@@ -428,8 +428,8 @@ void RtmpOsSetNetDevTypeMonitor(void *pDev);
 
 /* OS Semaphore */
 void RtmpOsCmdUp(RTMP_OS_TASK *pCmdQTask);
-unsigned char RtmpOsSemaInitLocked(RTMP_OS_SEM *pSemOrg, struct list_head *pSemList);
-unsigned char RtmpOsSemaInit(RTMP_OS_SEM *pSemOrg, struct list_head *pSemList);
+unsigned char RtmpOsSemaInitLocked(RTMP_OS_SEM *pSemOrg, LIST_HEADER *pSemList);
+unsigned char RtmpOsSemaInit(RTMP_OS_SEM *pSemOrg, LIST_HEADER *pSemList);
 unsigned char RtmpOsSemaDestroy(RTMP_OS_SEM *pSemOrg);
 int RtmpOsSemaWaitinterruptible(RTMP_OS_SEM *pSemOrg);
 void RtmpOsSemaWakeUp(RTMP_OS_SEM *pSemOrg);
@@ -511,7 +511,7 @@ void					*pReserved,
 NDIS_MINIPORT_TIMER		*pTimerOrg, 
 TIMER_FUNCTION			function,
 void*				data,
-struct list_head				*pTimerList);
+LIST_HEADER				*pTimerList);
 
 void RTMP_OS_Add_Timer(
 NDIS_MINIPORT_TIMER *pTimerOrg,

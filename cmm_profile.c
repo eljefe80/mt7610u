@@ -31,10 +31,10 @@
 #define ETH_MAC_ADDR_STR_LEN 17  /* in format of xx:xx:xx:xx:xx:xx*/
 
 /* We assume the s1 is a sting, s2 is a memory space with 6 bytes. and content of s1 will be changed.*/
-unsigned char rtstrmactohex(PSTRING s1, PSTRING s2)
+unsigned char rtstrmactohex(char* s1, char* s2)
 {
 	int i = 0;
-	PSTRING ptokS = s1, ptokE = s1;
+	char* ptokS = s1, *ptokE = s1;
 
 	if (strlen(s1) != ETH_MAC_ADDR_STR_LEN)
 		return FALSE;
@@ -45,7 +45,7 @@ unsigned char rtstrmactohex(PSTRING s1, PSTRING s2)
 			*ptokE++ = '\0';
 		if ((strlen(ptokS) != 2) || (!isxdigit(*ptokS)) || (!isxdigit(*(ptokS+1))))
 			break; /* fail*/
-		AtoH(ptokS, (PUCHAR)&s2[i++], 1);
+		AtoH(ptokS, (unsigned char*)&s2[i++], 1);
 		ptokS = ptokE;
 		if (ptokS == NULL)
 			break;
@@ -60,10 +60,10 @@ unsigned char rtstrmactohex(PSTRING s1, PSTRING s2)
 
 #define ASC_LOWER(_x)	((((_x) >= 0x41) && ((_x) <= 0x5a)) ? (_x) + 0x20 : (_x))
 /* we assume the s1 and s2 both are strings.*/
-unsigned char rtstrcasecmp(PSTRING s1, PSTRING s2)
+unsigned char rtstrcasecmp(char* s1, char* s2)
 {
-	PSTRING p1 = s1, p2 = s2;
-	CHAR c1, c2;
+	char* p1 = s1, *p2 = s2;
+	char c1, c2;
 	
 	if (strlen(s1) != strlen(s2))
 		return FALSE;
@@ -83,9 +83,9 @@ unsigned char rtstrcasecmp(PSTRING s1, PSTRING s2)
 
 
 /* we assume the s1 (buffer) and s2 (key) both are strings.*/
-PSTRING rtstrstruncasecmp(PSTRING s1, PSTRING s2)
+char* rtstrstruncasecmp(char* s1, char* s2)
 {
-	INT l1, l2, i;
+	int l1, l2, i;
 	char temp1, temp2;
 
 	l2 = strlen(s2);
@@ -127,9 +127,9 @@ PSTRING rtstrstruncasecmp(PSTRING s1, PSTRING s2)
   * @s1: The string to be searched
   * @s2: The string to search for
   */
-PSTRING rtstrstr(PSTRING s1,const PSTRING s2)
+char* rtstrstr(char* s1,const char* s2)
 {
-	INT l1, l2;
+	int l1, l2;
 
 	l2 = strlen(s2);
 	if (!l2)
@@ -154,10 +154,10 @@ PSTRING rtstrstr(PSTRING s1,const PSTRING s2)
  * @ct: The characters to search for
  * * WARNING: strtok is deprecated, use strsep instead. However strsep is not compatible with old architecture.
  */
-PSTRING __rstrtok;
-PSTRING rstrtok(PSTRING s,const PSTRING ct)
+char* __rstrtok;
+char* rstrtok(char* s,const char* ct)
 {
-	PSTRING sbegin, send;
+	char* sbegin, *send;
 
 	sbegin  = s ? s : __rstrtok;
 	if (!sbegin)
@@ -187,11 +187,11 @@ PSTRING rstrtok(PSTRING s,const PSTRING ct)
  * @ct: The delimiter to search for.
  * Notice : We suppose the delimiter is a single-char string(for example : ";").
  */
-INT delimitcnt(PSTRING s,PSTRING ct)
+int delimitcnt(char* s,char* ct)
 {
-	INT count = 0;
+	int count = 0;
 	/* point to the beginning of the line */
-	PSTRING token = s; 
+	char* token = s; 
 
 	for ( ;; )
 	{
@@ -220,11 +220,11 @@ INT delimitcnt(PSTRING s,PSTRING ct)
   * into binary data.
   * returns nonzero if the address is valid, zero if not.	
   */
-int rtinet_aton(PSTRING cp, unsigned int *addr)
+int rtinet_aton(const char* cp, unsigned int *addr)
 {
 	unsigned int 	val;
 	int         	base, n;
-	STRING        	c;
+	char        	c;
 	unsigned int    parts[4];
 	unsigned int    *pp = parts;
 
@@ -331,11 +331,11 @@ int rtinet_aton(PSTRING cp, unsigned int *addr)
         Others                      Success
     ========================================================================
 */
-PSTRING RTMPFindSection(
-    IN  PSTRING   buffer)
+char* RTMPFindSection(
+    IN  char*   buffer)
 {
-    STRING temp_buf[32];
-    PSTRING  ptr;
+    char temp_buf[32];
+    char*  ptr;
 
     // XTKNIGHT_FIXME: ? don't know what the use of this is.
     strcpy(temp_buf, "Default");
@@ -368,34 +368,34 @@ PSTRING RTMPFindSection(
 	For SSID and security key related parameters, we SHALL NOT trim the space(' ') character.
     ========================================================================
 */
-INT RTMPGetKeyParameter(
-    IN PSTRING key,
-    PSTRING dest,
-    IN INT destsize,
-    IN PSTRING buffer,
+int RTMPGetKeyParameter(
+    IN char* key,
+    char* dest,
+    IN int destsize,
+    IN char* buffer,
     IN unsigned char bTrimSpace)
 {
-	PSTRING pMemBuf, temp_buf1 = NULL, temp_buf2 = NULL;
-	PSTRING start_ptr, end_ptr;
-	PSTRING ptr;
-	PSTRING offset = NULL;
-	INT  len, keyLen;
+	char* pMemBuf, *temp_buf1 = NULL, *temp_buf2 = NULL;
+	char* start_ptr, *end_ptr;
+	char* ptr;
+	char* offset = NULL;
+	int  len, keyLen;
 
 
 	keyLen = strlen(key);
-	os_alloc_mem(NULL, (PUCHAR *)&pMemBuf, MAX_PARAM_BUFFER_SIZE  * 2);
+	os_alloc_mem(NULL, (unsigned char* *)&pMemBuf, MAX_PARAM_BUFFER_SIZE  * 2);
 	if (pMemBuf == NULL)
 		return (FALSE);
 	
 	memset(pMemBuf, 0, MAX_PARAM_BUFFER_SIZE * 2);
 	temp_buf1 = pMemBuf;
-	temp_buf2 = (PSTRING)(pMemBuf + MAX_PARAM_BUFFER_SIZE);
+	temp_buf2 = (char*)(pMemBuf + MAX_PARAM_BUFFER_SIZE);
 
 
 	/*find section*/
 	if((offset = RTMPFindSection(buffer)) == NULL)
 	{
-		os_free_mem(NULL, (PUCHAR)pMemBuf);
+		os_free_mem(NULL, (unsigned char*)pMemBuf);
 		return (FALSE);
 	}
 
@@ -406,7 +406,7 @@ INT RTMPGetKeyParameter(
 	/*search key*/
 	if((start_ptr=rtstrstr(offset, temp_buf1)) == NULL)
 	{
-		os_free_mem(NULL, (PUCHAR)pMemBuf);
+		os_free_mem(NULL, (unsigned char*)pMemBuf);
 		return (FALSE);
 	}
 
@@ -416,7 +416,7 @@ INT RTMPGetKeyParameter(
 
 	if (end_ptr<start_ptr)
 	{
-		os_free_mem(NULL, (PUCHAR)pMemBuf);
+		os_free_mem(NULL, (unsigned char*)pMemBuf);
 		return (FALSE);
 	}
 
@@ -425,7 +425,7 @@ INT RTMPGetKeyParameter(
 
 	if((start_ptr=rtstrstr(temp_buf2, "=")) == NULL)
 	{
-		os_free_mem(NULL, (PUCHAR)pMemBuf);
+		os_free_mem(NULL, (unsigned char*)pMemBuf);
 		return (FALSE);
 	}
 	ptr = (start_ptr +1);
@@ -442,7 +442,7 @@ INT RTMPGetKeyParameter(
 	memset(dest, 0x00, destsize);
 	strncpy(dest, ptr, ((len >= destsize) ? destsize: len));
 
-	os_free_mem(NULL, (PUCHAR)pMemBuf);
+	os_free_mem(NULL, (unsigned char*)pMemBuf);
 	
 	return TRUE;
 }
@@ -468,34 +468,34 @@ INT RTMPGetKeyParameter(
         This routine get the value with the matched key (case case-sensitive)
     ========================================================================
 */
-INT RTMPGetKeyParameterWithOffset(
-    IN  PSTRING   key,
-    PSTRING   dest,   
-    OUT	USHORT	*end_offset,		
-    IN  INT     destsize,
-    IN  PSTRING   buffer,
+int RTMPGetKeyParameterWithOffset(
+    IN  char*   key,
+    char*   dest,   
+    OUT	unsigned short *end_offset,		
+    IN  int     destsize,
+    IN  char*   buffer,
     IN	unsigned char	bTrimSpace)
 {
-    PSTRING temp_buf1 = NULL;
-    PSTRING temp_buf2 = NULL;
-    PSTRING start_ptr;
-    PSTRING end_ptr;
-    PSTRING ptr;
-    PSTRING offset = 0;
-    INT  len;
+    char* temp_buf1 = NULL;
+    char* temp_buf2 = NULL;
+    char* start_ptr;
+    char* end_ptr;
+    char* ptr;
+    char* offset = 0;
+    int  len;
 
 	if (*end_offset >= MAX_INI_BUFFER_SIZE)
 		return (FALSE);
 	
-	os_alloc_mem(NULL, (PUCHAR *)&temp_buf1, MAX_PARAM_BUFFER_SIZE);
+	os_alloc_mem(NULL, (unsigned char* *)&temp_buf1, MAX_PARAM_BUFFER_SIZE);
 
 	if(temp_buf1 == NULL)
         return (FALSE);
 		
-	os_alloc_mem(NULL, (PUCHAR *)&temp_buf2, MAX_PARAM_BUFFER_SIZE);
+	os_alloc_mem(NULL, (unsigned char* *)&temp_buf2, MAX_PARAM_BUFFER_SIZE);
 	if(temp_buf2 == NULL)
 	{
-		os_free_mem(NULL, (PUCHAR)temp_buf1);
+		os_free_mem(NULL, (unsigned char*)temp_buf1);
         return (FALSE);
 	}
 	
@@ -504,8 +504,8 @@ INT RTMPGetKeyParameterWithOffset(
     {
 		if ((offset = RTMPFindSection(buffer)) == NULL)
 		{
-			os_free_mem(NULL, (PUCHAR)temp_buf1);
-	    	os_free_mem(NULL, (PUCHAR)temp_buf2);
+			os_free_mem(NULL, (unsigned char*)temp_buf1);
+	    	os_free_mem(NULL, (unsigned char*)temp_buf2);
     	    return (FALSE);
 		}
     }
@@ -519,8 +519,8 @@ INT RTMPGetKeyParameterWithOffset(
     /*search key*/
     if((start_ptr=rtstrstr(offset, temp_buf1))==NULL)
     {
-		os_free_mem(NULL, (PUCHAR)temp_buf1);
-    	os_free_mem(NULL, (PUCHAR)temp_buf2);
+		os_free_mem(NULL, (unsigned char*)temp_buf1);
+    	os_free_mem(NULL, (unsigned char*)temp_buf2);
         return (FALSE);
     }
 
@@ -530,8 +530,8 @@ INT RTMPGetKeyParameterWithOffset(
 	
     if (end_ptr<start_ptr)
     {
-		os_free_mem(NULL, (PUCHAR)temp_buf1);
-    	os_free_mem(NULL, (PUCHAR)temp_buf2);
+		os_free_mem(NULL, (unsigned char*)temp_buf1);
+    	os_free_mem(NULL, (unsigned char*)temp_buf2);
         return (FALSE);
     }
 
@@ -543,8 +543,8 @@ INT RTMPGetKeyParameterWithOffset(
     strcpy(temp_buf1, temp_buf2);
     if((start_ptr=rtstrstr(temp_buf1, "=")) == NULL)
     {
-		os_free_mem(NULL, (PUCHAR)temp_buf1);
-    	os_free_mem(NULL, (PUCHAR)temp_buf2);
+		os_free_mem(NULL, (unsigned char*)temp_buf1);
+    	os_free_mem(NULL, (unsigned char*)temp_buf2);
         return (FALSE);
     }
 
@@ -563,29 +563,29 @@ INT RTMPGetKeyParameterWithOffset(
     memset(dest, 0x00, destsize);
     strncpy(dest, ptr, len >= destsize ?  destsize: len);
 
-	os_free_mem(NULL, (PUCHAR)temp_buf1);
-    os_free_mem(NULL, (PUCHAR)temp_buf2);
+	os_free_mem(NULL, (unsigned char*)temp_buf1);
+    os_free_mem(NULL, (unsigned char*)temp_buf2);
     return TRUE;
 }
 
 
 #ifdef CONFIG_STA_SUPPORT
-inline void RTMPSetSTADefKeyId(RTMP_ADAPTER *pAd, ULONG KeyIdx)
+inline void RTMPSetSTADefKeyId(RTMP_ADAPTER *pAd, unsigned long  KeyIdx)
 {
 	if((KeyIdx >= 1 ) && (KeyIdx <= 4))
-		pAd->StaCfg.DefaultKeyId = (UCHAR) (KeyIdx - 1);
+		pAd->StaCfg.DefaultKeyId = (unsigned char) (KeyIdx - 1);
 	else
 		pAd->StaCfg.DefaultKeyId = 0;
 }
 #endif /* CONFIG_STA_SUPPORT */
 
 
-static int rtmp_parse_key_buffer_from_file(IN  PRTMP_ADAPTER pAd,IN  PSTRING buffer,IN  ULONG KeyType,IN  INT BSSIdx,IN  INT KeyIdx)
+static int rtmp_parse_key_buffer_from_file(IN  PRTMP_ADAPTER pAd,IN  char* buffer,IN  unsigned long  KeyType,IN  int BSSIdx,IN  int KeyIdx)
 {
-	PSTRING		keybuff;
-	/*INT			i = BSSIdx, idx = KeyIdx, retVal;*/
-	ULONG		KeyLen;
-	/*UCHAR		CipherAlg = CIPHER_WEP64;*/
+	char*		keybuff;
+	/*int 		i = BSSIdx, idx = KeyIdx, retVal;*/
+	unsigned long 		KeyLen;
+	/*unsigned char 	CipherAlg = CIPHER_WEP64;*/
 	CIPHER_KEY	*pSharedKey;
 	
 	keybuff = buffer;
@@ -608,13 +608,13 @@ static int rtmp_parse_key_buffer_from_file(IN  PRTMP_ADAPTER pAd,IN  PSTRING buf
 }
 
 
-static void rtmp_read_key_parms_from_file(IN  PRTMP_ADAPTER pAd, PSTRING tmpbuf, PSTRING buffer)
+static void rtmp_read_key_parms_from_file(IN  PRTMP_ADAPTER pAd, char* tmpbuf, char* buffer)
 {
-	STRING		tok_str[16];
-	PSTRING		macptr;						
-	INT			i = 0, idx;
-	ULONG		KeyType[HW_BEACON_MAX_NUM];
-	ULONG		KeyIdx;
+	char		tok_str[16];
+	char*		macptr;						
+	int 		i = 0, idx;
+	unsigned long 		KeyType[HW_BEACON_MAX_NUM];
+	unsigned long 		KeyIdx;
 
 	NdisZeroMemory(KeyType, sizeof(KeyType));
 
@@ -669,7 +669,7 @@ static void rtmp_read_key_parms_from_file(IN  PRTMP_ADAPTER pAd, PSTRING tmpbuf,
 
 static void rtmp_key_set_default_parms(IN  PRTMP_ADAPTER pAd)
 {
-	ULONG		KeyIdx;
+	unsigned long 		KeyIdx;
 
 #ifdef CONFIG_STA_SUPPORT
 	// DefaultKeyID=1
@@ -689,8 +689,8 @@ static void rtmp_key_set_default_parms(IN  PRTMP_ADAPTER pAd)
 #ifdef CONFIG_STA_SUPPORT
 static void rtmp_read_sta_wmm_parms_from_file(IN  PRTMP_ADAPTER pAd, char *tmpbuf, char *buffer)
 {
-	PSTRING					macptr;						
-	INT						i=0;
+	char*					macptr;						
+	int 					i=0;
 	unsigned char					bWmmEnable = FALSE;
 	
 	/*WmmCapable*/
@@ -731,7 +731,7 @@ static void rtmp_read_sta_wmm_parms_from_file(IN  PRTMP_ADAPTER pAd, char *tmpbu
 	{			
 		for (i = 0, macptr = rstrtok(tmpbuf,";"); macptr; macptr = rstrtok(NULL,";"), i++)
 		{
-			pAd->CommonCfg.AckPolicy[i] = (UCHAR)simple_strtol(macptr, 0, 10);
+			pAd->CommonCfg.AckPolicy[i] = (unsigned char)simple_strtol(macptr, 0, 10);
 
 			DBGPRINT(RT_DEBUG_TRACE, ("AckPolicy[%d]=%d\n", i, pAd->CommonCfg.AckPolicy[i]));
 		}
@@ -787,7 +787,7 @@ static void rtmp_read_sta_wmm_parms_from_file(IN  PRTMP_ADAPTER pAd, char *tmpbu
 
 static void rtmp_sta_wmm_set_default_parms(IN  PRTMP_ADAPTER pAd)
 {				
-	INT i=0;
+	int i=0;
 	
 	// WmmCapable=0
 	pAd->CommonCfg.bWmmCapable = FALSE;
@@ -802,7 +802,7 @@ static void rtmp_sta_wmm_set_default_parms(IN  PRTMP_ADAPTER pAd)
 	/*AckPolicy for AC_BK, AC_BE, AC_VI, AC_VO*/
 	for (i = 0; i < 4; i++)
 	{
-		pAd->CommonCfg.AckPolicy[i] = (UCHAR)0;
+		pAd->CommonCfg.AckPolicy[i] = (unsigned char)0;
 		DBGPRINT(RT_DEBUG_TRACE, ("Default AckPolicy[%d]=%d\n", i, pAd->CommonCfg.AckPolicy[i]));
 	}
 
@@ -840,7 +840,7 @@ static void rtmp_sta_wmm_set_default_parms(IN  PRTMP_ADAPTER pAd)
 #ifdef XLINK_SUPPORT
 static void rtmp_get_psp_xlink_mode_from_file(IN  PRTMP_ADAPTER pAd, char *tmpbuf, char *buffer)
 {
-	UINT32 Value = 0;
+	unsigned int Value = 0;
 
 	/* Xlink Mode*/
 	if (RTMPGetKeyParameter("PSP_XLINK_MODE", tmpbuf, 32, buffer, TRUE))
@@ -867,7 +867,7 @@ static void rtmp_get_psp_xlink_mode_from_file(IN  PRTMP_ADAPTER pAd, char *tmpbu
 
 static void rtmp_psp_xlink_mode_set_default_parms(IN  PRTMP_ADAPTER pAd)
 {
-	UINT32 Value = 0;
+	unsigned int Value = 0;
 
 	// PSP_XLINK_MODE=0
 	pAd->StaCfg.PSPXlink = FALSE;
@@ -888,8 +888,8 @@ static void rtmp_psp_xlink_mode_set_default_parms(IN  PRTMP_ADAPTER pAd)
 #ifdef DOT11_VHT_AC
 static void VHTParametersHook(
 	IN RTMP_ADAPTER *pAd, 
-	IN PSTRING pValueStr,
-	IN PSTRING pInput)
+	IN char* pValueStr,
+	IN char* pInput)
 {
 	long Value;
 
@@ -973,7 +973,7 @@ static void VHTParametersHookDefaultValues(
 void demo_mode_cfg(RTMP_ADAPTER *pAd)
 {
 	int IdBss, i;
-	UCHAR cfg_mode;
+	unsigned char cfg_mode;
 
 	pAd->CommonCfg.Channel = 40;
 	for (i = 0; i < pAd->ApCfg.BssidNum; i++)
@@ -1005,8 +1005,8 @@ void demo_mode_cfg(RTMP_ADAPTER *pAd)
 #ifdef DOT11_N_SUPPORT
 static void HTParametersHook(
 	IN	PRTMP_ADAPTER pAd, 
-	IN	PSTRING		  pValueStr,
-	IN	PSTRING		  pInput)
+	IN	char*		  pValueStr,
+	IN	char*		  pInput)
 {
 	long Value;
 
@@ -1038,7 +1038,7 @@ static void HTParametersHook(
             pAd->CommonCfg.BACapability.field.MMPSmode = MMPS_ENABLE;
 			/*pAd->CommonCfg.BACapability.field.MMPSmode = Value;*/
         }
-        DBGPRINT(RT_DEBUG_TRACE, ("HT: MIMOPS Mode  = %d\n", (INT) Value));
+        DBGPRINT(RT_DEBUG_TRACE, ("HT: MIMOPS Mode  = %d\n", (int) Value));
     }
 
     if (RTMPGetKeyParameter("HT_BADecline", pValueStr, 25, pInput, TRUE))
@@ -1131,7 +1131,7 @@ static void HTParametersHook(
 		if (Value <=7 && Value >= 0)
 		{		
 			pAd->CommonCfg.BACapability.field.MpduDensity = Value;
-			DBGPRINT(RT_DEBUG_TRACE, ("HT: MPDU Density = %d\n", (INT) Value));
+			DBGPRINT(RT_DEBUG_TRACE, ("HT: MPDU Density = %d\n", (int) Value));
 		}
 		else
 		{
@@ -1149,7 +1149,7 @@ static void HTParametersHook(
 		{		
 			pAd->CommonCfg.REGBACapability.field.RxBAWinLimit = Value;
 			pAd->CommonCfg.BACapability.field.RxBAWinLimit = Value;
-			DBGPRINT(RT_DEBUG_TRACE, ("HT: BA Windw Size = %d\n", (INT) Value));
+			DBGPRINT(RT_DEBUG_TRACE, ("HT: BA Windw Size = %d\n", (int) Value));
 		}
 		else
 		{
@@ -1355,7 +1355,7 @@ static void HTParametersHook(
 			if (RTMPGetKeyParameter("OBSSScanParam", pValueStr, 32, pInput, TRUE))
 			{
 				int ObssScanValue, idx;
-				PSTRING	macptr;	
+				char*	macptr;	
 				for (idx = 0, macptr = rstrtok(pValueStr,";"); macptr; macptr = rstrtok(NULL,";"), idx++)
 				{
 					ObssScanValue = simple_strtol(macptr, 0, 10);
@@ -1485,7 +1485,7 @@ static void HTParametersHookDefaultValues(
 		pAd->CommonCfg.BACapability.field.MMPSmode = MMPS_ENABLE;
 		/*pAd->CommonCfg.BACapability.field.MMPSmode = Value;*/
         }
-        DBGPRINT(RT_DEBUG_TRACE, ("Default HT: MIMOPS Mode  = %d\n", (INT) pAd->CommonCfg.BACapability.field.MMPSmode));
+        DBGPRINT(RT_DEBUG_TRACE, ("Default HT: MIMOPS Mode  = %d\n", (int) pAd->CommonCfg.BACapability.field.MMPSmode));
 
 	// HT_BADecline=0
 	pAd->CommonCfg.bBADecline = FALSE;
@@ -1533,7 +1533,7 @@ static void HTParametersHookDefaultValues(
 	// HT_BAWinSize=64 (Max Rx BA Window Size)
 	pAd->CommonCfg.REGBACapability.field.RxBAWinLimit = 64;
 	pAd->CommonCfg.BACapability.field.RxBAWinLimit = 64;
-	DBGPRINT(RT_DEBUG_TRACE, ("Default HT: BA Window Size = %d\n", (INT) pAd->CommonCfg.REGBACapability.field.RxBAWinLimit));
+	DBGPRINT(RT_DEBUG_TRACE, ("Default HT: BA Window Size = %d\n", (int) pAd->CommonCfg.REGBACapability.field.RxBAWinLimit));
 
 	// HT_GI=1 (Guard Interval)
 	Value = GI_400; // 1
@@ -1618,9 +1618,9 @@ static void HTParametersHookDefaultValues(
 
 
 #ifdef CONFIG_STA_SUPPORT
-void RTMPSetSTASSID(RTMP_ADAPTER *pAd, PSTRING SSID)
+void RTMPSetSTASSID(RTMP_ADAPTER *pAd, char* SSID)
 {
-	pAd->CommonCfg.SsidLen = (UCHAR) strlen(SSID);
+	pAd->CommonCfg.SsidLen = (unsigned char) strlen(SSID);
 	NdisZeroMemory(pAd->CommonCfg.Ssid, NDIS_802_11_LENGTH_SSID);
 	NdisMoveMemory(pAd->CommonCfg.Ssid, SSID, pAd->CommonCfg.SsidLen);
 	pAd->CommonCfg.LastSsidLen= pAd->CommonCfg.SsidLen;
@@ -1635,7 +1635,7 @@ void RTMPSetSTASSID(RTMP_ADAPTER *pAd, PSTRING SSID)
 }
 
 
-void RTMPSetSTAPassPhrase(RTMP_ADAPTER *pAd, PSTRING PassPh)
+void RTMPSetSTAPassPhrase(RTMP_ADAPTER *pAd, char* PassPh)
 {
 	int     ret = TRUE;
 
@@ -1650,7 +1650,7 @@ void RTMPSetSTAPassPhrase(RTMP_ADAPTER *pAd, PSTRING PassPh)
 	}
 	else
 	{
-		ret = RT_CfgSetWPAPSKKey(pAd, PassPh, strlen(PassPh), (PUCHAR)pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen, pAd->StaCfg.PMK);
+		ret = RT_CfgSetWPAPSKKey(pAd, PassPh, strlen(PassPh), (unsigned char*)pAd->CommonCfg.Ssid, pAd->CommonCfg.SsidLen, pAd->StaCfg.PMK);
 	}
 				
 	if (ret == TRUE)
@@ -1688,7 +1688,7 @@ inline void RTMPSetSTACipherSuites(RTMP_ADAPTER *pAd, NDIS_802_11_ENCRYPTION_STA
 NDIS_STATUS RecoverConnectInfo(
 	IN  RTMP_ADAPTER *pAd)
 {
-	INT idx;
+	int idx;
 	char ssidStr[NDIS_802_11_LENGTH_SSID + 1];
 
 	NdisZeroMemory(&ssidStr[0], sizeof(ssidStr));
@@ -1746,7 +1746,7 @@ NDIS_STATUS RecoverConnectInfo(
 NDIS_STATUS StoreConnectInfo(
 	IN  RTMP_ADAPTER *pAd)
 {
-	INT idx;
+	int idx;
 	DBGPRINT(RT_DEBUG_TRACE, ("-->StoreConnectInfo()\n"));
 
 	RTMP_SEM_LOCK(&pAd->StaCtIf.Lock);
@@ -1782,7 +1782,7 @@ NDIS_STATUS StoreConnectInfo(
 #endif /* CONFIG_STA_SUPPORT */ 
 
 
-void RTMPSetCountryCode(RTMP_ADAPTER *pAd, PSTRING CountryCode)
+void RTMPSetCountryCode(RTMP_ADAPTER *pAd, char* CountryCode)
 {
 	NdisMoveMemory(pAd->CommonCfg.CountryCode, CountryCode , 2);
 	pAd->CommonCfg.CountryCode[2] = ' ';
@@ -1792,7 +1792,7 @@ void RTMPSetCountryCode(RTMP_ADAPTER *pAd, PSTRING CountryCode)
 		NdisMoveMemory(pAd->StaCfg.StaOriCountryCode, CountryCode , 2);
 #endif /* EXT_BUILD_CHANNEL_LIST */
 #endif /* CONFIG_STA_SUPPORT */
-	if (strlen((PSTRING) pAd->CommonCfg.CountryCode) != 0)
+	if (strlen((char*) pAd->CommonCfg.CountryCode) != 0)
 		pAd->CommonCfg.bCountryFlag = TRUE;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("CountryCode=%s\n", pAd->CommonCfg.CountryCode));
@@ -1801,16 +1801,16 @@ void RTMPSetCountryCode(RTMP_ADAPTER *pAd, PSTRING CountryCode)
 
 NDIS_STATUS	RTMPSetProfileParameters(
 	IN RTMP_ADAPTER *pAd,
-	IN PSTRING	pBuffer)
+	IN char*	pBuffer)
 {
-	PSTRING					tmpbuf;
-	ULONG					RtsThresh;
-	ULONG					FragThresh;
-	PSTRING					macptr;							
-	INT						i = 0, retval;
+	char*					tmpbuf;
+	unsigned long 					RtsThresh;
+	unsigned long 					FragThresh;
+	char*					macptr;							
+	int 					i = 0, retval;
 
 /*	tmpbuf = kmalloc(MAX_PARAM_BUFFER_SIZE, MEM_ALLOC_FLAG);*/
-	os_alloc_mem(NULL, (UCHAR **)&tmpbuf, MAX_PARAM_BUFFER_SIZE);
+	os_alloc_mem(NULL, (unsigned char **)&tmpbuf, MAX_PARAM_BUFFER_SIZE);
 	if(tmpbuf == NULL)
 		return NDIS_STATUS_FAILURE;
 	
@@ -1840,7 +1840,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 		/*EfuseBufferMode*/
 		if(RTMPGetKeyParameter("EfuseBufferMode", tmpbuf, 25, pBuffer, TRUE))
 		{
-			pAd->bEEPROMFile = (UCHAR) simple_strtol(tmpbuf, 0, 10);
+			pAd->bEEPROMFile = (unsigned char) simple_strtol(tmpbuf, 0, 10);
 			DBGPRINT(RT_DEBUG_TRACE, ("EfuseBufferMode=%d\n", pAd->bUseEfuse));
 		}
 #endif /* RTMP_EFUSE_SUPPORT */
@@ -1856,7 +1856,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 		/*ChannelGeography*/
 		if(RTMPGetKeyParameter("ChannelGeography", tmpbuf, 25, pBuffer, TRUE))
 		{
-			UCHAR Geography = (UCHAR) simple_strtol(tmpbuf, 0, 10);
+			unsigned char Geography = (unsigned char) simple_strtol(tmpbuf, 0, 10);
 			if (Geography <= BOTH)
 			{
 				pAd->CommonCfg.Geography = Geography;
@@ -1915,7 +1915,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 		/*Channel*/
 		if(RTMPGetKeyParameter("Channel", tmpbuf, 10, pBuffer, TRUE))
 		{
-			pAd->CommonCfg.Channel = (UCHAR) simple_strtol(tmpbuf, 0, 10);
+			pAd->CommonCfg.Channel = (unsigned char) simple_strtol(tmpbuf, 0, 10);
 			DBGPRINT(RT_DEBUG_TRACE, ("Channel=%d\n", pAd->CommonCfg.Channel));
 		}
 
@@ -1923,7 +1923,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 		/*Note: BssidNum must be put before WirelessMode in dat file*/
 		if(RTMPGetKeyParameter("WirelessMode", tmpbuf, 32, pBuffer, TRUE))
 		{
-			UCHAR cfg_mode;
+			unsigned char cfg_mode;
 			for (i = 0, macptr = rstrtok(tmpbuf,";"); macptr; macptr = rstrtok(NULL,";"), i++)
 			{
 				cfg_mode = simple_strtol(macptr, 0, 10);
@@ -1941,14 +1941,14 @@ NDIS_STATUS	RTMPSetProfileParameters(
 	    /*BasicRate*/
 		if(RTMPGetKeyParameter("BasicRate", tmpbuf, 10, pBuffer, TRUE))
 		{
-			pAd->CommonCfg.BasicRateBitmap = (ULONG) simple_strtol(tmpbuf, 0, 10);
-			pAd->CommonCfg.BasicRateBitmapOld = (ULONG) simple_strtol(tmpbuf, 0, 10);
+			pAd->CommonCfg.BasicRateBitmap = (unsigned long ) simple_strtol(tmpbuf, 0, 10);
+			pAd->CommonCfg.BasicRateBitmapOld = (unsigned long ) simple_strtol(tmpbuf, 0, 10);
 			DBGPRINT(RT_DEBUG_TRACE, ("BasicRate=%ld\n", pAd->CommonCfg.BasicRateBitmap));
 		}
 		/*BeaconPeriod*/
 		if(RTMPGetKeyParameter("BeaconPeriod", tmpbuf, 10, pBuffer, TRUE))
 		{
-			USHORT bcn_val = (USHORT) simple_strtol(tmpbuf, 0, 10);
+			unsigned short bcn_val = (unsigned short) simple_strtol(tmpbuf, 0, 10);
 
 			/* The acceptable is 20~1000 ms. Refer to WiFi test plan. */
 			if (bcn_val >= 20 && bcn_val <= 1000)	
@@ -1964,7 +1964,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 	    /*TxPower*/
 		if(RTMPGetKeyParameter("TxPower", tmpbuf, 10, pBuffer, TRUE))
 		{
-			pAd->CommonCfg.TxPowerPercentage = (ULONG) simple_strtol(tmpbuf, 0, 10);
+			pAd->CommonCfg.TxPowerPercentage = (unsigned long ) simple_strtol(tmpbuf, 0, 10);
 #ifdef CONFIG_STA_SUPPORT
 			IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 				pAd->CommonCfg.TxPowerDefault = pAd->CommonCfg.TxPowerPercentage;
@@ -2014,7 +2014,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 		{
 			RtsThresh = simple_strtol(tmpbuf, 0, 10);
 			if( (RtsThresh >= 1) && (RtsThresh <= MAX_RTS_THRESHOLD) )
-				pAd->CommonCfg.RtsThreshold  = (USHORT)RtsThresh;
+				pAd->CommonCfg.RtsThreshold  = (unsigned short)RtsThresh;
 			else
 				pAd->CommonCfg.RtsThreshold = MAX_RTS_THRESHOLD;
 			
@@ -2035,11 +2035,11 @@ NDIS_STATUS	RTMPSetProfileParameters(
 			{
 				/* The length of each fragment shall always be an even number of octets, except for the last fragment*/
 				/* of an MSDU or MMPDU, which may be either an even or an odd number of octets.*/
-				pAd->CommonCfg.FragmentThreshold = (USHORT)(FragThresh - 1);
+				pAd->CommonCfg.FragmentThreshold = (unsigned short)(FragThresh - 1);
 			}
 			else
 			{
-				pAd->CommonCfg.FragmentThreshold = (USHORT)FragThresh;
+				pAd->CommonCfg.FragmentThreshold = (unsigned short)FragThresh;
 			}
 			/*pAd->CommonCfg.AllowFragSize = (pAd->CommonCfg.FragmentThreshold) - LENGTH_802_11 - LENGTH_CRC;*/
 			DBGPRINT(RT_DEBUG_TRACE, ("FragThreshold=%d\n", pAd->CommonCfg.FragmentThreshold));
@@ -2182,7 +2182,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 			/* StreamModeMac*/
 			for (i = 0; i < STREAM_MODE_STA_NUM; i++)
 			{
-				STRING		tok_str[32];
+				char		tok_str[32];
 									
 				sprintf(tok_str, "StreamModeMac%d", i);
 									
@@ -2384,7 +2384,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 #ifdef CAPTURE_MODE
 				if(RTMPGetKeyParameter("cap_support", tmpbuf, 25, pBuffer, TRUE))
 				{
-					ULONG cap_support = simple_strtol(tmpbuf, 0, 10);
+					unsigned long  cap_support = simple_strtol(tmpbuf, 0, 10);
 
 					pAd->cap_support = cap_support > 0 ? TRUE : FALSE;
 					DBGPRINT(RT_DEBUG_OFF, ("%s(): CaptureMode=%d\n",
@@ -2484,7 +2484,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 						if (lInfo > 90 || lInfo < 60)
 							pAd->StaCfg.dBmToRoam = -70;
 						else    
-							pAd->StaCfg.dBmToRoam = (CHAR)(-1)*lInfo;
+							pAd->StaCfg.dBmToRoam = (char)(-1)*lInfo;
 
 						DBGPRINT(RT_DEBUG_TRACE, ("RoamThreshold=%d  dBm\n", pAd->StaCfg.dBmToRoam));
 					}
@@ -2504,7 +2504,7 @@ NDIS_STATUS	RTMPSetProfileParameters(
 					/* Beacon Lost Time*/
 					if (RTMPGetKeyParameter("BeaconLostTime", tmpbuf, 32, pBuffer, TRUE))
 					{
-						ULONG lInfo = (ULONG)simple_strtol(tmpbuf, 0, 10);
+						unsigned long  lInfo = (unsigned long )simple_strtol(tmpbuf, 0, 10);
 
 						if ((lInfo != 0) && (lInfo <= 60))
 							pAd->StaCfg.BeaconLostTime = (lInfo * OS_HZ);
@@ -2545,14 +2545,14 @@ NDIS_STATUS	RTMPSetProfileParameters(
 #ifdef SINGLE_SKU
 				if(RTMPGetKeyParameter("AntGain", tmpbuf, 10, pBuffer, TRUE))
 				{
-					UCHAR AntGain = simple_strtol(tmpbuf, 0, 10);
+					unsigned char AntGain = simple_strtol(tmpbuf, 0, 10);
 					pAd->CommonCfg.AntGain= AntGain;
 			
 					DBGPRINT(RT_DEBUG_TRACE, ("AntGain=%d\n", pAd->CommonCfg.AntGain));
 				}
 				if(RTMPGetKeyParameter("BandedgeDelta", tmpbuf, 10, pBuffer, TRUE))
 				{
-					UCHAR Bandedge = simple_strtol(tmpbuf, 0, 10);
+					unsigned char Bandedge = simple_strtol(tmpbuf, 0, 10);
 					pAd->CommonCfg.BandedgeDelta = Bandedge;
 
 					DBGPRINT(RT_DEBUG_TRACE, ("BandedgeDelta=%d\n", pAd->CommonCfg.BandedgeDelta));
@@ -2598,14 +2598,14 @@ NDIS_STATUS	RTMPSetProfileParameters(
 NDIS_STATUS	RTMPSetDefaultProfileParameters(
 	IN RTMP_ADAPTER *pAd)
 {
-	INT	retval;
+	int retval;
 	long	lInfo;
-	PSTRING	tmpbuf;
+	char*	tmpbuf;
 
 	// We still need to use tmpbuf even though we're not reading a file.
 	// If we pass string literals to these functions, we cause a kernel panic,
 	// so we need to load it into tmpbuf temporarily
-	os_alloc_mem(NULL, (UCHAR **)&tmpbuf, MAX_PARAM_BUFFER_SIZE);
+	os_alloc_mem(NULL, (unsigned char **)&tmpbuf, MAX_PARAM_BUFFER_SIZE);
 	if(tmpbuf == NULL)
 		return NDIS_STATUS_FAILURE;
 	tmpbuf[0] = 0;
@@ -2624,7 +2624,7 @@ NDIS_STATUS	RTMPSetDefaultProfileParameters(
 
 #ifdef RTMP_EFUSE_SUPPORT
 		// EfuseBufferMode (not sure why this is EEPROMFile in the other function, but we'll follow that)
-		pAd->bEEPROMFile = (UCHAR) 0;
+		pAd->bEEPROMFile = (unsigned char) 0;
 #endif
 
 		// CountryCode=(unset)
@@ -2667,7 +2667,7 @@ NDIS_STATUS	RTMPSetDefaultProfileParameters(
 #endif /* CONFIG_STA_SUPPORT */		
 	
 		// Channel=0
-		pAd->CommonCfg.Channel = (UCHAR) 0;
+		pAd->CommonCfg.Channel = (unsigned char) 0;
 		DBGPRINT(RT_DEBUG_TRACE, ("Default Channel=0\n"));
 	
 #ifdef DOT11_VHT_AC
@@ -2681,11 +2681,11 @@ NDIS_STATUS	RTMPSetDefaultProfileParameters(
 #endif /* DOT11_VHT_AC */
 
 		// BeaconPeriod=100ms
-		pAd->CommonCfg.BeaconPeriod = (USHORT) 100;
+		pAd->CommonCfg.BeaconPeriod = (unsigned short) 100;
 		DBGPRINT(RT_DEBUG_TRACE, ("Default BeaconPeriod=100\n"));
 
 		// TxPower=100
-		pAd->CommonCfg.TxPowerPercentage = (ULONG) 100;
+		pAd->CommonCfg.TxPowerPercentage = (unsigned long ) 100;
 #ifdef CONFIG_STA_SUPPORT
 		IF_DEV_CONFIG_OPMODE_ON_STA(pAd)
 			pAd->CommonCfg.TxPowerDefault = pAd->CommonCfg.TxPowerPercentage;
@@ -2701,13 +2701,13 @@ NDIS_STATUS	RTMPSetDefaultProfileParameters(
 		DBGPRINT(RT_DEBUG_TRACE, ("Default TxPreamble=%ld\n", pAd->CommonCfg.TxPreamble));
 
 		// RTSThreshold=2347
-		pAd->CommonCfg.RtsThreshold = (USHORT) 2347;
+		pAd->CommonCfg.RtsThreshold = (unsigned short) 2347;
 		DBGPRINT(RT_DEBUG_TRACE, ("Default RTSThreshold=%d\n", pAd->CommonCfg.RtsThreshold));
 
 		// FragThreshold=2346
 		// NOTE: MUST BE EVEN VALUE.
 		pAd->CommonCfg.bUseZeroToDisableFragment = FALSE;
-		pAd->CommonCfg.FragmentThreshold = (USHORT) 2346;
+		pAd->CommonCfg.FragmentThreshold = (unsigned short) 2346;
 		DBGPRINT(RT_DEBUG_TRACE, ("Default FragThreshold=%d\n", pAd->CommonCfg.FragmentThreshold));
 	
 		// TxBurst=1
@@ -2885,7 +2885,7 @@ NDIS_STATUS	RTMPSetDefaultProfileParameters(
 			if (lInfo > 90 || lInfo < 60)
 				pAd->StaCfg.dBmToRoam = -70;
 			else    
-				pAd->StaCfg.dBmToRoam = (CHAR)(-1)*lInfo;
+				pAd->StaCfg.dBmToRoam = (char)(-1)*lInfo;
 
 			DBGPRINT(RT_DEBUG_TRACE, ("Default RoamThreshold=%d  dBm\n", pAd->StaCfg.dBmToRoam));
 
@@ -2934,9 +2934,9 @@ NDIS_STATUS	RTMPSetDefaultProfileParameters(
 
 #ifdef MULTIPLE_CARD_SUPPORT
 /* record whether the card in the card list is used in the card file*/
-UINT8  MC_CardUsed[MAX_NUM_OF_MULTIPLE_CARD];
+unsigned char  MC_CardUsed[MAX_NUM_OF_MULTIPLE_CARD];
 /* record used card mac address in the card list*/
-static UINT8  MC_CardMac[MAX_NUM_OF_MULTIPLE_CARD][6];
+static unsigned char  MC_CardMac[MAX_NUM_OF_MULTIPLE_CARD][6];
 
 /*
 ========================================================================
@@ -2961,7 +2961,7 @@ unsigned char RTMP_CardInfoRead(
 #define MC_SELECT_CARDTYPE		2	/* use CARD type (abgn or bgn) to identify different cards */
 
 #define LETTER_CASE_TRANSLATE(txt_p, card_id)			\
-	{	UINT32 _len; char _char;						\
+	{	unsigned int _len; char _char;						\
 		for(_len=0; _len<strlen(card_id); _len++) {		\
 			_char = *(txt_p + _len);					\
 			if (('A' <= _char) && (_char <= 'Z'))		\
@@ -2969,25 +2969,25 @@ unsigned char RTMP_CardInfoRead(
 		} }
 
 	RTMP_OS_FD srcf;
-	INT retval;
-	PSTRING buffer, tmpbuf;
-	STRING card_id_buf[30], RFIC_word[30];
+	int retval;
+	char* buffer, tmpbuf;
+	char card_id_buf[30], RFIC_word[30];
 	unsigned char flg_match_ok = FALSE;
 	INT32 card_select_method;
 	INT32 card_free_id, card_nouse_id, card_same_mac_id, card_match_id;
 	EEPROM_ANTENNA_STRUC antenna;
-	USHORT addr01, addr23, addr45;
-	UINT8 mac[6];
-	UINT32 data, card_index;
-	UCHAR *start_ptr;
+	unsigned short addr01, addr23, addr45;
+	unsigned char mac[6];
+	unsigned int data, card_index;
+	unsigned char *start_ptr;
 	RTMP_OS_FS_INFO osFSInfo;
 
 	/* init*/
-	os_alloc_mem(NULL, (UCHAR **)&buffer, MAX_INI_BUFFER_SIZE);
+	os_alloc_mem(NULL, (unsigned char **)&buffer, MAX_INI_BUFFER_SIZE);
 	if (buffer == NULL)
 		return FALSE;
 
-	os_alloc_mem(NULL, (UCHAR **)&tmpbuf, MAX_PARAM_BUFFER_SIZE);
+	os_alloc_mem(NULL, (unsigned char **)&tmpbuf, MAX_PARAM_BUFFER_SIZE);
 	if(tmpbuf == NULL)
 	{
 		os_free_mem(NULL, buffer);
@@ -3026,12 +3026,12 @@ unsigned char RTMP_CardInfoRead(
 	RT28xx_EEPROM_READ16(pAd, 0x06, addr23);
 	RT28xx_EEPROM_READ16(pAd, 0x08, addr45);
 
-	mac[0] = (UCHAR)(addr01 & 0xff);
-	mac[1] = (UCHAR)(addr01 >> 8);
-	mac[2] = (UCHAR)(addr23 & 0xff);
-	mac[3] = (UCHAR)(addr23 >> 8);
-	mac[4] = (UCHAR)(addr45 & 0xff);
-	mac[5] = (UCHAR)(addr45 >> 8);
+	mac[0] = (unsigned char)(addr01 & 0xff);
+	mac[1] = (unsigned char)(addr01 >> 8);
+	mac[2] = (unsigned char)(addr23 & 0xff);
+	mac[3] = (unsigned char)(addr23 >> 8);
+	mac[4] = (unsigned char)(addr45 & 0xff);
+	mac[5] = (unsigned char)(addr45 >> 8);
 
 	DBGPRINT(RT_DEBUG_TRACE, ("mac addr=%02x:%02x:%02x:%02x:%02x:%02x!\n", PRINT_MAC(mac)));
 
@@ -3085,8 +3085,8 @@ unsigned char RTMP_CardInfoRead(
 			card_index<MAX_NUM_OF_MULTIPLE_CARD;
 			card_index++)
 		{
-			if ((*(UINT32 *)&MC_CardMac[card_index][0] == 0) &&
-				(*(UINT16 *)&MC_CardMac[card_index][4] == 0))
+			if ((*(unsigned int *)&MC_CardMac[card_index][0] == 0) &&
+				(*(unsigned short *)&MC_CardMac[card_index][4] == 0))
 			{
 				/* MAC is all-0 so the entry is available*/
 				MC_CardUsed[card_index] = 0;
@@ -3131,7 +3131,7 @@ unsigned char RTMP_CardInfoRead(
 				snprintf(card_id_buf, sizeof(card_id_buf), "%02dCARDTYPE%s",
 						card_match_id, RFIC_word);
 
-				if ((start_ptr = (PUCHAR)rtstrstruncasecmp(buffer, card_id_buf)) != NULL)
+				if ((start_ptr = (unsigned char*)rtstrstruncasecmp(buffer, card_id_buf)) != NULL)
 				{
 					/* we found the card ID*/
 					LETTER_CASE_TRANSLATE(start_ptr, card_id_buf);
@@ -3157,7 +3157,7 @@ unsigned char RTMP_CardInfoRead(
 							mac[3], mac[4], mac[5]);
 
 					/* try to find the key word in the card file */
-					if ((start_ptr = (PUCHAR)rtstrstruncasecmp(buffer, card_id_buf)) != NULL)
+					if ((start_ptr = (unsigned char*)rtstrstruncasecmp(buffer, card_id_buf)) != NULL)
 					{
 						LETTER_CASE_TRANSLATE(start_ptr, card_id_buf);
 
@@ -3181,7 +3181,7 @@ unsigned char RTMP_CardInfoRead(
 						snprintf(card_id_buf, sizeof(card_id_buf), "%02dCARDTYPE%s",
 								card_index, RFIC_word);
 
-						if ((start_ptr = (PUCHAR)rtstrstruncasecmp(buffer,
+						if ((start_ptr = (unsigned char*)rtstrstruncasecmp(buffer,
 													card_id_buf)) != NULL)
 						{
 							LETTER_CASE_TRANSLATE(start_ptr, card_id_buf);
@@ -3189,8 +3189,8 @@ unsigned char RTMP_CardInfoRead(
 							if (MC_CardUsed[card_index] == 0)
 							{
 								/* current the card profile is not used */
-								if ((*(UINT32 *)&MC_CardMac[card_index][0] == 0) &&
-									(*(UINT16 *)&MC_CardMac[card_index][4] == 0))
+								if ((*(unsigned int *)&MC_CardMac[card_index][0] == 0) &&
+									(*(unsigned short *)&MC_CardMac[card_index][4] == 0))
 								{
 									/* find it and no previous card use it*/
 									card_match_id = card_index;
@@ -3299,11 +3299,11 @@ return flg_match_ok;
 NDIS_STATUS	RTMPSetSingleSKUParameters(
 	IN RTMP_ADAPTER *pAd)
 {
-	PSTRING buffer;
-	PSTRING		readline, token;
+	char* buffer;
+	char*		readline, token;
 	RTMP_OS_FD srcf;
-	INT retval;
-	PSTRING ptr;
+	int retval;
+	char* ptr;
 	int index, i;
 	CH_POWER *StartCh = NULL;
 	RTMP_OS_FS_INFO osFSInfo;
@@ -3311,7 +3311,7 @@ NDIS_STATUS	RTMPSetSingleSKUParameters(
 	DlListInit(&pAd->SingleSkuPwrList);
 
 	/* init*/
-	os_alloc_mem(NULL, (UCHAR **)&buffer, MAX_INI_BUFFER_SIZE);
+	os_alloc_mem(NULL, (unsigned char **)&buffer, MAX_INI_BUFFER_SIZE);
 	if (buffer == NULL)
 		return FALSE;
 
@@ -3349,7 +3349,7 @@ NDIS_STATUS	RTMPSetSingleSKUParameters(
 
 				CH_POWER *pwr = NULL;
 
-				os_alloc_mem(NULL, (UCHAR **)&pwr, sizeof(*pwr));
+				os_alloc_mem(NULL, (unsigned char **)&pwr, sizeof(*pwr));
 				NdisZeroMemory(pwr, sizeof(*pwr));
 
 				token= rstrtok(readline +2 ," ");

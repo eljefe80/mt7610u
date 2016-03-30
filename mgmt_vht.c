@@ -30,7 +30,7 @@
 
 #ifdef DOT11_VHT_AC
 
-VOID rtmp_set_vht(RTMP_ADAPTER *pAd, RT_PHY_INFO *phy_info)
+void rtmp_set_vht(RTMP_ADAPTER *pAd, RT_PHY_INFO *phy_info)
 {
 	if (!phy_info)
 		return;
@@ -41,9 +41,9 @@ VOID rtmp_set_vht(RTMP_ADAPTER *pAd, RT_PHY_INFO *phy_info)
 }
 
 
-INT SetCommonVHT(RTMP_ADAPTER *pAd)
+int SetCommonVHT(RTMP_ADAPTER *pAd)
 {
-	UCHAR cent_ch = 0;
+	unsigned char cent_ch = 0;
 
 	if (!WMODE_CAP_AC(pAd->CommonCfg.PhyMode))
 	{

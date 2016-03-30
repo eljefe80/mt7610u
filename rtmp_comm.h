@@ -125,15 +125,15 @@ typedef enum{
 	       (((unsigned int) (x) & (unsigned int) 0xff000000UL) >> 24))) 
 
 #define SWAP64(x) \
-    ((UINT64)( \
-    (UINT64)(((UINT64)(x) & (UINT64) 0x00000000000000ffULL) << 56) | \
-    (UINT64)(((UINT64)(x) & (UINT64) 0x000000000000ff00ULL) << 40) | \
-    (UINT64)(((UINT64)(x) & (UINT64) 0x0000000000ff0000ULL) << 24) | \
-    (UINT64)(((UINT64)(x) & (UINT64) 0x00000000ff000000ULL) <<  8) | \
-    (UINT64)(((UINT64)(x) & (UINT64) 0x000000ff00000000ULL) >>  8) | \
-    (UINT64)(((UINT64)(x) & (UINT64) 0x0000ff0000000000ULL) >> 24) | \
-    (UINT64)(((UINT64)(x) & (UINT64) 0x00ff000000000000ULL) >> 40) | \
-    (UINT64)(((UINT64)(x) & (UINT64) 0xff00000000000000ULL) >> 56) ))
+    ((unsigned long)( \
+    (unsigned long)(((unsigned long)(x) & (unsigned long) 0x00000000000000ffULL) << 56) | \
+    (unsigned long)(((unsigned long)(x) & (unsigned long) 0x000000000000ff00ULL) << 40) | \
+    (unsigned long)(((unsigned long)(x) & (unsigned long) 0x0000000000ff0000ULL) << 24) | \
+    (unsigned long)(((unsigned long)(x) & (unsigned long) 0x00000000ff000000ULL) <<  8) | \
+    (unsigned long)(((unsigned long)(x) & (unsigned long) 0x000000ff00000000ULL) >>  8) | \
+    (unsigned long)(((unsigned long)(x) & (unsigned long) 0x0000ff0000000000ULL) >> 24) | \
+    (unsigned long)(((unsigned long)(x) & (unsigned long) 0x00ff000000000000ULL) >> 40) | \
+    (unsigned long)(((unsigned long)(x) & (unsigned long) 0xff00000000000000ULL) >> 56) ))
  
 #ifdef RT_BIG_ENDIAN
 
@@ -143,8 +143,8 @@ typedef enum{
 #define le2cpu32(x) SWAP32((x))
 #define cpu2le16(x) SWAP16((x))
 #define le2cpu16(x) SWAP16((x))
-#define cpu2be64(x) ((UINT64)(x))
-#define be2cpu64(x) ((UINT64)(x))
+#define cpu2be64(x) ((unsigned long)(x))
+#define be2cpu64(x) ((unsigned long)(x))
 #define cpu2be32(x) ((unsigned int)(x))
 #define be2cpu32(x) ((unsigned int)(x))
 #define cpu2be16(x) ((short)(x))
@@ -152,8 +152,8 @@ typedef enum{
     
 #else /* Little_Endian */
     
-#define cpu2le64(x) ((UINT64)(x))
-#define le2cpu64(x) ((UINT64)(x))
+#define cpu2le64(x) ((unsigned long)(x))
+#define le2cpu64(x) ((unsigned long)(x))
 #define cpu2le32(x) ((unsigned int)(x))
 #define le2cpu32(x) ((unsigned int)(x))
 #define cpu2le16(x) ((short)(x))

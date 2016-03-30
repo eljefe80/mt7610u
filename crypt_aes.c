@@ -29,12 +29,12 @@
 
 
 /* The value given by [x^(i-1),{00},{00},{00}], with x^(i-1) being powers of x in the field GF(2^8). */
-static const UINT32 aes_rcon[] = {
+static const unsigned int aes_rcon[] = {
 	0x00000000, 0x01000000, 0x02000000, 0x04000000, 
     0x08000000, 0x10000000, 0x20000000, 0x40000000, 
     0x80000000, 0x1B000000, 0x36000000};
 
-static const UINT8 aes_sbox_enc[] = {
+static const unsigned char aes_sbox_enc[] = {
   /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
     0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7 ,0xab, 0x76, /* 0 */
     0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4 ,0x72, 0xc0, /* 1 */
@@ -54,7 +54,7 @@ static const UINT8 aes_sbox_enc[] = {
     0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54 ,0xbb, 0x16, /* f */
 };
 
-static const UINT8 aes_sbox_dec[] = {
+static const unsigned char aes_sbox_dec[] = {
   /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
     0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38, 0xbf, 0x40, 0xa3, 0x9e, 0x81, 0xf3, 0xd7, 0xfb, /* 0 */
     0x7c, 0xe3, 0x39, 0x82, 0x9b, 0x2f, 0xff, 0x87, 0x34, 0x8e, 0x43, 0x44, 0xc4, 0xde, 0xe9, 0xcb, /* 1 */
@@ -75,7 +75,7 @@ static const UINT8 aes_sbox_dec[] = {
 };
 
 /* ArrayIndex*{02} */
-static const UINT8 aes_mul_2[] = {
+static const unsigned char aes_mul_2[] = {
   /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
     0x00, 0x02, 0x04, 0x06, 0x08, 0x0a, 0x0c, 0x0e, 0x10, 0x12, 0x14, 0x16, 0x18, 0x1a, 0x1c, 0x1e, /* 0 */
     0x20, 0x22, 0x24, 0x26, 0x28, 0x2a, 0x2c, 0x2e, 0x30, 0x32, 0x34, 0x36, 0x38, 0x3a, 0x3c, 0x3e, /* 1 */
@@ -96,7 +96,7 @@ static const UINT8 aes_mul_2[] = {
 };
 
 /* ArrayIndex*{03} */
-static const UINT8 aes_mul_3[] = {
+static const unsigned char aes_mul_3[] = {
   /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
     0x00, 0x03, 0x06, 0x05, 0x0c, 0x0f, 0x0a, 0x09, 0x18, 0x1b, 0x1e, 0x1d, 0x14, 0x17, 0x12, 0x11, /* 0 */
     0x30, 0x33, 0x36, 0x35, 0x3c, 0x3f, 0x3a, 0x39, 0x28, 0x2b, 0x2e, 0x2d, 0x24, 0x27, 0x22, 0x21, /* 1 */
@@ -117,7 +117,7 @@ static const UINT8 aes_mul_3[] = {
 };
 
 /* ArrayIndex*{09} */
-static const UINT8 aes_mul_9[] = {
+static const unsigned char aes_mul_9[] = {
   /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
     0x00, 0x09, 0x12, 0x1b, 0x24, 0x2d, 0x36, 0x3f, 0x48, 0x41, 0x5a, 0x53, 0x6c, 0x65, 0x7e, 0x77, /* 0 */
     0x90, 0x99, 0x82, 0x8b, 0xb4, 0xbd, 0xa6, 0xaf, 0xd8, 0xd1, 0xca, 0xc3, 0xfc, 0xf5, 0xee, 0xe7, /* 1 */
@@ -138,7 +138,7 @@ static const UINT8 aes_mul_9[] = {
 };
 
 /* ArrayIndex*{0b} */
-static const UINT8 aes_mul_b[] = {
+static const unsigned char aes_mul_b[] = {
   /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
     0x00, 0x0b, 0x16, 0x1d, 0x2c, 0x27, 0x3a, 0x31, 0x58, 0x53, 0x4e, 0x45, 0x74, 0x7f, 0x62, 0x69, /* 0 */
     0xb0, 0xbb, 0xa6, 0xad, 0x9c, 0x97, 0x8a, 0x81, 0xe8, 0xe3, 0xfe, 0xf5, 0xc4, 0xcf, 0xd2, 0xd9, /* 1 */
@@ -159,7 +159,7 @@ static const UINT8 aes_mul_b[] = {
 };
 
 /* ArrayIndex*{0d} */
-static const UINT8 aes_mul_d[] = {
+static const unsigned char aes_mul_d[] = {
   /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
     0x00, 0x0d, 0x1a, 0x17, 0x34, 0x39, 0x2e, 0x23, 0x68, 0x65, 0x72, 0x7f, 0x5c, 0x51, 0x46, 0x4b, /* 0 */
     0xd0, 0xdd, 0xca, 0xc7, 0xe4, 0xe9, 0xfe, 0xf3, 0xb8, 0xb5, 0xa2, 0xaf, 0x8c, 0x81, 0x96, 0x9b, /* 1 */
@@ -180,7 +180,7 @@ static const UINT8 aes_mul_d[] = {
 };
 
 /* ArrayIndex*{0e} */
-static const UINT8 aes_mul_e[] = {
+static const unsigned char aes_mul_e[] = {
   /*  0     1     2     3     4     5     6     7     8     9     a     b     c     d     e     f    */
     0x00, 0x0e, 0x1c, 0x12, 0x38, 0x36, 0x24, 0x2a, 0x70, 0x7e, 0x6c, 0x62, 0x48, 0x46, 0x54, 0x5a, /* 0 */
     0xe0, 0xee, 0xfc, 0xf2, 0xd8, 0xd6, 0xc4, 0xca, 0x90, 0x9e, 0x8c, 0x82, 0xa8, 0xa6, 0xb4, 0xba, /* 1 */
@@ -202,9 +202,9 @@ static const UINT8 aes_mul_e[] = {
 
 /* For AES_CMAC */
 #define AES_MAC_LENGTH 16 /* 128-bit string */
-static UINT8 Const_Zero[16] = {
+static unsigned char Const_Zero[16] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-static UINT8 Const_Rb[16] = {
+static unsigned char Const_Rb[16] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x87};
    
 /*
@@ -244,14 +244,14 @@ Note:
 ========================================================================
 */
 void RT_AES_KeyExpansion (
-    IN UINT8 Key[],
-    IN UINT KeyLength,
-    INAES_CTX_STRUC *paes_ctx)
+    IN unsigned char Key[],
+    IN unsigned int KeyLength,
+    AES_CTX_STRUC *paes_ctx)
 {
-    UINT KeyIndex = 0;
-    UINT NumberOfWordOfKey, NumberOfWordOfKeyExpansion;
-    UINT8  TempWord[AES_KEY_ROWS], Temp;
-    UINT32 Temprcon;
+    unsigned int KeyIndex = 0;
+    unsigned int NumberOfWordOfKey, NumberOfWordOfKeyExpansion;
+    unsigned char  TempWord[AES_KEY_ROWS], Temp;
+    unsigned int Temprcon;
 
     NumberOfWordOfKey = KeyLength >> 2;
     while (KeyIndex < NumberOfWordOfKey)
@@ -263,7 +263,7 @@ void RT_AES_KeyExpansion (
         KeyIndex++;
     }
 
-    NumberOfWordOfKeyExpansion = ((UINT) AES_KEY_ROWS) * ((KeyLength >> 2) + 6 + 1);    
+    NumberOfWordOfKeyExpansion = ((unsigned int) AES_KEY_ROWS) * ((KeyLength >> 2) + 6 + 1);    
     while (KeyIndex < NumberOfWordOfKeyExpansion)
     {
         TempWord[0] = paes_ctx->KeyWordExpansion[0][KeyIndex - 1];
@@ -335,19 +335,19 @@ Note:
 ========================================================================
 */
 void RT_AES_Encrypt (
-    IN UINT8 PlainBlock[],
-    IN UINT PlainBlockSize,
-    IN UINT8 Key[],
-    IN UINT KeyLength,
-    UINT8 CipherBlock[],
-    INUINT *CipherBlockSize)
+    IN unsigned char PlainBlock[],
+    IN unsigned int PlainBlockSize,
+    IN unsigned char Key[],
+    IN unsigned int KeyLength,
+    unsigned char CipherBlock[],
+    unsigned int *CipherBlockSize)
 {
 /*    AES_CTX_STRUC aes_ctx;
 */
 	AES_CTX_STRUC *paes_ctx = NULL;
-    UINT RowIndex, ColumnIndex;
-    UINT RoundIndex, NumberOfRound = 0;
-    UINT8 Temp, Row0, Row1, Row2, Row3;
+    unsigned int RowIndex, ColumnIndex;
+    unsigned int RoundIndex, NumberOfRound = 0;
+    unsigned char Temp, Row0, Row1, Row2, Row3;
 
     /*   
      * 1. Check if block size is 16 bytes(128 bits) and if key length is 16, 24, or 32 bytes(128, 192, or 256 bits) 
@@ -369,7 +369,7 @@ void RT_AES_Encrypt (
     }
 
 	/* allocate memory */
-	os_alloc_mem(NULL, (UCHAR **)&paes_ctx, sizeof(AES_CTX_STRUC));
+	os_alloc_mem(NULL, (unsigned char **)&paes_ctx, sizeof(AES_CTX_STRUC));
 	if (paes_ctx == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
@@ -393,7 +393,7 @@ void RT_AES_Encrypt (
     RoundIndex = 0;
     for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
         for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
-            paes_ctx->State[RowIndex][ColumnIndex] ^= paes_ctx->KeyWordExpansion[RowIndex][(RoundIndex*((UINT) AES_STATE_COLUMNS)) + ColumnIndex];
+            paes_ctx->State[RowIndex][ColumnIndex] ^= paes_ctx->KeyWordExpansion[RowIndex][(RoundIndex*((unsigned int) AES_STATE_COLUMNS)) + ColumnIndex];
 
     for (RoundIndex = 1; RoundIndex < NumberOfRound;RoundIndex++)
     {
@@ -436,7 +436,7 @@ void RT_AES_Encrypt (
         /* AES_AddRoundKey */
         for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
             for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
-                paes_ctx->State[RowIndex][ColumnIndex] ^= paes_ctx->KeyWordExpansion[RowIndex][(RoundIndex*((UINT) AES_STATE_COLUMNS)) + ColumnIndex];
+                paes_ctx->State[RowIndex][ColumnIndex] ^= paes_ctx->KeyWordExpansion[RowIndex][(RoundIndex*((unsigned int) AES_STATE_COLUMNS)) + ColumnIndex];
     }
 
     /* AES_SubBytes */
@@ -463,7 +463,7 @@ void RT_AES_Encrypt (
     /* AES_AddRoundKey */
     for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
         for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
-            paes_ctx->State[RowIndex][ColumnIndex] ^= paes_ctx->KeyWordExpansion[RowIndex][(RoundIndex*((UINT) AES_STATE_COLUMNS)) + ColumnIndex];
+            paes_ctx->State[RowIndex][ColumnIndex] ^= paes_ctx->KeyWordExpansion[RowIndex][(RoundIndex*((unsigned int) AES_STATE_COLUMNS)) + ColumnIndex];
 
     /* 
      * 4. Transfer the state block to cipher block 
@@ -472,7 +472,7 @@ void RT_AES_Encrypt (
         for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
             CipherBlock[RowIndex + 4*ColumnIndex] = paes_ctx->State[RowIndex][ColumnIndex];
 
-    *CipherBlockSize = ((UINT) AES_STATE_ROWS)*((UINT) AES_STATE_COLUMNS);
+    *CipherBlockSize = ((unsigned int) AES_STATE_ROWS)*((unsigned int) AES_STATE_COLUMNS);
 
 	if (paes_ctx != NULL)
 		os_free_mem(NULL, paes_ctx);
@@ -521,19 +521,19 @@ Note:
 ========================================================================
 */
 void RT_AES_Decrypt (
-    IN UINT8 CipherBlock[],
-    IN UINT CipherBlockSize,
-    IN UINT8 Key[],
-    IN UINT KeyLength,
-    UINT8 PlainBlock[],
-    INUINT *PlainBlockSize)
+    IN unsigned char CipherBlock[],
+    IN unsigned int CipherBlockSize,
+    IN unsigned char Key[],
+    IN unsigned int KeyLength,
+    unsigned char PlainBlock[],
+    unsigned int *PlainBlockSize)
 {
 /*    AES_CTX_STRUC aes_ctx;
 */
 	AES_CTX_STRUC *paes_ctx = NULL;
-    UINT RowIndex, ColumnIndex;
-    UINT RoundIndex, NumberOfRound = 0;
-    UINT8 Temp, Row0, Row1, Row2, Row3;
+    unsigned int RowIndex, ColumnIndex;
+    unsigned int RoundIndex, NumberOfRound = 0;
+    unsigned char Temp, Row0, Row1, Row2, Row3;
 
     /*   
      * 1. Check if block size is 16 bytes(128 bits) and if key length is 16, 24, or 32 bytes(128, 192, or 256 bits) 
@@ -555,7 +555,7 @@ void RT_AES_Decrypt (
     }
 
 	/* allocate memory */
-	os_alloc_mem(NULL, (UCHAR **)&paes_ctx, sizeof(AES_CTX_STRUC));
+	os_alloc_mem(NULL, (unsigned char **)&paes_ctx, sizeof(AES_CTX_STRUC));
 	if (paes_ctx == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
@@ -579,7 +579,7 @@ void RT_AES_Decrypt (
     RoundIndex = NumberOfRound;
     for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
         for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
-            paes_ctx->State[RowIndex][ColumnIndex] ^= paes_ctx->KeyWordExpansion[RowIndex][(RoundIndex*((UINT) AES_STATE_COLUMNS)) + ColumnIndex];
+            paes_ctx->State[RowIndex][ColumnIndex] ^= paes_ctx->KeyWordExpansion[RowIndex][(RoundIndex*((unsigned int) AES_STATE_COLUMNS)) + ColumnIndex];
 
     for (RoundIndex = (NumberOfRound - 1); RoundIndex > 0 ;RoundIndex--)
     {
@@ -609,7 +609,7 @@ void RT_AES_Decrypt (
         /* AES_AddRoundKey */
         for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
             for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
-                paes_ctx->State[RowIndex][ColumnIndex] ^= paes_ctx->KeyWordExpansion[RowIndex][(RoundIndex*((UINT) AES_STATE_COLUMNS)) + ColumnIndex];
+                paes_ctx->State[RowIndex][ColumnIndex] ^= paes_ctx->KeyWordExpansion[RowIndex][(RoundIndex*((unsigned int) AES_STATE_COLUMNS)) + ColumnIndex];
 
         /* AES_InvMixColumns */
         for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
@@ -649,7 +649,7 @@ void RT_AES_Decrypt (
     /* AES_AddRoundKey */
     for (RowIndex = 0; RowIndex < AES_STATE_ROWS;RowIndex++)
         for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
-            paes_ctx->State[RowIndex][ColumnIndex] ^= paes_ctx->KeyWordExpansion[RowIndex][(RoundIndex*((UINT) AES_STATE_COLUMNS)) + ColumnIndex];
+            paes_ctx->State[RowIndex][ColumnIndex] ^= paes_ctx->KeyWordExpansion[RowIndex][(RoundIndex*((unsigned int) AES_STATE_COLUMNS)) + ColumnIndex];
 
     /* 
      * 4. Transfer the state block to plain block 
@@ -658,7 +658,7 @@ void RT_AES_Decrypt (
         for (ColumnIndex = 0; ColumnIndex < AES_STATE_COLUMNS;ColumnIndex++)
             PlainBlock[RowIndex + 4*ColumnIndex] = paes_ctx->State[RowIndex][ColumnIndex];
 
-    *PlainBlockSize = ((UINT) AES_STATE_ROWS)*((UINT) AES_STATE_COLUMNS);
+    *PlainBlockSize = ((unsigned int) AES_STATE_ROWS)*((unsigned int) AES_STATE_COLUMNS);
 
 	if (paes_ctx != NULL)
 		os_free_mem(NULL, paes_ctx);
@@ -690,20 +690,20 @@ Note:
 ========================================================================
 */
 void AES_CCM_MAC (
-    IN UINT8 Payload[],
-    IN UINT  PayloadLength,
-    IN UINT8 Key[],
-    IN UINT  KeyLength,
-    IN UINT8 Nonce[],
-    IN UINT  NonceLength,
-    IN UINT8 AAD[],
-    IN UINT  AADLength,
-    IN UINT  MACLength,
-    UINT8 MACText[])
+    IN unsigned char Payload[],
+    IN unsigned int  PayloadLength,
+    IN unsigned char Key[],
+    IN unsigned int  KeyLength,
+    IN unsigned char Nonce[],
+    IN unsigned int  NonceLength,
+    IN unsigned char AAD[],
+    IN unsigned int  AADLength,
+    IN unsigned int  MACLength,
+    unsigned char MACText[])
 {
-    UINT8 Block[AES_BLOCK_SIZES], Block_MAC[AES_BLOCK_SIZES];
-    UINT  Block_Index = 0, ADD_Index = 0, Payload_Index = 0;
-    UINT  Temp_Value = 0, Temp_Index = 0, Temp_Length = 0, Copy_Length = 0;
+    unsigned char Block[AES_BLOCK_SIZES], Block_MAC[AES_BLOCK_SIZES];
+    unsigned int  Block_Index = 0, ADD_Index = 0, Payload_Index = 0;
+    unsigned int  Temp_Value = 0, Temp_Index = 0, Temp_Length = 0, Copy_Length = 0;
 
     /*   
      * 1. Formatting of the Control Information and the Nonce
@@ -823,23 +823,23 @@ Note:
     Here, the implement of AES_CCM is suitable for WI_FI.
 ========================================================================
 */
-INT AES_CCM_Encrypt (
-    IN UINT8 PlainText[],
-    IN UINT PlainTextLength,
-    IN UINT8 Key[],
-    IN UINT KeyLength,
-    IN UINT8 Nonce[],
-    IN UINT NonceLength,
-    IN UINT8 AAD[],
-    IN UINT AADLength,
-    IN UINT MACLength,
-    UINT8 CipherText[],
-    INUINT *CipherTextLength)
+int AES_CCM_Encrypt (
+    IN unsigned char PlainText[],
+    IN unsigned int PlainTextLength,
+    IN unsigned char Key[],
+    IN unsigned int KeyLength,
+    IN unsigned char Nonce[],
+    IN unsigned int NonceLength,
+    IN unsigned char AAD[],
+    IN unsigned int AADLength,
+    IN unsigned int MACLength,
+    unsigned char CipherText[],
+    unsigned int *CipherTextLength)
 {
-    UINT8 Block_MAC[AES_BLOCK_SIZES];
-    UINT8 Block_CTR[AES_BLOCK_SIZES], Block_CTR_Cipher[AES_BLOCK_SIZES];
-    UINT  Cipher_Index = 0;
-    UINT Temp_Value = 0, Temp_Index = 0, Temp_Length = 0, Copy_Length = 0;
+    unsigned char Block_MAC[AES_BLOCK_SIZES];
+    unsigned char Block_CTR[AES_BLOCK_SIZES], Block_CTR_Cipher[AES_BLOCK_SIZES];
+    unsigned int  Cipher_Index = 0;
+    unsigned int Temp_Value = 0, Temp_Index = 0, Temp_Length = 0, Copy_Length = 0;
 
     /*   
      * 1. Check Input Values
@@ -946,23 +946,23 @@ Note:
     Here, the implement of AES_CCM is suitable for WI_FI.
 ========================================================================
 */
-INT AES_CCM_Decrypt (
-    IN UINT8 CipherText[],
-    IN UINT  CipherTextLength,
-    IN UINT8 Key[],
-    IN UINT  KeyLength,
-    IN UINT8 Nonce[],
-    IN UINT  NonceLength,
-    IN UINT8 AAD[],
-    IN UINT  AADLength,
-    IN UINT  MACLength,    
-    UINT8 PlainText[],
-    INUINT *PlainTextLength)
+int AES_CCM_Decrypt (
+    IN unsigned char CipherText[],
+    IN unsigned int  CipherTextLength,
+    IN unsigned char Key[],
+    IN unsigned int  KeyLength,
+    IN unsigned char Nonce[],
+    IN unsigned int  NonceLength,
+    IN unsigned char AAD[],
+    IN unsigned int  AADLength,
+    IN unsigned int  MACLength,    
+    unsigned char PlainText[],
+    unsigned int *PlainTextLength)
 {
-    UINT8 Block_MAC[AES_BLOCK_SIZES], Block_MAC_From_Cipher[AES_BLOCK_SIZES];
-    UINT8 Block_CTR[AES_BLOCK_SIZES], Block_CTR_Cipher[AES_BLOCK_SIZES];
-    UINT  Block_Index = 0, Cipher_Index = 0;
-    UINT Temp_Value = 0, Temp_Index = 0, Temp_Length = 0, Copy_Length = 0;
+    unsigned char Block_MAC[AES_BLOCK_SIZES], Block_MAC_From_Cipher[AES_BLOCK_SIZES];
+    unsigned char Block_CTR[AES_BLOCK_SIZES], Block_CTR_Cipher[AES_BLOCK_SIZES];
+    unsigned int  Block_Index = 0, Cipher_Index = 0;
+    unsigned int Temp_Value = 0, Temp_Index = 0, Temp_Length = 0, Copy_Length = 0;
 
 
     /*   
@@ -1071,14 +1071,14 @@ Note:
 ========================================================================
 */
 void AES_CMAC_GenerateSubKey (
-    IN UINT8 Key[],
-    IN UINT KeyLength,
-    UINT8 SubKey1[],
-    UINT8 SubKey2[])
+    IN unsigned char Key[],
+    IN unsigned int KeyLength,
+    unsigned char SubKey1[],
+    unsigned char SubKey2[])
 {
-    UINT8 MSB_L = 0, MSB_K1 = 0, Top_Bit = 0;
-    UINT  SubKey1_Length = 0;
-    INT   Index = 0;
+    unsigned char MSB_L = 0, MSB_K1 = 0, Top_Bit = 0;
+    unsigned int  SubKey1_Length = 0;
+    int   Index = 0;
 
     if (KeyLength != AES_KEY128_LENGTH) {
     	DBGPRINT(RT_DEBUG_ERROR, ("AES_CMAC_GenerateSubKey: key length is %d bytes, it must be %d bytes(128 bits).\n", 
@@ -1147,19 +1147,19 @@ Note:
 ========================================================================
 */
 void AES_CMAC (
-    IN UINT8 PlainText[],
-    IN UINT PlainTextLength,
-    IN UINT8 Key[],
-    IN UINT KeyLength,
-    UINT8 MACText[],
-    INUINT *MACTextLength)
+    IN unsigned char PlainText[],
+    IN unsigned int PlainTextLength,
+    IN unsigned char Key[],
+    IN unsigned int KeyLength,
+    unsigned char MACText[],
+    unsigned int *MACTextLength)
 {
-    UINT  PlainBlockStart;
-    UINT8 X[AES_BLOCK_SIZES], Y[AES_BLOCK_SIZES];
-    UINT8 SubKey1[16];
-    UINT8 SubKey2[16];
-    INT Index;
-    UINT X_Length;
+    unsigned int  PlainBlockStart;
+    unsigned char X[AES_BLOCK_SIZES], Y[AES_BLOCK_SIZES];
+    unsigned char SubKey1[16];
+    unsigned char SubKey2[16];
+    int Index;
+    unsigned int X_Length;
 
     if (*MACTextLength < AES_MAC_LENGTH) {
     	DBGPRINT(RT_DEBUG_ERROR, ("AES_CMAC: MAC text length is less than %d bytes).\n", 
@@ -1192,7 +1192,7 @@ void AES_CMAC (
 
         X_Length = sizeof(X);
         RT_AES_Encrypt(Y, sizeof(Y) , Key, KeyLength, X, &X_Length);
-        PlainBlockStart += ((UINT) AES_BLOCK_SIZES);
+        PlainBlockStart += ((unsigned int) AES_BLOCK_SIZES);
     }
     if ((PlainTextLength - PlainBlockStart) == AES_BLOCK_SIZES) {
         for (Index = 0; Index < AES_BLOCK_SIZES; Index++)
@@ -1211,7 +1211,7 @@ void AES_CMAC (
 /* For AES_Key_Wrap */
 #define AES_KEY_WRAP_IV_LENGTH 8 /* 64-bit */
 #define AES_KEY_WRAP_BLOCK_SIZE 8 /* 64-bit */
-static UINT8 Default_IV[8] = {
+static unsigned char Default_IV[8] = {
     0xa6, 0xa6, 0xa6, 0xa6, 0xa6, 0xa6, 0xa6, 0xa6};
 
 /*
@@ -1237,18 +1237,18 @@ Note:
 ========================================================================
 */
 void AES_CBC_Encrypt (
-    IN UINT8 PlainText[],
-    IN UINT PlainTextLength,
-    IN UINT8 Key[],
-    IN UINT KeyLength,
-    IN UINT8 IV[],
-    IN UINT IVLength,
-    UINT8 CipherText[],
-    INUINT *CipherTextLength)
+    IN unsigned char PlainText[],
+    IN unsigned int PlainTextLength,
+    IN unsigned char Key[],
+    IN unsigned int KeyLength,
+    IN unsigned char IV[],
+    IN unsigned int IVLength,
+    unsigned char CipherText[],
+    unsigned int *CipherTextLength)
 {
-    UINT PaddingSize, PlainBlockStart, CipherBlockStart, CipherBlockSize;
-    UINT Index;
-    UINT8 Block[AES_BLOCK_SIZES];
+    unsigned int PaddingSize, PlainBlockStart, CipherBlockStart, CipherBlockSize;
+    unsigned int Index;
+    unsigned char Block[AES_BLOCK_SIZES];
 
     /*   
      * 1. Check the input parameters
@@ -1256,7 +1256,7 @@ void AES_CBC_Encrypt (
      *    - Key length must be 16, 24, or 32 bytes(128, 192, or 256 bits) 
      *    - IV length must be 16 bytes(128 bits) 
      */
-    PaddingSize = ((UINT) AES_BLOCK_SIZES) - (PlainTextLength % ((UINT)AES_BLOCK_SIZES));
+    PaddingSize = ((unsigned int) AES_BLOCK_SIZES) - (PlainTextLength % ((unsigned int)AES_BLOCK_SIZES));
     if (*CipherTextLength < (PlainTextLength + PaddingSize)) {
     	DBGPRINT(RT_DEBUG_ERROR, ("AES_CBC_Encrypt: cipher text length is %d bytes < (plain text length %d bytes + padding size %d bytes).\n", 
             *CipherTextLength, PlainTextLength, PaddingSize));
@@ -1292,24 +1292,24 @@ void AES_CBC_Encrypt (
                 Block[Index] = PlainText[PlainBlockStart + Index]^IV[Index];                
         } else {
             for (Index = 0; Index < AES_BLOCK_SIZES; Index++)
-                Block[Index] = PlainText[PlainBlockStart + Index]^CipherText[CipherBlockStart - ((UINT) AES_BLOCK_SIZES) + Index];
+                Block[Index] = PlainText[PlainBlockStart + Index]^CipherText[CipherBlockStart - ((unsigned int) AES_BLOCK_SIZES) + Index];
         }
             
         CipherBlockSize = *CipherTextLength - CipherBlockStart;
         RT_AES_Encrypt(Block, AES_BLOCK_SIZES , Key, KeyLength, CipherText + CipherBlockStart, &CipherBlockSize);
 
-        PlainBlockStart += ((UINT) AES_BLOCK_SIZES);
+        PlainBlockStart += ((unsigned int) AES_BLOCK_SIZES);
         CipherBlockStart += CipherBlockSize;
     }
 
     NdisMoveMemory(Block, (&PlainText[0] + PlainBlockStart), (PlainTextLength - PlainBlockStart));
-    NdisFillMemory((Block + (((UINT) AES_BLOCK_SIZES) -PaddingSize)), PaddingSize, (UINT8) PaddingSize);
+    NdisFillMemory((Block + (((unsigned int) AES_BLOCK_SIZES) -PaddingSize)), PaddingSize, (unsigned char) PaddingSize);
     if (CipherBlockStart == 0) {
        for (Index = 0; Index < AES_BLOCK_SIZES; Index++)
            Block[Index] ^= IV[Index];
     } else {
        for (Index = 0; Index < AES_BLOCK_SIZES; Index++)
-           Block[Index] ^= CipherText[CipherBlockStart - ((UINT) AES_BLOCK_SIZES) + Index];
+           Block[Index] ^= CipherText[CipherBlockStart - ((unsigned int) AES_BLOCK_SIZES) + Index];
     }
     CipherBlockSize = *CipherTextLength - CipherBlockStart;
     RT_AES_Encrypt(Block, AES_BLOCK_SIZES , Key, KeyLength, CipherText + CipherBlockStart, &CipherBlockSize);
@@ -1341,17 +1341,17 @@ Note:
 ========================================================================
 */
 void AES_CBC_Decrypt (
-    IN UINT8 CipherText[],
-    IN UINT CipherTextLength,
-    IN UINT8 Key[],
-    IN UINT KeyLength,
-    IN UINT8 IV[],
-    IN UINT IVLength,
-    UINT8 PlainText[],
-    INUINT *PlainTextLength)
+    IN unsigned char CipherText[],
+    IN unsigned int CipherTextLength,
+    IN unsigned char Key[],
+    IN unsigned int KeyLength,
+    IN unsigned char IV[],
+    IN unsigned int IVLength,
+    unsigned char PlainText[],
+    unsigned int *PlainTextLength)
 {
-    UINT PaddingSize, PlainBlockStart, CipherBlockStart, PlainBlockSize;
-    UINT Index;
+    unsigned int PaddingSize, PlainBlockStart, CipherBlockStart, PlainBlockSize;
+    unsigned int Index;
 
     /*   
      * 1. Check the input parameters
@@ -1394,14 +1394,14 @@ void AES_CBC_Decrypt (
                 PlainText[PlainBlockStart + Index] ^= IV[Index];                
         } else {
             for (Index = 0; Index < AES_BLOCK_SIZES; Index++)
-                PlainText[PlainBlockStart + Index] ^= CipherText[CipherBlockStart + Index - ((UINT) AES_BLOCK_SIZES)];
+                PlainText[PlainBlockStart + Index] ^= CipherText[CipherBlockStart + Index - ((unsigned int) AES_BLOCK_SIZES)];
         }
 
         CipherBlockStart += AES_BLOCK_SIZES;
         PlainBlockStart += PlainBlockSize;
     }
 
-    PaddingSize = (UINT8) PlainText[PlainBlockStart -1];   
+    PaddingSize = (unsigned char) PlainText[PlainBlockStart -1];   
     *PlainTextLength = PlainBlockStart - PaddingSize;
 
 }
@@ -1431,18 +1431,18 @@ Note:
     Reference to RFC 3394
 ========================================================================
 */
-INT AES_Key_Wrap (
-    IN UINT8 PlainText[],
-    IN UINT  PlainTextLength,
-    IN UINT8 Key[],
-    IN UINT  KeyLength,
-    UINT8 CipherText[],
-    UINT *CipherTextLength)
+int AES_Key_Wrap (
+    IN unsigned char PlainText[],
+    IN unsigned int  PlainTextLength,
+    IN unsigned char Key[],
+    IN unsigned int  KeyLength,
+    unsigned char CipherText[],
+    unsigned int *CipherTextLength)
 {
-    UINT8 IV[8], Block_B[16], Block_Input[16];
-    UINT8 *pResult;
-    UINT  Temp_Length = 0, Number_Of_Block = 0;
-    INT   Index_i = 0, Index_j = 0;
+    unsigned char IV[8], Block_B[16], Block_Input[16];
+    unsigned char *pResult;
+    unsigned int  Temp_Length = 0, Number_Of_Block = 0;
+    int   Index_i = 0, Index_j = 0;
     
     /*   
      * 0. Check input parameter
@@ -1452,11 +1452,11 @@ INT AES_Key_Wrap (
             KeyLength, AES_KEY128_LENGTH, AES_KEY192_LENGTH, AES_KEY256_LENGTH));
         return -1;
     } /* End of if */    
-	os_alloc_mem(NULL, (UCHAR **)&pResult, sizeof(UINT8)*PlainTextLength);
-/*    if ((pResult = (UINT8 *) kmalloc(sizeof(UINT8)*PlainTextLength, GFP_ATOMIC)) == NULL) {
+	os_alloc_mem(NULL, (unsigned char **)&pResult, sizeof(unsigned char)*PlainTextLength);
+/*    if ((pResult = (unsigned char *) kmalloc(sizeof(unsigned char)*PlainTextLength, GFP_ATOMIC)) == NULL) {
 */
     if (pResult == NULL) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_Key_Wrap: allocate %d bytes memory failure.\n", sizeof(UINT8)*PlainTextLength));
+    	DBGPRINT(RT_DEBUG_ERROR, ("AES_Key_Wrap: allocate %d bytes memory failure.\n", sizeof(unsigned char)*PlainTextLength));
         return -2;
     } /* End of if */
 
@@ -1525,18 +1525,18 @@ Note:
     Reference to RFC 3394
 ========================================================================
 */
-INT AES_Key_Unwrap (
-    IN UINT8 CipherText[],
-    IN UINT  CipherTextLength,
-    IN UINT8 Key[],
-    IN UINT  KeyLength,
-    UINT8 PlainText[],
-    UINT *PlainTextLength)
+int AES_Key_Unwrap (
+    IN unsigned char CipherText[],
+    IN unsigned int  CipherTextLength,
+    IN unsigned char Key[],
+    IN unsigned int  KeyLength,
+    unsigned char PlainText[],
+    unsigned int *PlainTextLength)
 {
-    UINT8 IV[8], Block_B[16], Block_Input[16];
-    UINT8 *pResult;
-    UINT  Temp_Length = 0, Number_Of_Block = 0, PlainLength;
-    INT   Index_i = 0, Index_j = 0;
+    unsigned char IV[8], Block_B[16], Block_Input[16];
+    unsigned char *pResult;
+    unsigned int  Temp_Length = 0, Number_Of_Block = 0, PlainLength;
+    int   Index_i = 0, Index_j = 0;
     
     /*   
      * 0. Check input parameter
@@ -1547,11 +1547,11 @@ INT AES_Key_Unwrap (
             KeyLength, AES_KEY128_LENGTH, AES_KEY192_LENGTH, AES_KEY256_LENGTH));
         return -1;
     } /* End of if */    
-	os_alloc_mem(NULL, (UCHAR **)&pResult, sizeof(UINT8)*PlainLength);
-/*    if ((pResult = (UINT8 *) kmalloc(sizeof(UINT8)*PlainLength, GFP_ATOMIC)) == NULL) {
+	os_alloc_mem(NULL, (unsigned char **)&pResult, sizeof(unsigned char)*PlainLength);
+/*    if ((pResult = (unsigned char *) kmalloc(sizeof(unsigned char)*PlainLength, GFP_ATOMIC)) == NULL) {
 */
     if (pResult == NULL) {
-    	DBGPRINT(RT_DEBUG_ERROR, ("AES_Key_Unwrap: allocate %d bytes memory failure.\n", sizeof(UINT8)*PlainLength));
+    	DBGPRINT(RT_DEBUG_ERROR, ("AES_Key_Unwrap: allocate %d bytes memory failure.\n", sizeof(unsigned char)*PlainLength));
         return -2;
     } /* End of if */
 

@@ -34,7 +34,7 @@
 #include "wpa_cmm.h"
 
 #include "wsc.h"
-
+#include "link_list.h"
 
 
 
@@ -1502,7 +1502,7 @@ typedef struct _COMMON_CONFIG {
 	unsigned char bMIMOPSEnable;
 	unsigned char bBADecline;
 	unsigned char bDisableReordering;
-	unsigned char bForty_Mhz_intolerant;
+	unsigned char bForty_Mhz_Intolerant;
 	unsigned char bExtChannelSwitchAnnouncement;
 	unsigned char bRcvBSSWidthTriggerEvents;
 	unsigned long LastRcvBSSWidthTriggerEventsTime;
@@ -1989,6 +1989,19 @@ struct ip_frag_q{
 };
 #endif /* IP_ASSEMBLY */
 #endif /* WFA_VHT_PF */
+typedef struct _QUEUE_ENTRY
+{
+    struct _QUEUE_ENTRY *Next;
+} QUEUE_ENTRY, *PQUEUE_ENTRY;
+
+/* Queue structure */
+typedef struct _QUEUE_HEADER
+{
+    PQUEUE_ENTRY Head;
+    PQUEUE_ENTRY Tail;
+    unsigned long Number;
+} QUEUE_HEADER, *PQUEUE_HEADER;
+
 
 typedef struct _MAC_TABLE_ENTRY {
 	/*
@@ -2051,7 +2064,7 @@ typedef struct _MAC_TABLE_ENTRY {
 	unsigned long NoDataIdleCount;
 	unsigned short StationKeepAliveCount;	/* unit: second */
 	unsigned long PsQIdleCount;
-	struct list_head PsQueue;
+	QUEUE_HEADER PsQueue;
 
 	unsigned int StaConnectTime;	/* the live time of this station since associated with AP */
 	unsigned int StaIdleTimeout;	/* idle timeout per entry */
@@ -2348,7 +2361,7 @@ typedef struct _MAC_TABLE {
 	MAC_TABLE_ENTRY *Hash[HASH_TABLE_SIZE];
 	MAC_TABLE_ENTRY Content[MAX_LEN_OF_MAC_TABLE];
 	unsigned short Size;
-	struct list_head McastPsQueue;
+	QUEUE_HEADER McastPsQueue;
 	unsigned long PsQIdleCount;
 	unsigned char fAnyStationInPsm;
 	unsigned char fAnyStationBadAtheros;	/* Check if any Station is atheros 802.11n Chip.  We need to use RTS/CTS with Atheros 802,.11n chip. */
@@ -2653,19 +2666,6 @@ typedef struct tx_agc_ctrl{
 	unsigned char TxAgcStep;	/* Store Tx TSSI delta increment / decrement value */
 	char TxAgcComp;	/* Store the compensation (TxAgcStep * (idx-1)) */
 }TX_AGC_CTRL;
-
-typedef struct _QUEUE_ENTRY
-{
-    struct _QUEUE_ENTRY *Next;
-} QUEUE_ENTRY, *PQUEUE_ENTRY;
-
-/* Queue structure */
-typedef struct _QUEUE_HEADER
-{
-    PQUEUE_ENTRY Head;
-    PQUEUE_ENTRY Tail;
-    unsigned long Number;
-} QUEUE_HEADER, *PQUEUE_HEADER;
 
 
 /*
@@ -3311,15 +3311,15 @@ struct _RTMP_ADAPTER {
 	} ProbeRespIE[MAX_LEN_OF_BSS_TABLE];
 
 	/* purpose: We free all kernel resources when module is removed */
-	struct list_head RscTimerMemList;	/* resource timers memory */
-	struct list_head RscTaskMemList;	/* resource tasks memory */
-	struct list_head RscLockMemList;	/* resource locks memory */
-	struct list_head RscTaskletMemList;	/* resource tasklets memory */
-	struct list_head RscSemMemList;	/* resource semaphore memory */
-	struct list_head RscAtomicMemList;	/* resource atomic memory */
+	LIST_HEADER RscTimerMemList;	/* resource timers memory */
+	LIST_HEADER RscTaskMemList;	/* resource tasks memory */
+	LIST_HEADER RscLockMemList;	/* resource locks memory */
+	LIST_HEADER RscTaskletMemList;	/* resource tasklets memory */
+	LIST_HEADER RscSemMemList;	/* resource semaphore memory */
+	LIST_HEADER RscAtomicMemList;	/* resource atomic memory */
 
 	/* purpose: Cancel all timers when module is removed */
-	struct list_head RscTimerCreateList;	/* timers list */
+	LIST_HEADER RscTimerCreateList;	/* timers list */
 
 #ifdef OS_ABL_SUPPORT
 #endif /* OS_ABL_SUPPORT */
@@ -5539,7 +5539,7 @@ unsigned char PeerBeaconAndProbeRspSanity_Old(
 	unsigned short *pBeaconPeriod, 
 	unsigned char *pChannel, 
 	unsigned char *pNewChannel, 
-	unsigned long long *pTimestamp, 
+	unsigned long long Timestamp, 
 	CF_PARM *pCfParm, 
 	unsigned short *pAtimWin, 
 	unsigned short *pCapabilityInfo, 
@@ -6027,7 +6027,7 @@ unsigned char cfgmode_2_wmode(unsigned char cfg_mode);
 unsigned char *wmode_2_str(unsigned char wmode);
 
 
-int RT_CfgSetshortSlot(
+int RT_CfgSetShortSlot(
 PRTMP_ADAPTER	pAd, 
 char *			arg);
 
@@ -6431,7 +6431,7 @@ char * s1,
 char * s2);
 
 char * rtstrstr(
-const char * s1,
+char * s1,
 const char * s2);
 
 char * rstrtok(
@@ -6989,7 +6989,7 @@ unsigned char CmdRspEventCallbackHandle(PRTMP_ADAPTER pAd, unsigned char* pRspBu
 /* remove LLC and get 802_3 Header */
 #define  RTMP_802_11_REMOVE_LLC_AND_CONVERT_TO_802_3(_pRxBlk, _pHeader802_3)	\
 {																				\
-	unsigned char* _pRemovedLLCSNAP = NULL, _pDA, _pSA;                                 \
+	unsigned char* _pRemovedLLCSNAP = NULL, *_pDA, *_pSA;                                 \
 																				\
 	if (RX_BLK_TEST_FLAG(_pRxBlk, fRX_WDS) || RX_BLK_TEST_FLAG(_pRxBlk, fRX_MESH)) \
 	{                                                                           \
@@ -8061,7 +8061,7 @@ unsigned char         apidx,
 
 void RtmpCleanupPsQueue(
  PRTMP_ADAPTER   pAd,
- struct list_head   *pQueue);
+ QUEUE_HEADER   *pQueue);
 
 #ifdef CONFIG_STA_SUPPORT
 unsigned char RtmpPktPmBitCheck(
