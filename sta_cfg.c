@@ -7971,7 +7971,7 @@ int RTMP_STA_IoctlHandle(
 		case CMD_RTPRIV_IOCTL_PARAM_SET:
 		{
 			RT_CMD_PARAM_SET *pCmdParam = (RT_CMD_PARAM_SET *)pData;
-			char * this_char = pCmdParam->pThischar;
+			char * this_char = pCmdParam->pThisChar;
 			char * value = pCmdParam->pValue;
 
 			Status = RTMPSTAPrivIoctlSet(pAd, this_char, value);

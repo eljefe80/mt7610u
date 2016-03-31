@@ -30,12 +30,12 @@
 
 #include	"rt_config.h"
 /* Match total 6 bulkout endpoint to corresponding queue.*/
-UCHAR	EpToQueue[6]={FIFO_EDCA, FIFO_EDCA, FIFO_EDCA, FIFO_EDCA, FIFO_EDCA, FIFO_MGMT};
+unsigned char	EpToQueue[6]={FIFO_EDCA, FIFO_EDCA, FIFO_EDCA, FIFO_EDCA, FIFO_EDCA, FIFO_MGMT};
 
 
 
 #ifdef INF_AMAZON_SE	
-UINT16 MaxBulkOutsSizeLimit[5][4] =
+unsigned short MaxBulkOutsSizeLimit[5][4] =
 {
 	/* Priority high -> low*/
 	{ 24576, 2048, 2048, 2048 },	/* 0 AC	*/
@@ -46,13 +46,13 @@ UINT16 MaxBulkOutsSizeLimit[5][4] =
 };
 
 
-VOID SoftwareFlowControl(
+void SoftwareFlowControl(
 	IN PRTMP_ADAPTER pAd) 
 {
 	unsigned char ResetBulkOutSize=FALSE;
-	UCHAR i=0,RunningQueueNo=0,QueIdx=0,HighWorkingAcCount=0;
-	UINT PacketsInQueueSize=0;
-	UCHAR Priority[]={1,0,2,3};
+	unsigned char i=0,RunningQueueNo=0,QueIdx=0,HighWorkingAcCount=0;
+	unsigned int PacketsInQueueSize=0;
+	unsigned char Priority[]={1,0,2,3};
 	
 	for (i=0;i<NUM_OF_TX_RING;i++)
 	{
@@ -128,14 +128,14 @@ pAd->RunningQueueNoCount=0;
 #endif /* INF_AMAZON_SE */
 
 
-VOID RTUSBInitTxDesc(
+void RTUSBInitTxDesc(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	PTX_CONTEXT		pTxContext,
-	IN	UCHAR			BulkOutPipeId,
+	IN	unsigned char			BulkOutPipeId,
 	IN	usb_complete_t	Func)
 {
 	PURB				pUrb;
-	PUCHAR				pSrc = NULL;
+	unsigned char*				pSrc = NULL;
 	POS_COOKIE			pObj = (POS_COOKIE) pAd->OS_Cookie;
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
 
@@ -160,7 +160,7 @@ VOID RTUSBInitTxDesc(
 	}
 	else
 	{
-		pSrc = (PUCHAR) pTxContext->TransferBuffer->field.WirelessPacket;
+		pSrc = (unsigned char*) pTxContext->TransferBuffer->field.WirelessPacket;
 
 		RTUSB_FILL_TX_BULK_URB(pUrb,
 						pObj->pUsb_Dev,
@@ -173,15 +173,15 @@ VOID RTUSBInitTxDesc(
 	}
 }
 
-VOID	RTUSBInitHTTxDesc(
+void	RTUSBInitHTTxDesc(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	PHT_TX_CONTEXT	pTxContext,
-	IN	UCHAR			BulkOutPipeId,
-	IN	ULONG			BulkOutSize,
+	IN	unsigned char			BulkOutPipeId,
+	IN	unsigned long 			BulkOutSize,
 	IN	usb_complete_t	Func)
 {
 	PURB				pUrb;
-	PUCHAR				pSrc = NULL;
+	unsigned char*				pSrc = NULL;
 	POS_COOKIE			pObj = (POS_COOKIE) pAd->OS_Cookie;
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
 
@@ -203,13 +203,13 @@ VOID	RTUSBInitHTTxDesc(
 						(pTxContext->data_dma + pTxContext->NextBulkOutPosition));
 }
 
-VOID	RTUSBInitRxDesc(
+void	RTUSBInitRxDesc(
 	IN	PRTMP_ADAPTER	pAd,
 	IN	PRX_CONTEXT		pRxContext)
 {
 	PURB				pUrb;
 	POS_COOKIE			pObj = (POS_COOKIE) pAd->OS_Cookie;
-	ULONG				RX_bulk_size;
+	unsigned long 				RX_bulk_size;
 	RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
 
 	pUrb = pRxContext->pUrb;
@@ -256,10 +256,10 @@ VOID	RTUSBInitRxDesc(
 			RTMP_IRQ_UNLOCK((pLock), IrqFlags);
 
 
-VOID	RTUSBBulkOutDataPacket(
+void	RTUSBBulkOutDataPacket(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	UCHAR			BulkOutPipeId,
-	IN	UCHAR			Index)
+	IN	unsigned char			BulkOutPipeId,
+	IN	unsigned char			Index)
 {
 
 	PHT_TX_CONTEXT	pHTTXContext;
@@ -267,15 +267,15 @@ VOID	RTUSBBulkOutDataPacket(
 	int				ret = 0;
 	TXINFO_STRUC *pTxInfo, *pLastTxInfo = NULL;
 	TXWI_STRUC *pTxWI;
-	ULONG			TmpBulkEndPos, ThisBulkSize;
+	unsigned long 			TmpBulkEndPos, ThisBulkSize;
 	unsigned long	IrqFlags = 0, IrqFlags2 = 0;
-	PUCHAR			pWirelessPkt, pAppendant;
+	unsigned char*			pWirelessPkt, *pAppendant;
 
 #ifdef USB_BULK_BUF_ALIGMENT
 	unsigned char			bLasAlignmentsectiontRound = FALSE;
 #else
 	unsigned char			bTxQLastRound = FALSE;
-	UCHAR			allzero[4]= {0x0,0x0,0x0,0x0};
+	unsigned char			allzero[4]= {0x0,0x0,0x0,0x0};
 #endif /* USB_BULK_BUF_ALIGMENT */
 
 
@@ -502,7 +502,7 @@ VOID	RTUSBBulkOutDataPacket(
 			DBGPRINT(RT_DEBUG_ERROR, ("\tCWPos=%ld, NBPos=%ld, ENBPos=%ld, bCopy=%d!\n", 
 										pHTTXContext->CurWritePosition, pHTTXContext->NextBulkOutPosition, 
 										pHTTXContext->ENextBulkOutPosition, pHTTXContext->bCopySavePad));
-			hex_dump("Wrong QSel Pkt:", (PUCHAR)&pWirelessPkt[TmpBulkEndPos], (pHTTXContext->CurWritePosition - pHTTXContext->NextBulkOutPosition));
+			hex_dump("Wrong QSel Pkt:", (unsigned char*)&pWirelessPkt[TmpBulkEndPos], (pHTTXContext->CurWritePosition - pHTTXContext->NextBulkOutPosition));
 		}
 		
 		if (pTxInfo->TxInfoPktLen <= 8)
@@ -558,16 +558,16 @@ VOID	RTUSBBulkOutDataPacket(
 			pHTTXContext->ENextBulkOutPosition = 8;
 			
 	#ifdef RT_BIG_ENDIAN
-			RTMPDescriptorEndianChange((PUCHAR)pTxInfo, TYPE_TXINFO);
-			RTMPWIEndianChange(pAd, (PUCHAR)pTxWI, TYPE_TXWI);
+			RTMPDescriptorEndianChange((unsigned char*)pTxInfo, TYPE_TXINFO);
+			RTMPWIEndianChange(pAd, (unsigned char*)pTxWI, TYPE_TXWI);
 	#endif /* RT_BIG_ENDIAN */
 	
 			break;
 		}
 #endif /* USB_BULK_BUF_ALIGMENT */	
 #ifdef RT_BIG_ENDIAN
-		RTMPDescriptorEndianChange((PUCHAR)pTxInfo, TYPE_TXINFO);
-		RTMPWIEndianChange(pAd, (PUCHAR)pTxWI, TYPE_TXWI);
+		RTMPDescriptorEndianChange((unsigned char*)pTxInfo, TYPE_TXINFO);
+		RTMPWIEndianChange(pAd, (unsigned char*)pTxWI, TYPE_TXWI);
 #endif /* RT_BIG_ENDIAN */
 
 	}while (TRUE);
@@ -576,11 +576,11 @@ VOID	RTUSBBulkOutDataPacket(
 	if (pLastTxInfo)
 	{
 #ifdef RT_BIG_ENDIAN
-		RTMPDescriptorEndianChange((PUCHAR)pLastTxInfo, TYPE_TXINFO);
+		RTMPDescriptorEndianChange((unsigned char*)pLastTxInfo, TYPE_TXINFO);
 #endif /* RT_BIG_ENDIAN */
 		pLastTxInfo->TxInfoUDMANextVld = 0;
 #ifdef RT_BIG_ENDIAN
-		RTMPDescriptorEndianChange((PUCHAR)pLastTxInfo, TYPE_TXINFO);
+		RTMPDescriptorEndianChange((unsigned char*)pLastTxInfo, TYPE_TXINFO);
 #endif /* RT_BIG_ENDIAN */
 	}
 
@@ -605,7 +605,7 @@ VOID	RTUSBBulkOutDataPacket(
 		pHTTXContext->bCopySavePad = TRUE;
 		if (RTMPEqualMemory(pHTTXContext->SavedPad, allzero,4))
 		{	
-			PUCHAR	pBuf = &pHTTXContext->SavedPad[0];
+			unsigned char*	pBuf = &pHTTXContext->SavedPad[0];
 			DBGPRINT_RAW(RT_DEBUG_ERROR,("WARNING-Zero-3:%02x%02x%02x%02x%02x%02x%02x%02x,CWPos=%ld, CWRPos=%ld, bCW=%d, NBPos=%ld, TBPos=%ld, TBSize=%ld\n",
 				pBuf[0], pBuf[1], pBuf[2],pBuf[3],pBuf[4], pBuf[5], pBuf[6],pBuf[7], pHTTXContext->CurWritePosition, pHTTXContext->CurWriteRealPos,
 				pHTTXContext->bCurWriting, pHTTXContext->NextBulkOutPosition, TmpBulkEndPos, ThisBulkSize));
@@ -679,7 +679,7 @@ USBHST_STATUS RTUSBBulkOutDataPacketComplete(URBCompleteStatus Status, purbb_t p
 	PHT_TX_CONTEXT	pHTTXContext;
 	PRTMP_ADAPTER	pAd;
 	POS_COOKIE 		pObj;
-	UCHAR			BulkOutPipeId;
+	unsigned char			BulkOutPipeId;
 	
 
 	pHTTXContext	= (PHT_TX_CONTEXT)RTMP_OS_USB_CONTEXT_GET(pURB);
@@ -744,7 +744,7 @@ USBHST_STATUS RTUSBBulkOutDataPacketComplete(URBCompleteStatus Status, purbb_t p
 	
 	========================================================================
 */
-VOID	RTUSBBulkOutNullFrame(
+void	RTUSBBulkOutNullFrame(
 	IN	PRTMP_ADAPTER	pAd)
 {
 	PTX_CONTEXT		pNullContext = &(pAd->NullContext);
@@ -771,7 +771,7 @@ VOID	RTUSBBulkOutNullFrame(
 	RTUSB_CLEAR_BULK_FLAG(pAd, fRTUSB_BULK_OUT_DATA_NULL);
 
 #ifdef RT_BIG_ENDIAN
-	RTMPDescriptorEndianChange((PUCHAR)pNullContext->TransferBuffer, TYPE_TXINFO);
+	RTMPDescriptorEndianChange((unsigned char*)pNullContext->TransferBuffer, TYPE_TXINFO);
 #endif /* RT_BIG_ENDIAN */
 
 	/* Init Tx context descriptor*/
@@ -797,7 +797,7 @@ USBHST_STATUS RTUSBBulkOutNullFrameComplete(URBCompleteStatus Status, purbb_t pU
 {
 	PRTMP_ADAPTER		pAd;
 	PTX_CONTEXT			pNullContext;
-	NTSTATUS			Status;
+	int			Status;
 	POS_COOKIE			pObj;
 
 	
@@ -825,9 +825,9 @@ USBHST_STATUS RTUSBBulkOutNullFrameComplete(URBCompleteStatus Status, purbb_t pU
 	
 	========================================================================
 */
-VOID	RTUSBBulkOutMLMEPacket(
+void	RTUSBBulkOutMLMEPacket(
 	IN	PRTMP_ADAPTER	pAd,
-	IN	UCHAR			Index)
+	IN	unsigned char			Index)
 {
 	PTX_CONTEXT		pMLMEContext;
 	PURB			pUrb;
@@ -870,7 +870,7 @@ VOID	RTUSBBulkOutMLMEPacket(
 	RTUSB_CLEAR_BULK_FLAG(pAd, fRTUSB_BULK_OUT_MLME);
 
 #ifdef RT_BIG_ENDIAN
-	RTMPDescriptorEndianChange((PUCHAR)pMLMEContext->TransferBuffer, TYPE_TXINFO);
+	RTMPDescriptorEndianChange((unsigned char*)pMLMEContext->TransferBuffer, TYPE_TXINFO);
 #endif /* RT_BIG_ENDIAN */
 
 	/* Init Tx context descriptor*/
@@ -898,7 +898,7 @@ USBHST_STATUS RTUSBBulkOutMLMEPacketComplete(URBCompleteStatus Status, purbb_t p
 {
 	PTX_CONTEXT			pMLMEContext;
 	PRTMP_ADAPTER		pAd;
-	NTSTATUS			Status;
+	int			Status;
 	POS_COOKIE 			pObj;
 	int					index;
 	
@@ -926,7 +926,7 @@ USBHST_STATUS RTUSBBulkOutMLMEPacketComplete(URBCompleteStatus Status, purbb_t p
 	
 	========================================================================
 */
-VOID	RTUSBBulkOutPsPoll(
+void	RTUSBBulkOutPsPoll(
 	IN	PRTMP_ADAPTER	pAd)
 {
 	PTX_CONTEXT		pPsPollContext = &(pAd->PsPollContext);
@@ -950,7 +950,7 @@ VOID	RTUSBBulkOutPsPoll(
 	RTUSB_CLEAR_BULK_FLAG(pAd, fRTUSB_BULK_OUT_PSPOLL);
 
 #ifdef RT_BIG_ENDIAN
-	RTMPDescriptorEndianChange((PUCHAR)pPsPollContext->TransferBuffer, TYPE_TXINFO);
+	RTMPDescriptorEndianChange((unsigned char*)pPsPollContext->TransferBuffer, TYPE_TXINFO);
 #endif /* RT_BIG_ENDIAN */
 
 	/* Init Tx context descriptor*/
@@ -976,7 +976,7 @@ USBHST_STATUS RTUSBBulkOutPsPollComplete(URBCompleteStatus Status, purbb_t pURB,
 {
 	PRTMP_ADAPTER		pAd;
 	PTX_CONTEXT			pPsPollContext;
-	NTSTATUS			Status;
+	int			Status;
 	POS_COOKIE			pObj;
 	
 	
@@ -991,7 +991,7 @@ USBHST_STATUS RTUSBBulkOutPsPollComplete(URBCompleteStatus Status, purbb_t pURB,
 }
 
 
-VOID DoBulkIn(IN RTMP_ADAPTER *pAd)
+void DoBulkIn(IN RTMP_ADAPTER *pAd)
 {	
 	PRX_CONTEXT		pRxContext;
 	PURB			pUrb;
@@ -1065,7 +1065,7 @@ VOID DoBulkIn(IN RTMP_ADAPTER *pAd)
 		 fRTMP_ADAPTER_RADIO_OFF | fRTMP_ADAPTER_RESET_IN_PROGRESS | \
 		 fRTMP_ADAPTER_REMOVE_IN_PROGRESS)
 		 
-VOID	RTUSBBulkReceive(
+void	RTUSBBulkReceive(
 	IN	PRTMP_ADAPTER	pAd)
 {
 	PRX_CONTEXT		pRxContext;
@@ -1180,7 +1180,7 @@ USBHST_STATUS RTUSBBulkRxComplete(URBCompleteStatus Status, purbb_t pURB, pregs 
 	
 	========================================================================
 */
-VOID	RTUSBKickBulkOut(
+void	RTUSBKickBulkOut(
 	IN	PRTMP_ADAPTER pAd)
 {
 	/* BulkIn Reset will reset whole USB PHY. So we need to make sure fRTMP_ADAPTER_BULKIN_RESET not flaged.*/
@@ -1283,10 +1283,10 @@ VOID	RTUSBKickBulkOut(
 	
 	========================================================================
 */
-VOID	RTUSBCleanUpDataBulkOutQueue(
+void	RTUSBCleanUpDataBulkOutQueue(
 	IN	PRTMP_ADAPTER	pAd)
 {
-	UCHAR			Idx;			
+	unsigned char			Idx;			
 	PHT_TX_CONTEXT	pTxContext;
 	
 	DBGPRINT(RT_DEBUG_TRACE, ("--->CleanUpDataBulkOutQueue\n"));
@@ -1318,7 +1318,7 @@ VOID	RTUSBCleanUpDataBulkOutQueue(
 	
 	========================================================================
 */
-VOID	RTUSBCleanUpMLMEBulkOutQueue(
+void	RTUSBCleanUpMLMEBulkOutQueue(
 	IN	PRTMP_ADAPTER	pAd)
 {
 	DBGPRINT(RT_DEBUG_TRACE, ("--->CleanUpMLMEBulkOutQueue\n"));
@@ -1342,7 +1342,7 @@ VOID	RTUSBCleanUpMLMEBulkOutQueue(
 	
 	========================================================================
 */
-VOID	RTUSBCancelPendingIRPs(
+void	RTUSBCancelPendingIRPs(
 	IN	PRTMP_ADAPTER	pAd)
 {
 	RTUSBCancelPendingBulkInIRP(pAd);
@@ -1362,13 +1362,13 @@ VOID	RTUSBCancelPendingIRPs(
 	
 	========================================================================
 */
-VOID	RTUSBCancelPendingBulkInIRP(
+void	RTUSBCancelPendingBulkInIRP(
 	IN	PRTMP_ADAPTER	pAd)
 {
 	PRX_CONTEXT pRxContext;
 	PCMD_RSP_CONTEXT pCmdRspEventContext = &pAd->CmdRspEventContext;
-	UINT i;
-	ULONG IrqFlags;
+	unsigned int i;
+	unsigned long  IrqFlags;
 
 	DBGPRINT_RAW(RT_DEBUG_TRACE, ("--->RTUSBCancelPendingBulkInIRP\n"));
 	for ( i = 0; i < (RX_RING_SIZE); i++)
@@ -1409,14 +1409,14 @@ VOID	RTUSBCancelPendingBulkInIRP(
 	
 	========================================================================
 */
-VOID	RTUSBCancelPendingBulkOutIRP(
+void	RTUSBCancelPendingBulkOutIRP(
 	IN	PRTMP_ADAPTER	pAd)
 {
 	PHT_TX_CONTEXT		pHTTXContext;
 	PTX_CONTEXT			pMLMEContext;
 	PTX_CONTEXT			pNullContext;
 	PTX_CONTEXT			pPsPollContext;
-	UINT				i, Idx;
+	unsigned int 			i, Idx;
 /*	unsigned int 		IrqFlags;*/
 /*	NDIS_SPIN_LOCK		*pLock;*/
 /*	unsigned char				*pPending;*/

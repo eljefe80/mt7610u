@@ -35,7 +35,7 @@
 #include "rtmp_osabl.h"
 
 
- UINT32 RalinkRate[256] = {
+ unsigned int RalinkRate[256] = {
 	2,  4, 11, 22, 
 	12, 18, 24, 36, 48, 72, 96, 108, 109, 110, 111, 112, /* CCK and OFDM */
 	13, 26, 39, 52, 78, 104, 117, 130, 26, 52, 78, 104, 156, 208, 234, 260,
@@ -57,40 +57,40 @@
 	40, 41, 42, 43, 44, 45, 46, 47 /* 3*3 */
 }; 
 
-VOID RtmpDrvMaxRateGet(
-	IN	VOID					*pReserved,
+void RtmpDrvMaxRateGet(
+	IN	void					*pReserved,
 /*	IN	PHTTRANSMIT_SETTING		pHtPhyMode,
 */
-	IN	UINT8					MODE,
-	IN	UINT8					ShortGI,
-	IN	UINT8					BW,
-	IN	UINT8					MCS,
-	OUT	UINT32					*pRate)
+	IN	unsigned char 				MODE,
+	IN	unsigned char 				ShortGI,
+	IN	unsigned char 				BW,
+	IN	unsigned char 				MCS,
+	OUT	unsigned int					*pRate)
 {
 	int rate_index = 0;
 
 #ifdef DOT11_VHT_AC
        if (MODE >= MODE_VHT) {
                if (BW == 0 /* 20Mhz */) {
-                       rate_index = 112 + ((UCHAR)ShortGI * 29) + ((UCHAR)MCS);
+                       rate_index = 112 + ((unsigned char)ShortGI * 29) + ((unsigned char)MCS);
                } else if (BW == 1 /* 40Mhz */) {
-                       rate_index = 121 + ((UCHAR)ShortGI * 29) + ((UCHAR)MCS);
+                       rate_index = 121 + ((unsigned char)ShortGI * 29) + ((unsigned char)MCS);
                } else if (BW == 2 /* 80Mhz */) {
-                       rate_index = 131 + ((UCHAR)ShortGI * 29) + ((UCHAR)MCS);
+                       rate_index = 131 + ((unsigned char)ShortGI * 29) + ((unsigned char)MCS);
                }
        } else
 #endif /* DOT11_VHT_AC */
 
 #ifdef DOT11_N_SUPPORT
 	if ((MODE >= MODE_HTMIX) && (MODE < MODE_VHT)) {
-		/* rate_index = 16 + ((UCHAR)pHtPhyMode->field.BW *16) + ((UCHAR)pHtPhyMode->field.ShortGI *32) + ((UCHAR)pHtPhyMode->field.MCS); */
-		rate_index = 16 + ((UCHAR)BW *24) + ((UCHAR)ShortGI *48) + ((UCHAR)MCS);
+		/* rate_index = 16 + ((unsigned char)pHtPhyMode->field.BW *16) + ((unsigned char)pHtPhyMode->field.ShortGI *32) + ((unsigned char)pHtPhyMode->field.MCS); */
+		rate_index = 16 + ((unsigned char)BW *24) + ((unsigned char)ShortGI *48) + ((unsigned char)MCS);
 	} else 
 #endif /* DOT11_N_SUPPORT */
 		if (MODE == MODE_OFDM)
-			rate_index = (UCHAR)(MCS) + 4;
+			rate_index = (unsigned char)(MCS) + 4;
 		else 
-			rate_index = (UCHAR)(MCS);
+			rate_index = (unsigned char)(MCS);
 
 	if (rate_index < 0)
 		rate_index = 0;
@@ -111,10 +111,10 @@ char *rtstrchr(const char * s, int c)
 }
 
 
-VOID RtmpMeshDown(
-	IN VOID *pDrvCtrlBK,
+void RtmpMeshDown(
+	IN void *pDrvCtrlBK,
 	IN unsigned char WaitFlag,
-	IN unsigned char	 (*RtmpMeshLinkCheck)(IN VOID *pAd))
+	IN unsigned char	 (*RtmpMeshLinkCheck)(IN void *pAd))
 {
 }
 
@@ -122,8 +122,8 @@ VOID RtmpMeshDown(
 
 	
 unsigned char RtmpOsCmdDisplayLenCheck(
-	IN UINT32 LenSrc,
-	IN UINT32 Offset)
+	IN unsigned int LenSrc,
+	IN unsigned int Offset)
 {
 	if (LenSrc > (IW_PRIV_SIZE_MASK - Offset))
 		return FALSE;
@@ -133,7 +133,7 @@ unsigned char RtmpOsCmdDisplayLenCheck(
 
 
 #if defined(WPA_SUPPLICANT_SUPPORT) || defined(APCLI_WPA_SUPPLICANT_SUPPORT)
-VOID WpaSendMicFailureToWpaSupplicant(
+void WpaSendMicFailureToWpaSupplicant(
 	IN PNET_DEV pNetDev,
 	IN unsigned char bUnicast)
 {    
@@ -143,7 +143,7 @@ VOID WpaSendMicFailureToWpaSupplicant(
 	if(bUnicast)
 		sprintf(custom, "%s unicast", custom);
 
-	RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, -1, NULL, (PUCHAR)custom, strlen(custom));
+	RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, -1, NULL, (unsigned char*)custom, strlen(custom));
 	
 	return;
 }
@@ -153,8 +153,8 @@ VOID WpaSendMicFailureToWpaSupplicant(
 #ifdef NATIVE_WPA_SUPPLICANT_SUPPORT
 int wext_notify_event_assoc(
 	IN PNET_DEV pNetDev,
-	IN UCHAR *ReqVarIEs,
-	IN UINT32 ReqVarIELen)
+	IN unsigned char *ReqVarIEs,
+	IN unsigned int ReqVarIELen)
 {
 	char custom[IW_CUSTOM_MAX] = {0};
 
@@ -163,7 +163,7 @@ int wext_notify_event_assoc(
 	{
 		NdisMoveMemory(custom, ReqVarIEs, ReqVarIELen);
 		RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_ASSOC_REQ_IE, -1, NULL,
-								(UCHAR *)custom, ReqVarIELen);
+								(unsigned char *)custom, ReqVarIELen);
 	}
 	else
 	    DBGPRINT(RT_DEBUG_TRACE, ("pAd->StaCfg.ReqVarIELen > MAX_CUSTOM_LEN\n"));
@@ -173,7 +173,7 @@ int wext_notify_event_assoc(
 	len = (ReqVarIELen*2) + 17;
 	if (len <= IW_CUSTOM_MAX)
 	{
-		UCHAR   idx;
+		unsigned char   idx;
 		snprintf(custom, sizeof(custom), "ASSOCINFO(ReqIEs=");
 		for (idx=0; idx<ReqVarIELen; idx++)
 		        sprintf(custom, "%s%02x", custom, ReqVarIEs[idx]);
@@ -191,18 +191,18 @@ int wext_notify_event_assoc(
 
 #ifdef WPA_SUPPLICANT_SUPPORT
 #ifndef NATIVE_WPA_SUPPLICANT_SUPPORT
-VOID SendAssocIEsToWpaSupplicant( 
+void SendAssocIEsToWpaSupplicant( 
 	IN PNET_DEV pNetDev,
-	IN UCHAR *ReqVarIEs,
-	IN UINT32 ReqVarIELen)
+	IN unsigned char *ReqVarIEs,
+	IN unsigned int ReqVarIELen)
 {
-	STRING custom[IW_CUSTOM_MAX] = {0};
+	char custom[IW_CUSTOM_MAX] = {0};
 
 	if ((ReqVarIELen + 17) <= IW_CUSTOM_MAX)
 	{
 		snprintf(custom, sizeof(custom), "ASSOCINFO_ReqIEs=");
 		NdisMoveMemory(custom+17, ReqVarIEs, ReqVarIELen);
-		RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, RT_REQIE_EVENT_FLAG, NULL, (PUCHAR)custom, ReqVarIELen + 17);
+		RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, RT_REQIE_EVENT_FLAG, NULL, (unsigned char*)custom, ReqVarIELen + 17);
 
 		RtmpOSWrielessEventSend(pNetDev, RT_WLAN_EVENT_CUSTOM, RT_ASSOCINFO_EVENT_FLAG, NULL, NULL, 0);
 	}
@@ -215,9 +215,9 @@ VOID SendAssocIEsToWpaSupplicant(
 #endif /* WPA_SUPPLICANT_SUPPORT */
 
 
-INT32  RtPrivIoctlSetVal(VOID)
+int  RtPrivIoctlSetVal(void)
 {
-    return (INT32)RTPRIV_IOCTL_SET;
+    return (int)RTPRIV_IOCTL_SET;
 }
 
 

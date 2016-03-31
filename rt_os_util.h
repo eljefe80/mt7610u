@@ -27,7 +27,7 @@
 
 #ifndef __RT_OS_UTIL_H__
 #define __RT_OS_UTIL_H__
-
+#include "link_list.h"
 /* ============================ rt_linux.c ================================== */
 /* General */
 void RtmpUtilInit(void);

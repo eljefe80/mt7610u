@@ -33,8 +33,8 @@
 /*#include	"rt_config.h" */
 
 #ifdef DBG
-extern ULONG RTDebugLevel;
-extern ULONG RTDebugFunc;
+extern unsigned long  RTDebugLevel;
+extern unsigned long  RTDebugFunc;
 #endif
 
 #define NR_WEP_KEYS 				4
@@ -53,16 +53,16 @@ extern ULONG RTDebugFunc;
 #define IWE_STREAM_ADD_VALUE(_A, _B, _C, _D, _E, _F)	iwe_stream_add_value(_B, _C, _D, _E, _F)
 #endif
 
-extern UCHAR    CipherWpa2Template[];
+extern unsigned char    CipherWpa2Template[];
 
-typedef struct GNU_PACKED _RT_VERSION_INFO{
-    UCHAR       DriverVersionW;
-    UCHAR       DriverVersionX;
-    UCHAR       DriverVersionY;
-    UCHAR       DriverVersionZ;
-    UINT        DriverBuildYear;
-    UINT        DriverBuildMonth;
-    UINT        DriverBuildDay;
+typedef struct __attribute__ ((packed)) _RT_VERSION_INFO{
+    unsigned char       DriverVersionW;
+    unsigned char       DriverVersionX;
+    unsigned char       DriverVersionY;
+    unsigned char       DriverVersionZ;
+    unsigned int        DriverBuildYear;
+    unsigned int        DriverBuildMonth;
+    unsigned int        DriverBuildDay;
 } RT_VERSION_INFO, *PRT_VERSION_INFO;
 
 struct iw_priv_args privtab[] = {
@@ -120,8 +120,8 @@ struct iw_priv_args privtab[] = {
 
 };
 
-extern INT32 ralinkrate[];
-extern UINT32 RT_RateSize;
+extern int ralinkrate[];
+extern unsigned int RT_RateSize;
 
 
 
@@ -143,7 +143,7 @@ int rt_ioctl_siwfreq(struct net_device *dev,
 			struct iw_request_info *info,
 			struct iw_freq *freq, char *extra)
 {
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 /*	int 	chan = -1; */
 	RT_CMD_STA_IOCTL_FREQ IoctlFreq, *pIoctlFreq = &IoctlFreq;
 
@@ -177,9 +177,9 @@ int rt_ioctl_giwfreq(struct net_device *dev,
 		   struct iw_request_info *info,
 		   struct iw_freq *freq, char *extra)
 {
-	VOID *pAd = NULL;
-/*	UCHAR ch; */
-	ULONG	m = 2412000;
+	void *pAd = NULL;
+/*	unsigned char ch; */
+	unsigned long 	m = 2412000;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
 
@@ -213,8 +213,8 @@ int rt_ioctl_siwmode(struct net_device *dev,
 		   struct iw_request_info *info,
 		   __u32 *mode, char *extra)
 {
-	VOID *pAd = NULL;
-	LONG Mode;
+	void *pAd = NULL;
+	long Mode;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
 
@@ -251,8 +251,8 @@ int rt_ioctl_giwmode(struct net_device *dev,
 		   struct iw_request_info *info,
 		   __u32 *mode, char *extra)
 {
-	VOID *pAd = NULL;
-	ULONG Mode;
+	void *pAd = NULL;
+	unsigned long  Mode;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
 
@@ -294,7 +294,7 @@ int rt_ioctl_siwsens(struct net_device *dev,
 		   struct iw_request_info *info,
 		   char *name, char *extra)
 {
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
 
@@ -320,13 +320,13 @@ int rt_ioctl_giwrange(struct net_device *dev,
 		   struct iw_request_info *info,
 		   struct iw_point *data, char *extra)
 {
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 	struct iw_range *range = (struct iw_range *) extra;
 	u16 val;
 	int i;
-	ULONG Mode, ChannelListNum;
-	UCHAR *pChannel;
-	UINT32 *pFreq;
+	unsigned long  Mode, ChannelListNum;
+	unsigned char *pChannel;
+	unsigned int *pFreq;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
 
@@ -366,7 +366,7 @@ int rt_ioctl_giwrange(struct net_device *dev,
 		range->max_pmt = 1000 * 1024;
 		range->pmp_flags = IW_POWER_PERIOD;
 		range->pmt_flags = IW_POWER_TIMEOUT;
-		range->pm_capa = IW_POWER_PERIOD | IW_POWER_TIME|
+		range->pm_capa = IW_POWER_PERIOD | IW_POWER_TIMEOUT|
 			IW_POWER_UNICAST_R | IW_POWER_ALL_R;
 	}
 
@@ -383,10 +383,10 @@ int rt_ioctl_giwrange(struct net_device *dev,
 						&ChannelListNum, 0, RT_DEV_PRIV_FLAGS_GET(dev));
 	range->num_channels = ChannelListNum;
 
-	os_alloc_mem(NULL, (UCHAR **)&pChannel, sizeof(UCHAR)*ChannelListNum);
+	os_alloc_mem(NULL, (unsigned char **)&pChannel, sizeof(unsigned char)*ChannelListNum);
 	if (pChannel == NULL)
 		return -ENOMEM;
-	os_alloc_mem(NULL, (UCHAR **)&pFreq, sizeof(UINT32)*ChannelListNum);
+	os_alloc_mem(NULL, (unsigned char **)&pFreq, sizeof(unsigned int)*ChannelListNum);
 	if (pFreq == NULL)
 	{
 		os_free_mem(NULL, pChannel);
@@ -453,7 +453,7 @@ int rt_ioctl_giwpriv(
 	struct iw_point *dwrq,	char *extra)
 {
 #ifdef ANDROID_SUPPORT
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 	int len = 0;
 	char *ext;
 	int ret = 0;
@@ -488,7 +488,7 @@ int rt_ioctl_giwpriv(
 	}
 	else if(strcasecmp(ext,"RSSI") == 0)
 	{
-		CHAR AvgRssi0;
+		char AvgRssi0;
 		RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCSIWPRIVRSSI,
 								0, &AvgRssi0, 0, dev->priv_flags);
 		snprintf(ext, min(dwrq->length, (UINT16)(strlen(ext)+1)),"rssi %d", AvgRssi0);
@@ -499,7 +499,7 @@ int rt_ioctl_giwpriv(
 	}
 	else if(strcasecmp(ext,"MACADDR") == 0)
 	{
-		UCHAR mac[6];
+		unsigned char mac[6];
 		RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCGIFHWADDR,
 								0, mac, 0, dev->priv_flags);
 		snprintf(ext, min(dwrq->length, (UINT16)(strlen(ext)+1)),
@@ -538,8 +538,8 @@ int rt_ioctl_siwap(struct net_device *dev,
 		      struct iw_request_info *info,
 		      struct sockaddr *ap_addr, char *extra)
 {
-	VOID *pAd = NULL;
-    UCHAR Bssid[6];
+	void *pAd = NULL;
+    unsigned char Bssid[6];
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
 
@@ -553,7 +553,7 @@ int rt_ioctl_siwap(struct net_device *dev,
 
 
 	RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCSIWAP, 0,
-					(VOID *)(ap_addr->sa_data), 0, RT_DEV_PRIV_FLAGS_GET(dev));
+					(void *)(ap_addr->sa_data), 0, RT_DEV_PRIV_FLAGS_GET(dev));
 
     memcpy(Bssid, ap_addr->sa_data, MAC_ADDR_LEN);
 
@@ -567,7 +567,7 @@ int rt_ioctl_giwap(struct net_device *dev,
 		      struct iw_request_info *info,
 		      struct sockaddr *ap_addr, char *extra)
 {
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
 
@@ -588,7 +588,7 @@ int rt_ioctl_giwap(struct net_device *dev,
 
 
 	if (RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCGIWAP, 0,
-						(VOID *)(ap_addr->sa_data), 0,
+						(void *)(ap_addr->sa_data), 0,
 						RT_DEV_PRIV_FLAGS_GET(dev)) != NDIS_STATUS_SUCCESS)
 	{
 		DBGPRINT(RT_DEBUG_TRACE, ("IOCTL::SIOCGIWAP(=EMPTY)\n"));
@@ -615,7 +615,7 @@ int rt_ioctl_giwap(struct net_device *dev,
  * NB: various calculations are based on the orinoco/wavelan
  *     drivers for compatibility
  */
-static void set_quality(VOID *pAd,
+static void set_quality(void *pAd,
                         struct iw_quality *iq, 
 						RT_CMD_STA_IOCTL_BSS *pBss)
 /*                        PBSS_ENTRY pBssEntry) */
@@ -642,7 +642,7 @@ int rt_ioctl_iwaplist(struct net_device *dev,
 			struct iw_request_info *info,
 			struct iw_point *data, char *extra)
 {
- 	VOID *pAd = NULL;	
+ 	void *pAd = NULL;	
 
 /*	struct sockaddr addr[IW_MAX_AP]; */
 	struct sockaddr *addr = NULL;
@@ -664,14 +664,14 @@ int rt_ioctl_iwaplist(struct net_device *dev,
 	}
 
 	/* allocate memory */
-	os_alloc_mem(NULL, (UCHAR **)&(pBssList->pList), sizeof(RT_CMD_STA_IOCTL_BSS_LIST) * IW_MAX_AP);
+	os_alloc_mem(NULL, (unsigned char **)&(pBssList->pList), sizeof(RT_CMD_STA_IOCTL_BSS_LIST) * IW_MAX_AP);
 	if (pBssList->pList == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
 		return 0;
 	}
 
-	os_alloc_mem(NULL, (UCHAR **)&addr, sizeof(struct sockaddr) * IW_MAX_AP);
+	os_alloc_mem(NULL, (unsigned char **)&addr, sizeof(struct sockaddr) * IW_MAX_AP);
 	if (addr == NULL)
 	{
 		DBGPRINT(RT_DEBUG_ERROR, ("%s: Allocate memory fail!!!\n", __FUNCTION__));
@@ -707,7 +707,7 @@ int rt_ioctl_siwscan(struct net_device *dev,
 			struct iw_request_info *info,
 			union iwreq_data *wreq, char *extra)
 {
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 	int Status = NDIS_STATUS_SUCCESS;
 	RT_CMD_STA_IOCTL_SCAN IoctlScan, *pIoctlScan = &IoctlScan;
 #ifdef WPA_SUPPLICANT_SUPPORT
@@ -734,7 +734,7 @@ int rt_ioctl_siwscan(struct net_device *dev,
 	pIoctlScan->FlgScanThisSsid = (wreq->data.length == sizeof(struct iw_scan_req) &&
 									wreq->data.flags & IW_SCAN_THIS_ESSID);
 	pIoctlScan->SsidLen = req->essid_len;
-	pIoctlScan->pSsid = (CHAR *)(req->essid);
+	pIoctlScan->pSsid = (char *)(req->essid);
 #endif
 #endif /* WPA_SUPPLICANT_SUPPORT */
 	RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCSIWSCAN, 0,
@@ -749,12 +749,12 @@ int rt_ioctl_giwscan(struct net_device *dev,
 			struct iw_request_info *info,
 			struct iw_point *data, char *extra)
 {
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 	int i=0, status = 0;
-	PSTRING current_ev = extra, previous_ev = extra;
-	PSTRING end_buf;
-	PSTRING current_val;
-	STRING custom[MAX_CUSTOM_LEN] = {0};
+	char* current_ev = extra, *previous_ev = extra;
+	char* end_buf;
+	char* current_val;
+	char custom[MAX_CUSTOM_LEN] = {0};
 #ifndef IWEVGENIE
 	unsigned char idx;
 #endif /* IWEVGENIE */
@@ -924,7 +924,7 @@ int rt_ioctl_giwscan(struct net_device *dev,
 		iwe.u.data.flags = 1;
  
         previous_ev = current_ev;
-		current_ev = IWE_STREAM_ADD_POINT(info, current_ev,end_buf, &iwe, (PSTRING) pIoctlScan->pBssTable[i].Ssid);
+		current_ev = IWE_STREAM_ADD_POINT(info, current_ev,end_buf, &iwe, (char*) pIoctlScan->pBssTable[i].Ssid);
         if (current_ev == previous_ev)
         {
 #if WIRELESS_EXT >= 17
@@ -970,11 +970,11 @@ int rt_ioctl_giwscan(struct net_device *dev,
 		memset(&iwe, 0, sizeof(iwe));
 		iwe.cmd = SIOCGIWFREQ;
 		{
-			UCHAR ch = pIoctlScan->pBssTable[i].Channel;
-			ULONG	m = 0;
+			unsigned char ch = pIoctlScan->pBssTable[i].Channel;
+			unsigned long 	m = 0;
 /*			MAP_CHANNEL_ID_TO_KHZ(ch, m); */
 			RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_CHID_2_FREQ, 0,
-								(VOID *)&m, ch, RT_DEV_PRIV_FLAGS_GET(dev));
+								(void *)&m, ch, RT_DEV_PRIV_FLAGS_GET(dev));
 			iwe.u.freq.m = m * 100;
 			iwe.u.freq.e = 1;
 		iwe.u.freq.i = 0;
@@ -1034,7 +1034,7 @@ int rt_ioctl_giwscan(struct net_device *dev,
 		/*================================ */
 		if (pIoctlScan->pBssTable[i].SupRateLen)
         {
-            UCHAR tmpRate = pIoctlScan->pBssTable[i].SupRate[pIoctlScan->pBssTable[i].SupRateLen-1];
+            unsigned char tmpRate = pIoctlScan->pBssTable[i].SupRate[pIoctlScan->pBssTable[i].SupRateLen-1];
 			memset(&iwe, 0, sizeof(iwe));
 			iwe.cmd = SIOCGIWRATE;
     		current_val = current_ev + IW_EV_LCP_LEN;            
@@ -1051,8 +1051,8 @@ int rt_ioctl_giwscan(struct net_device *dev,
             
 			if (pIoctlScan->pBssTable[i].ExtRateLen)
 			{
-				UCHAR tmpSupRate =(pIoctlScan->pBssTable[i].SupRate[pIoctlScan->pBssTable[i].SupRateLen-1]& 0x7f);
-				UCHAR tmpExtRate =(pIoctlScan->pBssTable[i].ExtRate[pIoctlScan->pBssTable[i].ExtRateLen-1]& 0x7f);
+				unsigned char tmpSupRate =(pIoctlScan->pBssTable[i].SupRate[pIoctlScan->pBssTable[i].SupRateLen-1]& 0x7f);
+				unsigned char tmpExtRate =(pIoctlScan->pBssTable[i].ExtRate[pIoctlScan->pBssTable[i].ExtRateLen-1]& 0x7f);
 				iwe.u.bitrate.value = (tmpSupRate > tmpExtRate) ? (tmpSupRate)*500000 : (tmpExtRate)*500000;	
 			}
 
@@ -1062,8 +1062,8 @@ int rt_ioctl_giwscan(struct net_device *dev,
 /*				HT_CAP_INFO capInfo = pIoctlScan->pBssTable[i].HtCapability.HtCapInfo; */
 				int shortGI = pIoctlScan->pBssTable[i].ChannelWidth ? pIoctlScan->pBssTable[i].ShortGIfor40 : pIoctlScan->pBssTable[i].ShortGIfor20;
 				int maxMCS = pIoctlScan->pBssTable[i].MCSSet ?  15 : 7;
-				int rate_index = 12 + ((UCHAR)pIoctlScan->pBssTable[i].ChannelWidth * 24) +
-								((UCHAR)shortGI *48) + ((UCHAR)maxMCS);
+				int rate_index = 12 + ((unsigned char)pIoctlScan->pBssTable[i].ChannelWidth * 24) +
+								((unsigned char)shortGI *48) + ((unsigned char)maxMCS);
 				if (rate_index < 0)
 					rate_index = 0;
 				if (rate_index >= rate_count)
@@ -1223,7 +1223,7 @@ int rt_ioctl_siwessid(struct net_device *dev,
 			 struct iw_request_info *info,
 			 struct iw_point *data, char *essid)
 {
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 	RT_CMD_STA_IOCTL_SSID IoctlEssid, *pIoctlEssid = &IoctlEssid;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
@@ -1246,7 +1246,7 @@ int rt_ioctl_siwessid(struct net_device *dev,
 
 	pIoctlEssid->FlgAnySsid = data->flags;
 	pIoctlEssid->SsidLen = data->length;
-	pIoctlEssid->pSsid = (CHAR *)essid;
+	pIoctlEssid->pSsid = (char *)essid;
 	pIoctlEssid->Status = 0;
 	RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCSIWESSID, 0,
 						pIoctlEssid, 0, RT_DEV_PRIV_FLAGS_GET(dev));
@@ -1259,7 +1259,7 @@ int rt_ioctl_giwessid(struct net_device *dev,
 			 struct iw_request_info *info,
 			 struct iw_point *data, char *essid)
 {
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 	RT_CMD_STA_IOCTL_SSID IoctlEssid, *pIoctlEssid = &IoctlEssid;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
@@ -1282,7 +1282,7 @@ int rt_ioctl_giwessid(struct net_device *dev,
 	data->flags = 1;
 
 
-	pIoctlEssid->pSsid = (CHAR *)essid;
+	pIoctlEssid->pSsid = (char *)essid;
 	pIoctlEssid->Status = 0;
 	RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCGIWESSID, 0,
 						pIoctlEssid, 0, RT_DEV_PRIV_FLAGS_GET(dev));
@@ -1296,7 +1296,7 @@ int rt_ioctl_siwnickn(struct net_device *dev,
 			 struct iw_request_info *info,
 			 struct iw_point *data, char *nickname)
 {
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
 
@@ -1321,7 +1321,7 @@ int rt_ioctl_giwnickn(struct net_device *dev,
 			 struct iw_request_info *info,
 			 struct iw_point *data, char *nickname)
 {
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 	RT_CMD_STA_IOCTL_NICK_NAME NickName, *pNickName = &NickName;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
@@ -1344,7 +1344,7 @@ int rt_ioctl_giwnickn(struct net_device *dev,
 
 
 	pNickName->NameLen = data->length;
-	pNickName->pName = (CHAR *)nickname;
+	pNickName->pName = (char *)nickname;
 
 	RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCGIWNICKN, 0,
 							pNickName, 0, RT_DEV_PRIV_FLAGS_GET(dev));
@@ -1357,7 +1357,7 @@ int rt_ioctl_siwrts(struct net_device *dev,
 		       struct iw_request_info *info,
 		       struct iw_param *rts, char *extra)
 {
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 	u16 val;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
@@ -1391,8 +1391,8 @@ int rt_ioctl_giwrts(struct net_device *dev,
 		       struct iw_request_info *info,
 		       struct iw_param *rts, char *extra)
 {
-	VOID *pAd = NULL;
-	USHORT RtsThreshold;
+	void *pAd = NULL;
+	unsigned short RtsThreshold;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
 
@@ -1424,7 +1424,7 @@ int rt_ioctl_siwfrag(struct net_device *dev,
 			struct iw_request_info *info,
 			struct iw_param *frag, char *extra)
 {
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 	u16 val;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
@@ -1456,8 +1456,8 @@ int rt_ioctl_giwfrag(struct net_device *dev,
 			struct iw_request_info *info,
 			struct iw_param *frag, char *extra)
 {
-	VOID *pAd = NULL;
-	USHORT FragmentThreshold;
+	void *pAd = NULL;
+	unsigned short FragmentThreshold;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
 
@@ -1491,7 +1491,7 @@ int rt_ioctl_siwencode(struct net_device *dev,
 			  struct iw_request_info *info,
 			  struct iw_point *erq, char *extra)
 {
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 	RT_CMD_STA_IOCTL_SECURITY IoctlSec, *pIoctlSec = &IoctlSec;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
@@ -1505,7 +1505,7 @@ int rt_ioctl_siwencode(struct net_device *dev,
     	}
 
 
-	pIoctlSec->pData = (CHAR *)extra;
+	pIoctlSec->pData = (char *)extra;
 	pIoctlSec->length = erq->length;
 	pIoctlSec->KeyIdx = (erq->flags & IW_ENCODE_INDEX) - 1;
 	pIoctlSec->flags = 0;
@@ -1535,7 +1535,7 @@ rt_ioctl_giwencode(struct net_device *dev,
 			  struct iw_point *erq, char *key)
 {
 /*	int kid; */
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 	RT_CMD_STA_IOCTL_SECURITY IoctlSec, *pIoctlSec = &IoctlSec;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
@@ -1556,7 +1556,7 @@ rt_ioctl_giwencode(struct net_device *dev,
 	}
 		
 
-	pIoctlSec->pData = (CHAR *)key;
+	pIoctlSec->pData = (char *)key;
 	pIoctlSec->KeyIdx = erq->flags & IW_ENCODE_INDEX;
 	pIoctlSec->length = erq->length;
 
@@ -1582,10 +1582,10 @@ rt_ioctl_giwencode(struct net_device *dev,
 int rt_ioctl_setparam(struct net_device *dev, struct iw_request_info *info,
 			 void *w, char *extra)
 {
-	VOID *pAd;
+	void *pAd;
 /*	POS_COOKIE pObj; */
-	PSTRING this_char = extra;
-	PSTRING value = NULL;
+	char* this_char = extra;
+	char* value = NULL;
 	int  Status=0;
 	RT_CMD_PARAM_SET CmdParam;
 
@@ -1641,8 +1641,8 @@ static int
 rt_private_get_statistics(struct net_device *dev, struct iw_request_info *info,
 		struct iw_point *wrq, char *extra)
 {
-	INT				Status = 0;
-    VOID   *pAd = NULL;
+	int 			Status = 0;
+    void   *pAd = NULL;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
 
@@ -1675,11 +1675,11 @@ rt_private_get_statistics(struct net_device *dev, struct iw_request_info *info,
 
 static int
 rt_private_show(struct net_device *dev, struct iw_request_info *info,
-		struct iw_point *wrq, PSTRING extra)
+		struct iw_point *wrq, char* extra)
 {
 	RTMP_IOCTL_INPUT_STRUCT wrqin;
-	INT				Status = 0;
-	VOID   			*pAd;
+	int 			Status = 0;
+	void   			*pAd;
 /*	POS_COOKIE		pObj; */
 	u32             subcmd = wrq->flags;
 	RT_CMD_STA_IOCTL_SHOW IoctlShow, *pIoctlShow = &IoctlShow;
@@ -1706,7 +1706,7 @@ rt_private_show(struct net_device *dev, struct iw_request_info *info,
 	wrqin.u.data.pointer = wrq->pointer;
 	wrqin.u.data.length = wrq->length;
 
-	pIoctlShow->pData = (CHAR *)extra;
+	pIoctlShow->pData = (char *)extra;
 	pIoctlShow->MaxSize = IW_PRIV_SIZE_MASK;
 	pIoctlShow->InfType = RT_DEV_PRIV_FLAGS_GET(dev);
 	RTMP_STA_IoctlHandle(pAd, &wrqin, CMD_RTPRIV_IOCTL_SHOW, subcmd,
@@ -1722,13 +1722,13 @@ int rt_ioctl_siwmlme(struct net_device *dev,
 			   union iwreq_data *wrqu,
 			   char *extra)
 {
-	VOID   *pAd = NULL;
+	void   *pAd = NULL;
 	struct iw_mlme *pMlme = (struct iw_mlme *)wrqu->data.pointer;
 /*	MLME_QUEUE_ELEM				MsgElem; */
 /*	MLME_QUEUE_ELEM				*pMsgElem = NULL; */
 /*	MLME_DISASSOC_REQ_STRUCT	DisAssocReq; */
 /*	MLME_DEAUTH_REQ_STRUCT      DeAuthReq; */
-	ULONG Subcmd = 0;
+	unsigned long  Subcmd = 0;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
 
@@ -1776,7 +1776,7 @@ int rt_ioctl_siwauth(struct net_device *dev,
 			  struct iw_request_info *info,
 			  union iwreq_data *wrqu, char *extra)
 {
-	VOID   *pAd = NULL;
+	void   *pAd = NULL;
 	struct iw_param *param = &wrqu->param;
 	RT_CMD_STA_IOCTL_SECURITY_ADV IoctlWpa, *pIoctlWpa = &IoctlWpa;
 
@@ -1877,7 +1877,7 @@ int rt_ioctl_giwauth(struct net_device *dev,
 			       struct iw_request_info *info,
 			       union iwreq_data *wrqu, char *extra)
 {
-	VOID   *pAd = NULL;
+	void   *pAd = NULL;
 	struct iw_param *param = &wrqu->param;
 	RT_CMD_STA_IOCTL_SECURITY_ADV IoctlWpa, *pIoctlWpa = &IoctlWpa;
 
@@ -1939,7 +1939,7 @@ int rt_ioctl_siwencodeext(struct net_device *dev,
 			   union iwreq_data *wrqu,
 			   char *extra)
 {
-	VOID   *pAd = NULL;
+	void   *pAd = NULL;
 	struct iw_point *encoding = &wrqu->encoding;
 	struct iw_encode_ext *ext = (struct iw_encode_ext *)extra;
     int /* keyIdx, */ alg = ext->alg;
@@ -1956,7 +1956,7 @@ int rt_ioctl_siwencodeext(struct net_device *dev,
 	}
 
 			
-	pIoctlSec->pData = (CHAR *)ext->key;
+	pIoctlSec->pData = (char *)ext->key;
 	pIoctlSec->length = ext->key_len;
 	pIoctlSec->KeyIdx = (encoding->flags & IW_ENCODE_INDEX) - 1;
 	if (alg == IW_ENCODE_ALG_NONE )
@@ -1995,8 +1995,8 @@ rt_ioctl_giwencodeext(struct net_device *dev,
 			  struct iw_request_info *info,
 			  union iwreq_data *wrqu, char *extra)
 {
-	VOID *pAd = NULL;
-/*	PCHAR pKey = NULL; */
+	void *pAd = NULL;
+/*	char* pKey = NULL; */
 	struct iw_point *encoding = &wrqu->encoding;
 	struct iw_encode_ext *ext = (struct iw_encode_ext *)extra;
 	int /* idx, */ max_key_len;
@@ -2061,7 +2061,7 @@ int rt_ioctl_siwgenie(struct net_device *dev,
 			  struct iw_request_info *info,
 			  union iwreq_data *wrqu, char *extra)
 {
-	VOID   *pAd = NULL;
+	void   *pAd = NULL;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);	
 	
@@ -2090,7 +2090,7 @@ int rt_ioctl_giwgenie(struct net_device *dev,
 			       struct iw_request_info *info,
 			       union iwreq_data *wrqu, char *extra)
 {
-	VOID   *pAd = NULL;
+	void   *pAd = NULL;
 	RT_CMD_STA_IOCTL_RSN_IE IoctlRsnIe, *pIoctlRsnIe = &IoctlRsnIe;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);	
@@ -2105,7 +2105,7 @@ int rt_ioctl_giwgenie(struct net_device *dev,
 
 
 	pIoctlRsnIe->length = wrqu->data.length;
-	pIoctlRsnIe->pRsnIe = (UCHAR *)extra;
+	pIoctlRsnIe->pRsnIe = (unsigned char *)extra;
 
 	if (RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCGIWGENIE, 0,
 						pIoctlRsnIe, 0,
@@ -2121,9 +2121,9 @@ int rt_ioctl_siwpmksa(struct net_device *dev,
 			   union iwreq_data *wrqu,
 			   char *extra)
 {
-	VOID   *pAd = NULL;
+	void   *pAd = NULL;
 	struct iw_pmksa *pPmksa = (struct iw_pmksa *)wrqu->data.pointer;
-/*	INT	CachedIdx = 0, idx = 0; */
+/*	int CachedIdx = 0, idx = 0; */
 	RT_CMD_STA_IOCTL_PMA_SA IoctlPmaSa, *pIoctlPmaSa = &IoctlPmaSa;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);	
@@ -2150,7 +2150,7 @@ int rt_ioctl_siwpmksa(struct net_device *dev,
 		pIoctlPmaSa->Cmd = RT_CMD_STA_IOCTL_PMA_SA_ADD;
 	else
 		pIoctlPmaSa->Cmd = 0;
-	pIoctlPmaSa->pBssid = (UCHAR *)pPmksa->bssid.sa_data;
+	pIoctlPmaSa->pBssid = (unsigned char *)pPmksa->bssid.sa_data;
 	pIoctlPmaSa->pPmkid = pPmksa->pmkid;
 
 	RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCSIWPMKSA, 0,
@@ -2166,8 +2166,8 @@ rt_private_ioctl_bbp(struct net_device *dev, struct iw_request_info *info,
 		struct iw_point *wrq, char *extra)
 {
 	RTMP_IOCTL_INPUT_STRUCT wrqin;
-	INT					Status = 0;
-    VOID       			*pAd = NULL;
+	int 				Status = 0;
+    void       			*pAd = NULL;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);	
 
@@ -2193,8 +2193,8 @@ int rt_ioctl_siwrate(struct net_device *dev,
 			struct iw_request_info *info,
 			union iwreq_data *wrqu, char *extra)
 {
-    VOID   *pAd = NULL;
-    UINT32          rate = wrqu->bitrate.value, fixed = wrqu->bitrate.fixed;
+    void   *pAd = NULL;
+    unsigned int          rate = wrqu->bitrate.value, fixed = wrqu->bitrate.fixed;
 	RT_CMD_RATE_SET CmdRate;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
@@ -2228,10 +2228,10 @@ int rt_ioctl_giwrate(struct net_device *dev,
 			       struct iw_request_info *info,
 			       union iwreq_data *wrqu, char *extra)
 {
-    VOID   *pAd = NULL;
+    void   *pAd = NULL;
 /*    int rate_index = 0, rate_count = 0; */
 /*    HTTRANSMIT_SETTING ht_setting; */
-	ULONG Rate;
+	unsigned long  Rate;
 
 	GET_PAD_FROM_NET_DEV(pAd, dev);
 
@@ -2370,19 +2370,19 @@ const struct iw_handler_def rt28xx_iw_handler_def =
 };
 
 
-INT rt28xx_sta_ioctl(
+int rt28xx_sta_ioctl(
 	IN	struct net_device	*net_dev, 
 	IN	OUT	struct ifreq	*rq, 
-	IN	INT					cmd)
+	IN	int 				cmd)
 {
 /*	POS_COOKIE			pObj; */
-	VOID        		*pAd = NULL;
+	void        		*pAd = NULL;
 	struct iwreq        *wrqin = (struct iwreq *) rq;
 	RTMP_IOCTL_INPUT_STRUCT rt_wrq, *wrq = &rt_wrq;
 /*	unsigned char				StateMachineTouched = FALSE; */
-	INT					Status = NDIS_STATUS_SUCCESS;
-	USHORT				subcmd;
-	UINT32				org_len;
+	int 				Status = NDIS_STATUS_SUCCESS;
+	unsigned short 			subcmd;
+	unsigned int				org_len;
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);
 
@@ -2477,16 +2477,16 @@ INT rt28xx_sta_ioctl(
 		case SIOCGIWNICKN: /*get node name/nickname */
         {
 			RT_CMD_STA_IOCTL_NICK_NAME NickName, *pNickName = &NickName;
-			CHAR nickname[IW_ESSID_MAX_SIZE+1];
+			char nickname[IW_ESSID_MAX_SIZE+1];
 			struct iw_point	*erq = NULL;
         	erq = &wrqin->u.data;
 
 			pNickName->NameLen = IW_ESSID_MAX_SIZE+1;
-			pNickName->pName = (CHAR *)nickname;
+			pNickName->pName = (char *)nickname;
 			RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCGIWNICKN, 0,
 							pNickName, 0, RT_DEV_PRIV_FLAGS_GET(net_dev));
 
-            erq->length = pNickName->NameLen; /*strlen((PSTRING) pAd->nickname); */
+            erq->length = pNickName->NameLen; /*strlen((char*) pAd->nickname); */
             Status = copy_to_user(erq->pointer, nickname, erq->length);
 			break;
 		}

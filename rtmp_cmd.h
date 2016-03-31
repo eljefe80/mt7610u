@@ -570,7 +570,7 @@ unsigned int Fixed;
 } RT_CMD_RATE_SET;
 
 typedef struct __RT_CMD_PARAM_SET {
-char*  pThischar;
+char*  pThisChar;
 char*  pValue;
 } RT_CMD_PARAM_SET;
 

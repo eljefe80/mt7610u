@@ -6891,9 +6891,9 @@ unsigned char ht_cap_len,
 HT_CAPABILITY_IE *pHTCapability);
 #endif /* DOT11_N_SUPPORT */
 
-unsigned char APRxDoneinterruptHandle(RTMP_ADAPTER *pAd);
-unsigned char STARxDoneinterruptHandle(RTMP_ADAPTER *pAd, unsigned char argc);
-unsigned char RxDoneinterruptHandle(RTMP_ADAPTER *pAd);
+unsigned char APRxDoneInterruptHandle(RTMP_ADAPTER *pAd);
+unsigned char STARxDoneInterruptHandle(RTMP_ADAPTER *pAd, unsigned char argc);
+unsigned char RxDoneInterruptHandle(RTMP_ADAPTER *pAd);
 
 #ifdef DOT11_N_SUPPORT
 /* AMPDU packet indication */

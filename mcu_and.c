@@ -29,7 +29,7 @@
 
 
 #ifdef RTMP_MAC_USB
-VOID usb_uploadfw_complete(purbb_t urb, pregs *pt_regs)
+void usb_uploadfw_complete(purbb_t urb, pregs *pt_regs)
 {
 	RTMP_OS_COMPLETION *load_fw_done = (RTMP_OS_COMPLETION *)RTMP_OS_USB_CONTEXT_GET(urb);
 
@@ -77,7 +77,7 @@ NDIS_STATUS andes_usb_loadfw(RTMP_ADAPTER *ad)
 	PURB urb;
 	POS_COOKIE obj = (POS_COOKIE)ad->OS_Cookie;
 	ra_dma_addr_t fw_dma;
-	PUCHAR fw_data;
+	unsigned char* fw_data;
 	TXINFO_NMAC_CMD *tx_info;	
 	s32 sent_len;
 	u32 cur_len = 0;
@@ -229,7 +229,7 @@ loadfw_protect:
 			tx_info->d_port = CPU_TX_PORT;
 
 #ifdef RT_BIG_ENDIAN
-			RTMPDescriptorEndianChange((PUCHAR)tx_info, TYPE_TXINFO);
+			RTMPDescriptorEndianChange((unsigned char*)tx_info, TYPE_TXINFO);
 #endif
 			NdisMoveMemory(fw_data + sizeof(*tx_info), cap->FWImageName + FW_INFO_SIZE + cur_len, sent_len);
 
@@ -379,7 +379,7 @@ loadfw_protect:
 			tx_info->d_port = CPU_TX_PORT;
 
 #ifdef RT_BIG_ENDIAN
-			RTMPDescriptorEndianChange((PUCHAR)tx_info, TYPE_TXINFO);
+			RTMPDescriptorEndianChange((unsigned char*)tx_info, TYPE_TXINFO);
 #endif
 			NdisMoveMemory(fw_data + sizeof(*tx_info), cap->FWImageName + FW_INFO_SIZE + ilm_len + cur_len, sent_len);
 	
@@ -564,7 +564,7 @@ static struct cmd_msg *andes_alloc_cmd_msg(RTMP_ADAPTER *ad, unsigned int length
 
 	OS_PKT_RESERVE(net_pkt, cap->cmd_header_len);
 
-	os_alloc_mem(NULL, (PUCHAR *)&msg, sizeof(*msg));
+	os_alloc_mem(NULL, (unsigned char* *)&msg, sizeof(*msg));
 
 	if (!msg) {
 		DBGPRINT(RT_DEBUG_ERROR, ("can not allocate cmd msg\n"));
@@ -657,9 +657,9 @@ unsigned char is_inband_cmd_processing(RTMP_ADAPTER *ad)
 	return ret;
 }
 
-UCHAR get_cmd_rsp_num(RTMP_ADAPTER *ad)
+unsigned char get_cmd_rsp_num(RTMP_ADAPTER *ad)
 {
-	UCHAR Num = 0;
+	unsigned char Num = 0;
 
 	return Num;
 }
@@ -705,7 +705,7 @@ static NDIS_SPIN_LOCK *andes_get_spin_lock(struct MCU_CTRL *ctl, DL_LIST *list)
 	return lock;
 } 
 
-static inline UCHAR andes_get_cmd_msg_seq(RTMP_ADAPTER *ad)
+static inline unsigned char andes_get_cmd_msg_seq(RTMP_ADAPTER *ad)
 {
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 	struct cmd_msg *msg;
@@ -868,7 +868,7 @@ void andes_rx_process_cmd_msg(RTMP_ADAPTER *ad, struct cmd_msg *rx_msg)
 	struct MCU_CTRL *ctl = &ad->MCUCtrl;
 
 #ifdef RT_BIG_ENDIAN
-	RTMPDescriptorEndianChange((PUCHAR)rx_info, TYPE_RXINFO);
+	RTMPDescriptorEndianChange((unsigned char*)rx_info, TYPE_RXINFO);
 #endif
 
 
@@ -1302,7 +1302,7 @@ static int andes_dequeue_and_kick_out_cmd_msgs(RTMP_ADAPTER *ad)
 		tx_info->pkt_len = GET_OS_PKT_LEN(net_pkt) - sizeof(*tx_info);
 
 #ifdef RT_BIG_ENDIAN
-		RTMPDescriptorEndianChange((PUCHAR)tx_info, TYPE_TXINFO);
+		RTMPDescriptorEndianChange((unsigned char*)tx_info, TYPE_TXINFO);
 #endif
 	
 

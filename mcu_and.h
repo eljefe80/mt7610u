@@ -29,7 +29,7 @@
 #define __MCU_AND_H__
 
 #include "mcu.h"
-#include "linux/list.h"
+#include "link_list.h"
 struct _RTMP_ADAPTER;
 
 #define MCU_WAIT_ACK_CMD_THRESHOLD 0x0f
@@ -86,17 +86,17 @@ struct MCU_CTRL {
 	unsigned long flags;
 	RTMP_NET_TASK_STRUCT cmd_msg_task;
 	NDIS_SPIN_LOCK txq_lock;
-	struct list_head txq;
+	DL_LIST txq;
 	NDIS_SPIN_LOCK rxq_lock;
-	struct list_head rxq;
+	DL_LIST rxq;
 	NDIS_SPIN_LOCK ackq_lock;
-	struct list_head ackq;
+	DL_LIST ackq;
 	NDIS_SPIN_LOCK kickq_lock;
-	struct list_head kickq;
+	DL_LIST kickq;
 	NDIS_SPIN_LOCK tx_doneq_lock;
-	struct list_head tx_doneq;
+	DL_LIST tx_doneq;
 	NDIS_SPIN_LOCK rx_doneq_lock;
-	struct list_head rx_doneq;
+	DL_LIST rx_doneq;
 	unsigned long tx_kickout_fail_count;
 	unsigned long tx_timeout_fail_count;
 	unsigned long rx_receive_fail_count;
@@ -123,7 +123,7 @@ struct cmd_msg_cb {
 #define CMD_MSG_TIMEOUT 500
 
 struct cmd_msg {
-	struct list_head list;
+	DL_LIST list;
 	u8 type;
 	u8 seq;
 	u16 timeout;

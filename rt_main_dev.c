@@ -55,10 +55,10 @@ MODULE_LICENSE("GPL");
 /* Private Variables Used                                              */
 /*---------------------------------------------------------------------*/
 
-PSTRING mac = "";		     /* default 00:00:00:00:00:00 */
-PSTRING hostname = "";		     /* default CMPC */
-ULONG RTDebugLevel = RT_DEBUG_ERROR; /* Set to debug mod param in init() */
-ULONG debug = RT_DEBUG_ERROR;        /* default RT_DEBUG_ERROR */
+char* mac = "";		     /* default 00:00:00:00:00:00 */
+char* hostname = "";		     /* default CMPC */
+unsigned long  RTDebugLevel = RT_DEBUG_ERROR; /* Set to debug mod param in init() */
+unsigned long  debug = RT_DEBUG_ERROR;        /* default RT_DEBUG_ERROR */
 #if LINUX_VERSION_CODE <= KERNEL_VERSION(2,6,12)
 MODULE_PARM (mac, "s");
 MODULE_PARM (debug, "l");
@@ -80,11 +80,11 @@ RTMP_NET_ABL_OPS RtmpDrvNetOps, *pRtmpDrvNetOps = &RtmpDrvNetOps;
 /*---------------------------------------------------------------------*/
 
 /* public function prototype */
-int rt28xx_close(VOID *net_dev);
-int rt28xx_open(VOID *net_dev);
+int rt28xx_close(void *net_dev);
+int rt28xx_open(void *net_dev);
 
 /* private function prototype */
-static INT rt28xx_send_packets(IN struct sk_buff *skb_p, IN struct net_device *net_dev);
+static int rt28xx_send_packets(IN struct sk_buff *skb_p, IN struct net_device *net_dev);
 
 
 
@@ -115,7 +115,7 @@ Note:
 */
 int MainVirtualIF_close(IN struct net_device *net_dev)
 {
-    VOID *pAd = NULL;
+    void *pAd = NULL;
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);	
 
@@ -160,7 +160,7 @@ Note:
 */
 int MainVirtualIF_open(IN struct net_device *net_dev)
 {
-    VOID *pAd = NULL;
+    void *pAd = NULL;
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);	
 
@@ -207,10 +207,10 @@ Note:
 		(3) BA Reordering: 				ba_reordering_resource_release()
 ========================================================================
 */
-int rt28xx_close(VOID *dev)
+int rt28xx_close(void *dev)
 {
 	struct net_device * net_dev = (struct net_device *)dev;
-    VOID	*pAd = NULL;
+    void	*pAd = NULL;
 	
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);	
 
@@ -249,19 +249,19 @@ Return Value:
 Note:
 ========================================================================
 */
-int rt28xx_open(VOID *dev)
+int rt28xx_open(void *dev)
 {				 
 	struct net_device * net_dev = (struct net_device *)dev;
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 	int retval = 0;
-	ULONG OpMode;
+	unsigned long  OpMode;
 
 #ifdef CONFIG_STA_SUPPORT
 #ifdef CONFIG_PM
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
 	struct usb_interface *intf;
 	struct usb_device		*pUsb_Dev;
-	INT 		pm_usage_cnt;
+	int 		pm_usage_cnt;
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 #endif /* CONFIG_PM */
 #endif /* CONFIG_STA_SUPPORT */
@@ -397,11 +397,11 @@ err:
 
 
 PNET_DEV RtmpPhyNetDevInit(
-	IN VOID						*pAd,
+	IN void						*pAd,
 	IN RTMP_OS_NETDEV_OP_HOOK	*pNetDevHook)
 {
 	struct net_device	*net_dev = NULL;
-	ULONG InfId, OpMode;
+	unsigned long  InfId, OpMode;
 
 	RTMP_DRIVER_MAIN_INF_GET(pAd, &InfId);
 
@@ -473,9 +473,9 @@ PNET_DEV RtmpPhyNetDevInit(
 }
 
 
-VOID *RtmpNetEthConvertDevSearch(
-	IN	VOID			*net_dev_,
-	IN	UCHAR			*pData)
+void *RtmpNetEthConvertDevSearch(
+	IN	void			*net_dev_,
+	IN	unsigned char			*pData)
 {
 	struct net_device *pNetDev;
 
@@ -509,7 +509,7 @@ VOID *RtmpNetEthConvertDevSearch(
 			break;
 	}
 
-	return (VOID *)pNetDev;
+	return (void *)pNetDev;
 }
 
 
@@ -536,7 +536,7 @@ int rt28xx_packet_xmit(void *skbsrc)
 {
 	struct sk_buff *skb = (struct sk_buff *)skbsrc;
 	struct net_device *net_dev = skb->dev;
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 	PNDIS_PACKET pPacket = (PNDIS_PACKET) skb;
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);	
@@ -574,7 +574,7 @@ static int rt28xx_send_packets(
 		return 0;
 	}
 
-	NdisZeroMemory((PUCHAR)&skb_p->cb[CB_OFF], 15);
+	NdisZeroMemory((unsigned char*)&skb_p->cb[CB_OFF], 15);
 	RTMP_SET_PACKET_NET_DEVICE_MBSSID(skb_p, MAIN_MBSSID);
 	MEM_DBG_PKT_ALLOC_INC(skb_p);
 
@@ -586,7 +586,7 @@ static int rt28xx_send_packets(
 /* This function will be called when query /proc */
 struct iw_statistics *rt28xx_get_wireless_stats(struct net_device *net_dev)
 {
-	VOID *pAd = NULL;
+	void *pAd = NULL;
 	struct iw_statistics *pStats;
 	RT_CMD_IW_STATS DrvIwStats, *pDrvIwStats = &DrvIwStats;
 
@@ -598,7 +598,7 @@ struct iw_statistics *rt28xx_get_wireless_stats(struct net_device *net_dev)
 
 
 	pDrvIwStats->priv_flags = RT_DEV_PRIV_FLAGS_GET(net_dev);
-	pDrvIwStats->dev_addr = (PUCHAR)net_dev->dev_addr;
+	pDrvIwStats->dev_addr = (unsigned char*)net_dev->dev_addr;
 
 	if (RTMP_DRIVER_IW_STATS_GET(pAd, pDrvIwStats) != NDIS_STATUS_SUCCESS)
 		return NULL;
@@ -623,14 +623,14 @@ struct iw_statistics *rt28xx_get_wireless_stats(struct net_device *net_dev)
 #endif /* WIRELESS_EXT */
 
 
-INT rt28xx_ioctl(
+int rt28xx_ioctl(
 	IN PNET_DEV net_dev, 
-	INstruct ifreq	*rq, 
-	IN INT cmd)
+	IN struct ifreq	*rq, 
+	IN int cmd)
 {
-	VOID *pAd = NULL;
-	INT ret = 0;
-	ULONG OpMode;
+	void *pAd = NULL;
+	int ret = 0;
+	unsigned long  OpMode;
 
 	GET_PAD_FROM_NET_DEV(pAd, net_dev);	
 
@@ -675,7 +675,7 @@ INT rt28xx_ioctl(
 struct net_device_stats *RT28xx_get_ether_stats(
     IN  struct net_device *net_dev)
 {
-    VOID *pAd = NULL;
+    void *pAd = NULL;
 	struct net_device_stats *pStats;
 
 	if (net_dev)
@@ -732,7 +732,7 @@ struct net_device_stats *RT28xx_get_ether_stats(
 
 
 unsigned char RtmpPhyNetDevExit(
-	IN VOID			*pAd, 
+	IN void			*pAd, 
 	IN PNET_DEV		net_dev)
 {
 
@@ -775,8 +775,8 @@ unsigned char RtmpPhyNetDevExit(
  *******************************************************************************/
 int RtmpOSIRQRequest(IN PNET_DEV pNetDev)
 {
-	ULONG infType;
-	VOID *pAd = NULL;
+	unsigned long  infType;
+	void *pAd = NULL;
 	int retval = 0;
 	
 	GET_PAD_FROM_NET_DEV(pAd, pNetDev);	
@@ -811,8 +811,8 @@ int RtmpOSIRQRequest(IN PNET_DEV pNetDev)
 struct net_device_stats *RT28xx_get_wds_ether_stats(
     IN PNET_DEV net_dev)
 {
-    VOID *pAd = NULL;
-/*	INT WDS_apidx = 0,index; */
+    void *pAd = NULL;
+/*	int WDS_apidx = 0,index; */
 	struct net_device_stats *pStats;
 	RT_CMD_STATS WdsStats, *pWdsStats = &WdsStats;
 

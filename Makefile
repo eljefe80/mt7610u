@@ -86,19 +86,26 @@ mt7610u-y := \
 	rtmp_data.o\
 	wpa.o\
 	rt_linux.o\
+                cmm_mac_usb.o\
+				mcu.o\
 				rt65xx.o\
                 mt76x0.o\
                 cmm_data_usb.o\
+                rt_usb.o\
 				rtusb_io.o\
+				rtusb_bulk.o\
+                mcu_and.o\
+				ral_nmac.o\
+				ee_efuse.o\
+	rt_os_util.o\
+	sta_ioctl.o\
+	rt_main_dev.o\
 	$(obj_vht)\
 	$(obj_cmm)\
 	$(obj_wsc)
 
 mt7610-objs += \
-	rt_os_util.o\
-	sta_ioctl.o\
 	rt_linux.o\
-	rt_main_dev.o
 mt7610-objs += \
 	cmm_mat.o \
 	cmm_mat_iparp.o \
@@ -121,13 +128,9 @@ mt7610-objs += \
                 cmm_mac_pci.o\
                 cmm_data_pci.o\
                 rt_rbus_pci_drv.o\
-				ee_efuse.o\
                 ee_prom.o\
                 rt_rf.o\
                 rt30xx.o\
-				ral_nmac.o\
-				mcu.o\
-                mcu_and.o
 
 mt7610-objs += \
         ee_flash.o
@@ -139,10 +142,7 @@ mt7610-objs += \
 mt7610-objs += \
         frq_cal.o
 mt7610-objs += \
-                cmm_mac_usb.o\
 				rtusb_data.o\
-				rtusb_bulk.o\
-                rt_usb.o\
                 ee_prom.o\
 				ee_efuse.o\
                 rt_rf.o\
