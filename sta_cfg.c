@@ -7788,6 +7788,7 @@ RtmpIoctl_rt_private_get_statistics(
 	IN	void					*pData,
 	IN	unsigned long					Data)
 {
+#if 0
 	char *extra = (char *)pData;
 	unsigned long txCount = 0;
 #ifdef ENHANCED_STAT_DISPLAY
@@ -7916,6 +7917,7 @@ RtmpIoctl_rt_private_get_statistics(
 	/* Display Tx Aggregation statistics */
 	DisplayTxAgg(pAd);
 #endif /* DOT11_N_SUPPORT */
+#endif
 	return NDIS_STATUS_SUCCESS;
 }
 

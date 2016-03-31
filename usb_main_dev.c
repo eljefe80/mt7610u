@@ -48,17 +48,17 @@ MODULE_VERSION(STA_DRIVER_VERSION);
 
 
 extern USB_DEVICE_ID rtusb_dev_id[];
-extern INT const rtusb_usb_id_len;
+extern int const rtusb_usb_id_len;
 
 static void rt2870_disconnect(
 	IN struct usb_device *dev, 
-	IN VOID *pAd);
+	IN void *pAd);
 
 static int rt2870_probe(
 	IN struct usb_interface *intf,
 	IN struct usb_device *usb_dev,
 	IN const USB_DEVICE_ID *dev_id,
-	IN VOID **ppAd);
+	IN void **ppAd);
 
 #ifndef PF_NOFREEZE
 #define PF_NOFREEZE  0
@@ -71,12 +71,12 @@ static int rt2870_probe(
 static unsigned char USBDevConfigInit(
 	IN struct usb_device 	*dev,
 	IN struct usb_interface *intf, 
-	IN VOID					*pAd);
+	IN void					*pAd);
 	
 
-VOID RT28XXVendorSpecificCheck(
+void RT28XXVendorSpecificCheck(
 	IN struct usb_device 	*dev,
-	IN VOID 				*pAd)
+	IN void 				*pAd)
 {
 
 
@@ -92,7 +92,7 @@ VOID RT28XXVendorSpecificCheck(
 /*tested for kernel 2.4 series */
 /**************************************************************************/
 /**************************************************************************/
-static void *rtusb_probe(struct usb_device *dev, UINT interface,
+static void *rtusb_probe(struct usb_device *dev, unsigned int interface,
 						const USB_DEVICE_ID *id_table);
 static void rtusb_disconnect(struct usb_device *dev, void *ptr);
 
@@ -107,12 +107,12 @@ struct usb_driver rtusb_driver = {
 static unsigned char USBDevConfigInit(
 	IN struct usb_device *dev,
 	IN struct usb_interface *intf, 
-	IN VOID *pAd)
+	IN void *pAd)
 {
 	struct usb_interface_descriptor *iface_desc;
 	struct usb_endpoint_descriptor *endpoint;
-	ULONG BulkOutIdx;
-	UINT32 i;
+	unsigned long  BulkOutIdx;
+	unsigned int i;
 	RT_CMD_USB_DEV_CONFIG Config, *pConfig = &Config;
 
 
@@ -164,11 +164,11 @@ static unsigned char USBDevConfigInit(
 	
 }
 
-static void *rtusb_probe(struct usb_device *dev, UINT interface,
+static void *rtusb_probe(struct usb_device *dev, unsigned int interface,
 						const USB_DEVICE_ID *id)
 {
 	struct usb_interface *intf;
-	VOID *pAd;
+	void *pAd;
 	int rv;
 
 
@@ -216,12 +216,12 @@ static void rtusb_disconnect(struct usb_interface *intf);
 static unsigned char USBDevConfigInit(
 	IN struct usb_device 	*dev,
 	IN struct usb_interface *intf, 
-	IN VOID 				*pAd)
+	IN void 				*pAd)
 {
 	struct usb_host_interface *iface_desc;
-	ULONG BulkOutIdx;
-	ULONG BulkInIdx;
-	UINT32 i;
+	unsigned long  BulkOutIdx;
+	unsigned long  BulkInIdx;
+	unsigned int i;
 	RT_CMD_USB_DEV_CONFIG Config, *pConfig = &Config;
 
 	/* get the active interface descriptor */
@@ -301,7 +301,7 @@ static unsigned char USBDevConfigInit(
 static int rtusb_probe (struct usb_interface *intf,
 						const USB_DEVICE_ID *id)
 {	
-	VOID *pAd;
+	void *pAd;
 	struct usb_device *dev;
 	int rv;
 
@@ -332,7 +332,7 @@ static int rtusb_probe (struct usb_interface *intf,
 static void rtusb_disconnect(struct usb_interface *intf)
 {
 	struct usb_device   *dev = interface_to_usbdev(intf);
-	VOID				*pAd;
+	void				*pAd;
 
 	printk("rtusb_disconnect ENTER\n");
 
@@ -380,8 +380,8 @@ struct usb_driver rtusb_driver = {
 
 #ifdef CONFIG_PM
 
-VOID RT2870RejectPendingPackets(
-	IN	VOID	*pAd)
+void RT2870RejectPendingPackets(
+	IN	void	*pAd)
 {
 	/* clear PS packets */
 	/* clear TxSw packets */
@@ -392,12 +392,12 @@ static int rt2870_suspend(
 	pm_message_t state)
 {
 	struct net_device *net_dev;
-	VOID *pAd = usb_get_intfdata(intf);
+	void *pAd = usb_get_intfdata(intf);
 	
 	DBGPRINT(RT_DEBUG_TRACE, ("===> rt2870_suspend()\n"));
 
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
-	UCHAR Flag;
+	unsigned char Flag;
 	DBGPRINT(RT_DEBUG_ERROR, ("autosuspend===> rt2870_suspend()\n"));
 #ifdef WOW_SUPPORT
 	RTMP_DRIVER_ADAPTER_RT28XX_USB_WOW_STATUS(pAd, &Flag);
@@ -440,11 +440,11 @@ static int rt2870_resume(
 	struct usb_interface *intf)
 {
 	struct net_device *net_dev;
-	VOID *pAd = usb_get_intfdata(intf);
+	void *pAd = usb_get_intfdata(intf);
 
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
-	INT 		pm_usage_cnt;
-	UCHAR Flag;
+	int 		pm_usage_cnt;
+	unsigned char Flag;
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32)
 	pm_usage_cnt = atomic_read(&intf->pm_usage_cnt);	
@@ -496,14 +496,14 @@ static int rt2870_resume(
 
 
 /* Init driver module */
-INT __init rtusb_init(void)
+int __init rtusb_init(void)
 {
 	printk("rtusb init %s --->\n", RTMP_DRV_NAME);
 	return usb_register(&rtusb_driver);
 }
 
 /* Deinit driver module */
-VOID __exit rtusb_exit(void)
+void __exit rtusb_exit(void)
 {
 	printk("---> rtusb exit\n");
 	usb_deregister(&rtusb_driver);	
@@ -537,10 +537,10 @@ Return Value:
 Note:
 ========================================================================
 */
-static void rt2870_disconnect(struct usb_device *dev, VOID *pAd)
+static void rt2870_disconnect(struct usb_device *dev, void *pAd)
 {
 	struct net_device *net_dev;
-	UCHAR ZERO_MAC_ADDR[MAC_ADDR_LEN]  = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+	unsigned char ZERO_MAC_ADDR[MAC_ADDR_LEN]  = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 	RTMP_DRIVER_NET_DEV_GET(pAd, &net_dev);
 
@@ -552,7 +552,7 @@ static void rt2870_disconnect(struct usb_device *dev, VOID *pAd)
 
 	printk("rt2870_disconnect(): CMD_RTPRIV_IOCTL_STA_SIOCSIWAP(00:00:00:00:00:00)\n");
 	RTMP_STA_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_STA_SIOCSIWAP, 0,
-					(VOID *)(&ZERO_MAC_ADDR[0]), 0, RT_DEV_PRIV_FLAGS_GET(net_dev));
+					(void *)(&ZERO_MAC_ADDR[0]), 0, RT_DEV_PRIV_FLAGS_GET(net_dev));
 #endif
 
 	DBGPRINT(RT_DEBUG_ERROR, ("rtusb_disconnect: unregister usbnet usb-%s-%s\n",
@@ -636,18 +636,18 @@ static int rt2870_probe(
 	IN struct usb_interface *intf,
 	IN struct usb_device *usb_dev,
 	IN const USB_DEVICE_ID *dev_id,
-	IN VOID **ppAd)
+	IN void **ppAd)
 {
 	struct  net_device		*net_dev = NULL;
-	VOID       				*pAd = (VOID *) NULL;
-	INT                 	status, rv;
-	PVOID					handle;
+	void       				*pAd = (void *) NULL;
+	int                 	status, rv;
+	void*					handle;
 	RTMP_OS_NETDEV_OP_HOOK	netDevHook;
-	ULONG					OpMode;
+	unsigned long 					OpMode;
 #ifdef CONFIG_PM
 #ifdef USB_SUPPORT_SELECTIVE_SUSPEND
-/*	INT 		pm_usage_cnt; */
-	INT		 res =1 ; 
+/*	int 		pm_usage_cnt; */
+	int 	 res =1 ; 
 #endif /* USB_SUPPORT_SELECTIVE_SUSPEND */
 #endif /* CONFIG_PM */	
 
@@ -682,7 +682,7 @@ static int rt2870_probe(
 /*RtmpDevInit============================================= */
 	/* Allocate RTMP_ADAPTER adapter structure */
 /*	handle = kmalloc(sizeof(struct os_cookie), GFP_KERNEL); */
-	os_alloc_mem(NULL, (UCHAR **)&handle, sizeof(struct os_cookie));
+	os_alloc_mem(NULL, (unsigned char **)&handle, sizeof(struct os_cookie));
 	if (handle == NULL)
 	{
 		printk("rt2870_probe(): Allocate memory for os handle failed!\n");
@@ -772,12 +772,12 @@ static int rt2870_probe(
 
 #ifdef INF_PPA_SUPPORT
 /*	pAd->pDirectpathCb = (PPA_DIRECTPATH_CB *) kmalloc (sizeof(PPA_DIRECTPATH_CB), GFP_ATOMIC); */
-/*	os_alloc_mem(NULL, (UCHAR **)&(pAd->pDirectpathCb), sizeof(PPA_DIRECTPATH_CB)); */
+/*	os_alloc_mem(NULL, (unsigned char **)&(pAd->pDirectpathCb), sizeof(PPA_DIRECTPATH_CB)); */
 	RTMP_DRIVER_INF_PPA_INIT(pAd);
 #endif /* INF_PPA_SUPPORT */
 
 #ifdef PRE_ASSIGN_MAC_ADDR
-	UCHAR PermanentAddress[MAC_ADDR_LEN];
+	unsigned char PermanentAddress[MAC_ADDR_LEN];
 	RTMP_DRIVER_MAC_ADDR_GET(pAd, &PermanentAddress[0]);
 	DBGPRINT(RT_DEBUG_TRACE, ("@%s MAC address: %02x:%02x:%02x:%02x:%02x:%02x\n", __FUNCTION__, PermanentAddress[0], PermanentAddress[1],PermanentAddress[2],PermanentAddress[3],PermanentAddress[4],PermanentAddress[5]));
 	/* Set up the Mac address */
@@ -819,37 +819,37 @@ RTMP_DRV_USB_COMPLETE_HANDLER RtmpDrvUsbBulkRxComplete = NULL;
 
 USBHST_STATUS RTUSBBulkOutDataPacketComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs)
 {
-	RtmpDrvUsbBulkOutDataPacketComplete((VOID *)pURB);
+	RtmpDrvUsbBulkOutDataPacketComplete((void *)pURB);
 }
 
 USBHST_STATUS RTUSBBulkOutMLMEPacketComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs)
 {
-	RtmpDrvUsbBulkOutMLMEPacketComplete((VOID *)pURB);
+	RtmpDrvUsbBulkOutMLMEPacketComplete((void *)pURB);
 }
 
 USBHST_STATUS RTUSBBulkOutNullFrameComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs)
 {
-	RtmpDrvUsbBulkOutNullFrameComplete((VOID *)pURB);
+	RtmpDrvUsbBulkOutNullFrameComplete((void *)pURB);
 }
 
 USBHST_STATUS RTUSBBulkOutRTSFrameComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs)
 {
-	RtmpDrvUsbBulkOutRTSFrameComplete((VOID *)pURB);
+	RtmpDrvUsbBulkOutRTSFrameComplete((void *)pURB);
 }
 
 USBHST_STATUS RTUSBBulkOutPsPollComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs)
 {
-	RtmpDrvUsbBulkOutPsPollComplete((VOID *)pURB);
+	RtmpDrvUsbBulkOutPsPollComplete((void *)pURB);
 }
 
 USBHST_STATUS RTUSBBulkRxComplete(URBCompleteStatus Status, purbb_t pURB, pregs *pt_regs)
 {
-	RtmpDrvUsbBulkRxComplete((VOID *)pURB);
+	RtmpDrvUsbBulkRxComplete((void *)pURB);
 }
 
 
-VOID RtmpNetOpsInit(
-	IN VOID			*pDrvNetOpsSrc)
+void RtmpNetOpsInit(
+	IN void			*pDrvNetOpsSrc)
 {
 	RTMP_NET_ABL_OPS *pDrvNetOps = (RTMP_NET_ABL_OPS *)pDrvNetOpsSrc;
 
@@ -864,8 +864,8 @@ VOID RtmpNetOpsInit(
 }
 
 
-VOID RtmpNetOpsSet(
-	IN VOID			*pDrvNetOpsSrc)
+void RtmpNetOpsSet(
+	IN void			*pDrvNetOpsSrc)
 {
 	RTMP_NET_ABL_OPS *pDrvNetOps = (RTMP_NET_ABL_OPS *)pDrvNetOpsSrc;
 

@@ -1561,11 +1561,11 @@ void RTUSBBssBeaconStart(
 		pAd->CommonCfg.BeaconUpdateTimer.Repeat = TRUE;
 
 		pAd->CommonCfg.BeaconAdjust = 0;
-		pAd->CommonCfg.BeaconFactor = 0xffffffff / (pAd->CommonCfg.BeaconPeriod << 10);
+/*		pAd->CommonCfg.BeaconFactor = 0xffffffff / (pAd->CommonCfg.BeaconPeriod << 10);
 		pAd->CommonCfg.BeaconRemain = (0xffffffff % (pAd->CommonCfg.BeaconPeriod << 10)) + 1;
 		DBGPRINT(RT_DEBUG_TRACE, ("RTUSBBssBeaconStart:BeaconFactor=%d, BeaconRemain=%d!\n", 
 									pAd->CommonCfg.BeaconFactor, pAd->CommonCfg.BeaconRemain));
-		RTMPSetTimer(&pAd->CommonCfg.BeaconUpdateTimer, 10 /*pAd->CommonCfg.BeaconPeriod*/);
+*/		RTMPSetTimer(&pAd->CommonCfg.BeaconUpdateTimer, 10 /*pAd->CommonCfg.BeaconPeriod*/);
 
 	}
 }
@@ -1668,7 +1668,8 @@ void BeaconUpdateExec(
     IN void * SystemSpecific3)
 {
 	PRTMP_ADAPTER	pAd = (PRTMP_ADAPTER)FunctionContext;
-	unsigned long long	tsfTime_a;/*, tsfTime_b, deltaTime_exp, deltaTime_ab;*/
+//	unsigned long long	tsfTime_a;/*, tsfTime_b, deltaTime_exp, deltaTime_ab;*/
+	unsigned long	tsfTime_a;/*, tsfTime_b, deltaTime_exp, deltaTime_ab;*/
 	unsigned int			delta, delta2MS, period2US, remain, remain_low, remain_high;
 /*	unsigned char			positive;*/
 

@@ -40,6 +40,7 @@
 
 // TODO: shiang-6590, remove it when MP
 // TODO: End---
+MODULE_LICENSE("GPL");
 
 #ifdef RTMP_MAC_USB
 #ifdef OS_ABL_SUPPORT

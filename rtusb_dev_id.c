@@ -54,6 +54,7 @@ USB_DEVICE_ID rtusb_dev_id[] = {
 	{USB_DEVICE(0x293C,0x5702)}, /* Comcast Xfinity KXW02AAA */
 	{USB_DEVICE(0x2019,0xAB31)}, /* Planex GW-450D/GW-450D-KATANA */
 	{USB_DEVICE(0x20F4,0x806B)}, /* TRENDnet TEW-806UBH AC600 */
+	{USB_DEVICE(0x2357,0x0105)}, /* TP-LINK Archer T1U */
 
 	{USB_DEVICE_AND_INTERFACE_INFO(0x0E8D, 0x7630, 0xff, 0x2, 0xff)}, /* MT7630U */
 	{USB_DEVICE_AND_INTERFACE_INFO(0x0E8D, 0x7650, 0xff, 0x2, 0xff)}, /* MT7650U */
@@ -61,5 +62,5 @@ USB_DEVICE_ID rtusb_dev_id[] = {
 	{ }/* Terminating entry */
 };
 
-INT const rtusb_usb_id_len = sizeof(rtusb_dev_id) / sizeof(USB_DEVICE_ID);
+int const rtusb_usb_id_len = sizeof(rtusb_dev_id) / sizeof(USB_DEVICE_ID);
 MODULE_DEVICE_TABLE(usb, rtusb_dev_id);
