@@ -60,16 +60,18 @@ obj_cmm += \
         ba_action.o\
         mgmt_ht.o
 
-obj_cmm += \
-        cmm_txbf.o\
-        cmm_txbf_cal.o
+#obj_cmm += \
+#        cmm_txbf.o\
+#        cmm_txbf_cal.o
+
+
 obj_vht += mgmt_vht.o\
 	vht.o
 
 
 obj-m := mt7610u.o
 
-ccflags-y += -DNEW_RATE_ADAPT_SUPPORT -DCONFIG_STA_SUPPORT -DSYSTEM_LOG_SUPPORT -DCHIPSET=mt7610u -DRESOURCE_PRE_ALLOC -DDOT11_VHT_AC -DENHANCED_STAT_DISPLAY -DSTA_DRIVER_BUILD="\"20141022-1327\"" -DAGGREGATION_SUPPORT -DPIGGYBACK_SUPPORT -DWMM_SUPPORT -DLINUX  -DSTATS_COUNT_SUPPORT -DMT76x0 -DRT65xx -DRLT_MAC -DRLT_RF -DRTMP_MAC_USB -DRTMP_USB_SUPPORT -DRTMP_TIMER_TASK_SUPPORT -DA_BAND_SUPPORT -DRTMP_EFUSE_SUPPORT -DNEW_MBSSID_MODE -DCONFIG_ANDES_SUPPORT -DMT7650 -DMT7630 -DMT7610 -DDBG -DDOT11_N_SUPPORT
+ccflags-y += -DNEW_RATE_ADAPT_SUPPORT -DCONFIG_STA_SUPPORT -DSYSTEM_LOG_SUPPORT -DCHIPSET=mt7610u -DRESOURCE_PRE_ALLOC -DDOT11_VHT_AC -DENHANCED_STAT_DISPLAY -DSTA_DRIVER_BUILD="\"20141022-1327\"" -DAGGREGATION_SUPPORT -DPIGGYBACK_SUPPORT -DWMM_SUPPORT -DLINUX  -DSTATS_COUNT_SUPPORT -DMT76x0 -DRT65xx -DRLT_MAC -DRLT_RF -DRTMP_MAC_USB -DRTMP_USB_SUPPORT -DRTMP_TIMER_TASK_SUPPORT -DA_BAND_SUPPORT -DRTMP_EFUSE_SUPPORT -DNEW_MBSSID_MODE -DCONFIG_ANDES_SUPPORT -DMT7650 -DMT7630 -DMT7610 -DDBG -DDOT11_N_SUPPORT -DSCAN_SUPPORT
 #-DCONFIG_STA_SUPPORT  -DRTMP_USB_SUPPORT -DWPA_SUPPLICANT_SUPPORT -DNATIVE_WPA_SUPPLICANT_SUPPORT -DDOT11_VHT_AC -DMT76x2 -DRT65xx -DRLT_MAC -DRLT_RF -DRTMP_USB_SUPPORT -DRTMP_TIMER_TASK_SUPPORT -DA_BAND_SUPPORT -DRTMP_EFUSE_SUPPORT -DNEW_MBSSID_MODE -DCONFIG_ANDES_SUPPORT
 #ccflags-y += -DCONFIG_STA_SUPPORT -DRTMP_MAC_USB -DRTMP_USB_SUPPORT -DWPA_SUPPLICANT_SUPPORT -DNATIVE_WPA_SUPPLICANT_SUPPORT -DDOT11_VHT_AC -DMT76x2 -DRT65xx -DRLT_MAC -DRLT_RF -DRTMP_MAC_USB -DRTMP_USB_SUPPORT -DRTMP_TIMER_TASK_SUPPORT -DA_BAND_SUPPORT -DRTMP_EFUSE_SUPPORT -DNEW_MBSSID_MODE -DCONFIG_ANDES_SUPPORT
 mt7610u-y := \
@@ -83,6 +85,11 @@ mt7610u-y := \
 	sync.o\
 	rtmp_data.o\
 	wpa.o\
+	rt_linux.o\
+				rt65xx.o\
+                mt76x0.o\
+                cmm_data_usb.o\
+				rtusb_io.o\
 	$(obj_vht)\
 	$(obj_cmm)\
 	$(obj_wsc)
@@ -118,8 +125,6 @@ mt7610-objs += \
                 ee_prom.o\
                 rt_rf.o\
                 rt30xx.o\
-				rt65xx.o\
-                mt76x0.o\
 				ral_nmac.o\
 				mcu.o\
                 mcu_and.o
@@ -135,8 +140,6 @@ mt7610-objs += \
         frq_cal.o
 mt7610-objs += \
                 cmm_mac_usb.o\
-                cmm_data_usb.o\
-				rtusb_io.o\
 				rtusb_data.o\
 				rtusb_bulk.o\
                 rt_usb.o\
@@ -206,10 +209,6 @@ endif
 endif
 
 install:
-	rm -rf $(DAT_PATH)
-	$(shell [ ! -f /etc/Wireless ] && mkdir /etc/Wireless)
-	mkdir $(DAT_PATH)
-	cp $(RT28xx_DIR)/$(DAT_FILE_NAME) $(DAT_PATH)/.
 	install -d $(LINUX_SRC_MODULE)
 	install -m 644 -c $(addsuffix .ko,mt7610) $(LINUX_SRC_MODULE)
 	/sbin/depmod -a ${shell uname -r}

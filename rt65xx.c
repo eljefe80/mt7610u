@@ -49,17 +49,17 @@
 		Before Enable RX, make sure you have enabled Interrupt.
 	========================================================================
 */
-VOID ral_wlan_chip_onoff(
+void ral_wlan_chip_onoff(
 	IN RTMP_ADAPTER *pAd,
-	IN unsigned char bOn,
-	IN unsigned char bResetWLAN)
+	IN char bOn,
+	IN char bResetWLAN)
 {
 	// TODO: check the functionality of the WLAN_FUN_CTRL here, now we just bring up it bu no fine tune.
 	WLAN_FUN_CTRL_STRUC WlanFunCtrl = {.word=0};
 
 
 #ifdef RTMP_MAC_USB
-	UINT32 ret;
+	unsigned int ret;
 
 	if (IS_USB_INF(pAd)) {
 		RTMP_SEM_EVENT_WAIT(&pAd->wlan_en_atomic, ret);
@@ -110,14 +110,14 @@ VOID ral_wlan_chip_onoff(
 #endif /* RTMP_MAC_USB */
 }
 
-VOID dump_bw_info(RTMP_ADAPTER *pAd)
+void dump_bw_info(RTMP_ADAPTER *pAd)
 {
-		UINT32 core_r1, agc_r0, be_r0, band_cfg;
-		static UCHAR *bw_str[]={"20", "10", "40", "80"};
-		UCHAR bw, prim_ch_idx, decode_cap;
-		static UCHAR *decode_str[] = {"0", "20", "40", "20/40",
+		unsigned int core_r1, agc_r0, be_r0, band_cfg;
+		static unsigned char *bw_str[]={"20", "10", "40", "80"};
+		unsigned char bw, prim_ch_idx, decode_cap;
+		static unsigned char *decode_str[] = {"0", "20", "40", "20/40",
 									"80", "20/80", "40/80", "20/40/80"};
-		UCHAR tx_prim;
+		unsigned char tx_prim;
 		RTMP_CHIP_CAP *pChipCap = &pAd->chipCap;
 
 
@@ -151,9 +151,9 @@ VOID dump_bw_info(RTMP_ADAPTER *pAd)
 
 
 #ifdef RTMP_USB_SUPPORT
-VOID RT65xxUsbAsicRadioOff(RTMP_ADAPTER *pAd, UCHAR Stage)
+void RT65xxUsbAsicRadioOff(RTMP_ADAPTER *pAd, unsigned char Stage)
 {
-	UINT32 ret;
+	unsigned int ret;
 
 	DBGPRINT(RT_DEBUG_TRACE, ("--> %s\n", __FUNCTION__));
 
@@ -196,11 +196,11 @@ VOID RT65xxUsbAsicRadioOff(RTMP_ADAPTER *pAd, UCHAR Stage)
 }
 
 
-VOID RT65xxUsbAsicRadioOn(RTMP_ADAPTER *pAd, UCHAR Stage)
+void RT65xxUsbAsicRadioOn(RTMP_ADAPTER *pAd, unsigned char Stage)
 {
-	UINT32 MACValue = 0;
-	UINT32 rx_filter_flag;
-	UINT32 ret;
+	unsigned int MACValue = 0;
+	unsigned int rx_filter_flag;
+	unsigned int ret;
 
 	RTMP_CLEAR_PSFLAG(pAd, fRTMP_PS_MCU_SLEEP);
 #ifdef CONFIG_PM
@@ -285,15 +285,15 @@ VOID RT65xxUsbAsicRadioOn(RTMP_ADAPTER *pAd, UCHAR Stage)
 }
 #endif
 
-VOID RT65xxDisableTxRx(
+void RT65xxDisableTxRx(
 	RTMP_ADAPTER *pAd,
-	UCHAR Level)
+	unsigned char Level)
 {
-	UINT32 MacReg = 0;
-	UINT32 MTxCycle;
+	unsigned int MacReg = 0;
+	unsigned int MTxCycle;
 	unsigned char bResetWLAN = FALSE;
 	unsigned char bFree = TRUE;
-	UINT8 CheckFreeTimes = 0;
+	unsigned char CheckFreeTimes = 0;
 
 	if (!IS_RT65XX(pAd))
 		return;
@@ -306,9 +306,9 @@ VOID RT65xxDisableTxRx(
 	}
 
 	DBGPRINT(RT_DEBUG_TRACE, ("%s Tx success = %ld\n", 
-		__FUNCTION__, (ULONG)pAd->WlanCounters.TransmittedFragmentCount.u.LowPart));
+		__FUNCTION__, (unsigned long)pAd->WlanCounters.TransmittedFragmentCount));
 	DBGPRINT(RT_DEBUG_TRACE, ("%s Rx success = %ld\n", 
-		__FUNCTION__, (ULONG)pAd->WlanCounters.ReceivedFragmentCount.QuadPart));
+		__FUNCTION__, (unsigned long)pAd->WlanCounters.ReceivedFragmentCount));
 
 	StopDmaTx(pAd, Level);
 
@@ -499,16 +499,16 @@ VOID RT65xxDisableTxRx(
 	DBGPRINT(RT_DEBUG_TRACE, ("<---- %s\n", __FUNCTION__));
 }
 
-VOID RT65xx_WLAN_ChipOnOff(
+void RT65xx_WLAN_ChipOnOff(
 	IN RTMP_ADAPTER *pAd,
-	IN unsigned char bOn,
-	IN unsigned char bResetWLAN)
+	IN char bOn,
+	IN char bResetWLAN)
 {
 	WLAN_FUN_CTRL_STRUC WlanFunCtrl = {.word=0};
 
 
 #ifdef RTMP_MAC_USB
-	UINT32 ret;
+	unsigned int ret;
 
 	if (IS_USB_INF(pAd)) {
 		RTMP_SEM_EVENT_WAIT(&pAd->wlan_en_atomic, ret);
@@ -575,7 +575,7 @@ VOID RT65xx_WLAN_ChipOnOff(
 
 	if (bOn == TRUE)
 	{
-		UINT index = 0;		
+		unsigned int index = 0;		
 		CMB_CTRL_STRUC CmbCtrl;
 		
 		CmbCtrl.word = 0;

@@ -29,12 +29,12 @@
 
 
 #ifdef SCAN_SUPPORT
-static INT scan_ch_restore(RTMP_ADAPTER *pAd, UCHAR OpMode)
+static int scan_ch_restore(RTMP_ADAPTER *pAd, unsigned char OpMode)
 {
 #ifdef CONFIG_STA_SUPPORT
-	USHORT Status;
+	unsigned short Status;
 #endif /* CONFIG_STA_SUPPORT */
-	INT bw, ch;
+	int bw, ch;
 	
 	//printk("pAd->hw_cfg.bbp_bw = %d\n", pAd->hw_cfg.bbp_bw);	
 	if (pAd->CommonCfg.BBPCurrentBW != pAd->hw_cfg.bbp_bw)
@@ -144,14 +144,14 @@ static INT scan_ch_restore(RTMP_ADAPTER *pAd, UCHAR OpMode)
 
 
 
-static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
+static int scan_active(RTMP_ADAPTER *pAd, unsigned char OpMode, unsigned char ScanType)
 {
-	UCHAR *frm_buf = NULL;
+	unsigned char *frm_buf = NULL;
 	HEADER_802_11 Hdr80211;
-	ULONG FrameLen = 0;
-	UCHAR SsidLen = 0;
+	unsigned long FrameLen = 0;
+	unsigned char SsidLen = 0;
 #ifdef CONFIG_STA_SUPPORT
-	USHORT Status;
+	unsigned short Status;
 #endif /* CONFIG_STA_SUPPORT */
 
 
@@ -207,7 +207,7 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
 
 		if (pAd->CommonCfg.ExtRateLen)
 		{
-			ULONG Tmp;
+			unsigned long Tmp;
 			MakeOutgoingFrame(frm_buf + FrameLen,            &Tmp,
 							  1,                                &ExtRateIe,
 							  1,                                &pAd->CommonCfg.ExtRateLen,
@@ -219,9 +219,9 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
 #ifdef DOT11_N_SUPPORT
 	if (WMODE_CAP_N(pAd->CommonCfg.PhyMode))
 	{
-		ULONG	Tmp;
-		UCHAR	HtLen;
-		UCHAR	BROADCOM[4] = {0x0, 0x90, 0x4c, 0x33};
+		unsigned long	Tmp;
+		unsigned char	HtLen;
+		unsigned char	BROADCOM[4] = {0x0, 0x90, 0x4c, 0x33};
 #ifdef RT_BIG_ENDIAN
 		HT_CAPABILITY_IE HtCapabilityTmp;
 #endif
@@ -230,17 +230,17 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
 			HtLen = pAd->MlmeAux.HtCapabilityLen + 4;
 #ifdef RT_BIG_ENDIAN
 			NdisMoveMemory(&HtCapabilityTmp, &pAd->MlmeAux.HtCapability, SIZE_HT_CAP_IE);
-			*(USHORT *)(&HtCapabilityTmp.HtCapInfo) = SWAP16(*(USHORT *)(&HtCapabilityTmp.HtCapInfo));
+			*(unsigned short *)(&HtCapabilityTmp.HtCapInfo) = SWAP16(*(unsigned short *)(&HtCapabilityTmp.HtCapInfo));
 #ifdef UNALIGNMENT_SUPPORT
 			{
 				EXT_HT_CAP_INFO extHtCapInfo;
 
-				NdisMoveMemory((PUCHAR)(&extHtCapInfo), (PUCHAR)(&HtCapabilityTmp.ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
-				*(USHORT *)(&extHtCapInfo) = cpu2le16(*(USHORT *)(&extHtCapInfo));
-				NdisMoveMemory((PUCHAR)(&HtCapabilityTmp.ExtHtCapInfo), (PUCHAR)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));		
+				NdisMoveMemory((Punsigned char)(&extHtCapInfo), (Punsigned char)(&HtCapabilityTmp.ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+				*(unsigned short *)(&extHtCapInfo) = cpu2le16(*(unsigned short *)(&extHtCapInfo));
+				NdisMoveMemory((Punsigned char)(&HtCapabilityTmp.ExtHtCapInfo), (Punsigned char)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));		
 			}
 #else				
-			*(USHORT *)(&HtCapabilityTmp.ExtHtCapInfo) = cpu2le16(*(USHORT *)(&HtCapabilityTmp.ExtHtCapInfo));
+			*(unsigned short *)(&HtCapabilityTmp.ExtHtCapInfo) = cpu2le16(*(unsigned short *)(&HtCapabilityTmp.ExtHtCapInfo));
 #endif /* UNALIGNMENT_SUPPORT */
 
 			MakeOutgoingFrame(frm_buf + FrameLen,          &Tmp,
@@ -263,17 +263,17 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
 			HtLen = sizeof(HT_CAPABILITY_IE);
 #ifdef RT_BIG_ENDIAN
 			NdisMoveMemory(&HtCapabilityTmp, &pAd->CommonCfg.HtCapability, SIZE_HT_CAP_IE);
-			*(USHORT *)(&HtCapabilityTmp.HtCapInfo) = SWAP16(*(USHORT *)(&HtCapabilityTmp.HtCapInfo));
+			*(unsigned short *)(&HtCapabilityTmp.HtCapInfo) = SWAP16(*(unsigned short *)(&HtCapabilityTmp.HtCapInfo));
 #ifdef UNALIGNMENT_SUPPORT
 			{
 				EXT_HT_CAP_INFO extHtCapInfo;
 
-				NdisMoveMemory((PUCHAR)(&extHtCapInfo), (PUCHAR)(&HtCapabilityTmp.ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
-				*(USHORT *)(&extHtCapInfo) = cpu2le16(*(USHORT *)(&extHtCapInfo));
-				NdisMoveMemory((PUCHAR)(&HtCapabilityTmp.ExtHtCapInfo), (PUCHAR)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));		
+				NdisMoveMemory((Punsigned char)(&extHtCapInfo), (Punsigned char)(&HtCapabilityTmp.ExtHtCapInfo), sizeof(EXT_HT_CAP_INFO));
+				*(unsigned short *)(&extHtCapInfo) = cpu2le16(*(unsigned short *)(&extHtCapInfo));
+				NdisMoveMemory((Punsigned char)(&HtCapabilityTmp.ExtHtCapInfo), (Punsigned char)(&extHtCapInfo), sizeof(EXT_HT_CAP_INFO));		
 			}
 #else				
-			*(USHORT *)(&HtCapabilityTmp.ExtHtCapInfo) = cpu2le16(*(USHORT *)(&HtCapabilityTmp.ExtHtCapInfo));
+			*(unsigned short *)(&HtCapabilityTmp.ExtHtCapInfo) = cpu2le16(*(unsigned short *)(&HtCapabilityTmp.ExtHtCapInfo));
 #endif /* UNALIGNMENT_SUPPORT */
 
 			MakeOutgoingFrame(frm_buf + FrameLen,          &Tmp,
@@ -294,7 +294,7 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
 #ifdef DOT11N_DRAFT3
 		if ((pAd->MlmeAux.Channel <= 14) && (pAd->CommonCfg.bBssCoexEnable == TRUE))
 		{
-			ULONG Tmp;
+			unsigned long Tmp;
 			HtLen = 1;
 			MakeOutgoingFrame(frm_buf + FrameLen,            &Tmp,
 							  1,					&ExtHtCapIe,
@@ -311,7 +311,7 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
 #ifdef DOT11_VHT_AC
 	if (WMODE_CAP_AC(pAd->CommonCfg.PhyMode) &&
 		(pAd->MlmeAux.Channel > 14)) {		
-		FrameLen += build_vht_ies(pAd, (UCHAR *)(frm_buf + FrameLen), SUBTYPE_PROBE_REQ);
+		FrameLen += build_vht_ies(pAd, (unsigned char *)(frm_buf + FrameLen), SUBTYPE_PROBE_REQ);
 	}
 #endif /* DOT11_VHT_AC */
 
@@ -321,7 +321,7 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
 		(pAd->StaCfg.WpaSupplicantUP != WPA_SUPPLICANT_DISABLE) &&
 		(pAd->StaCfg.WpsProbeReqIeLen != 0))
 	{
-		ULONG 		WpsTmpLen = 0;
+		unsigned long 		WpsTmpLen = 0;
 		
 		MakeOutgoingFrame(frm_buf + FrameLen,              &WpsTmpLen,
 						pAd->StaCfg.WpsProbeReqIeLen,	pAd->StaCfg.pWpsProbeReqIe,
@@ -367,16 +367,16 @@ static INT scan_active(RTMP_ADAPTER *pAd, UCHAR OpMode, UCHAR ScanType)
 		Scan next channel
 	==========================================================================
  */
-VOID ScanNextChannel(
+void ScanNextChannel(
 	IN PRTMP_ADAPTER pAd,
-	IN UCHAR OpMode) 
+	IN unsigned char OpMode) 
 {
-	UCHAR ScanType = pAd->MlmeAux.ScanType;
-	UINT ScanTimeIn5gChannel = SHORT_CHANNEL_TIME;
+	unsigned char ScanType = pAd->MlmeAux.ScanType;
+	unsigned int ScanTimeIn5gChannel = SHORT_CHANNEL_TIME;
 	unsigned char ScanPending = FALSE;
 	RALINK_TIMER_STRUCT *sc_timer;
-	UINT stay_time = 0;
-	UCHAR ImprovedScan_MaxScanChannelCnt;
+	unsigned int stay_time = 0;
+	unsigned char ImprovedScan_MaxScanChannelCnt;
 			
 
 #ifdef RALINK_ATE

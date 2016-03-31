@@ -486,8 +486,8 @@ int RtmpOSTaskInit(
 RTMP_OS_TASK			*pTaskOrg,
 char*					pTaskName,
 void				*pPriv,
-struct list_head				*pTaskList,
-struct list_head				*pSemList);
+LIST_HEADER				*pTaskList,
+LIST_HEADER				*pSemList);
 
 unsigned char RtmpOSTaskWait(
 void				*pReserved,
